@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Dokter;
+use Illuminate\View\View;
+
+class DokterController extends Controller
+{
+    public function index(): View
+    {
+        $dokter = Dokter::with('user')->latest()->paginate(15);
+
+        return view('admin.dokter.index', compact('dokter'));
+    }
+}
