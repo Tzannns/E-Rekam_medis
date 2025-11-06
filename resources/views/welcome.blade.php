@@ -55,7 +55,7 @@
                             </h1>
                             <p class="text-xl text-gray-600 mb-8 leading-relaxed">
                                 Kelola rekam medis pasien dengan mudah, aman, dan efisien. 
-                                Sistem terintegrasi untuk Admin, Dokter, dan Pasien.
+                                Sistem terintegrasi untuk Admin, Petugas, Dokter, dan Pasien.
                             </p>
                             
                             <div class="flex flex-col sm:flex-row gap-4 mb-12">
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="ml-4">
                                         <h3 class="text-lg font-semibold text-gray-900">Multi User</h3>
-                                        <p class="text-gray-600">Akses berbeda untuk Admin, Dokter, dan Pasien</p>
+                                        <p class="text-gray-600">Akses berbeda untuk Admin, Dokter, Petugas dan Pasien</p>
                                     </div>
                 </div>
 
@@ -150,6 +150,17 @@
                                             <div>
                                                 <h3 class="font-semibold text-gray-900">Admin</h3>
                                                 <p class="text-sm text-gray-600">Kelola semua data</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold text-gray-900">Petugas</h3>
+                                                <p class="text-sm text-gray-600">Operasional layanan harian</p>
                                             </div>
                                         </div>
                                         <div class="flex items-center space-x-4">

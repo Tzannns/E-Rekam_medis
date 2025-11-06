@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\RekamMedisController;
 use App\Http\Controllers\Admin\StorageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Dokter\IGDController as DokterIGDController;
 use App\Http\Controllers\Dokter\JadwalController as DokterJadwalController;
 use App\Http\Controllers\Dokter\LaboratoriumController as DokterLaboratoriumController;
@@ -48,6 +49,10 @@ Route::get('/dashboard', function () {
         return redirect()->route('dokter.dashboard');
     }
 
+    if ($user->hasRole('Petugas')) {
+        return redirect()->route('petugas.dashboard');
+    }
+
     if ($user->hasRole('Pasien')) {
         return redirect()->route('pasien.dashboard');
     }
@@ -62,7 +67,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Rekam Medis
-    Route::resource('rekam-medis', RekamMedisController::class);
+    Route::resource('rekam-medis', RekamMedisController::class)->middleware('permission:rekam-medis.view');
     Route::get('/rekam-medis-data', [RekamMedisController::class, 'data'])->name('rekam-medis.data');
 
     // Users (simplified - can be expanded)
@@ -79,7 +84,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 
     // Modul Admin
-    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index')->middleware('permission:pendaftaran.view');
     Route::get('/igd', [IGDController::class, 'index'])->name('igd.index');
     Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])->name('rawat-inap.index');
@@ -109,6 +114,60 @@ Route::middleware(['auth', 'role:Dokter'])->prefix('dokter')->name('dokter.')->g
     Route::get('/laboratorium', [DokterLaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [DokterRadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/jadwal', [DokterJadwalController::class, 'index'])->name('jadwal.index');
+});
+
+// Petugas Routes
+Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')->group(function () {
+    Route::get('/dashboard', [PetugasDashboardController::class, 'index'])->name('dashboard');
+
+    // Akses modul untuk Petugas (dengan permission)
+    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])
+        ->name('pendaftaran.index')
+        ->middleware('permission:pendaftaran.view');
+
+    Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])
+        ->name('rawat-jalan.index')
+        ->middleware('permission:rawat-jalan.view');
+
+    Route::get('/rawat-inap', [RawatInapController::class, 'index'])
+        ->name('rawat-inap.index')
+        ->middleware('permission:rawat-inap.view');
+
+    Route::get('/rekam-medis', [RekamMedisController::class, 'index'])
+        ->name('rekam-medis.index')
+        ->middleware('permission:rekam-medis.view');
+
+    Route::get('/igd', [IGDController::class, 'index'])
+        ->name('igd.index')
+        ->middleware('permission:igd.view');
+
+    Route::get('/kasir', [KasirController::class, 'index'])
+        ->name('kasir.index')
+        ->middleware('permission:kasir.view');
+
+    Route::get('/storage', [StorageController::class, 'index'])
+        ->name('storage.index')
+        ->middleware('permission:storage.view');
+
+    Route::get('/apotik', [ApotikController::class, 'index'])
+        ->name('apotik.index')
+        ->middleware('permission:apotik.view');
+
+    Route::get('/laboratorium', [LaboratoriumController::class, 'index'])
+        ->name('laboratorium.index')
+        ->middleware('permission:laboratorium.view');
+
+    Route::get('/radiologi', [RadiologiController::class, 'index'])
+        ->name('radiologi.index')
+        ->middleware('permission:radiologi.view');
+
+    Route::get('/gizi', [GiziController::class, 'index'])
+        ->name('gizi.index')
+        ->middleware('permission:gizi.view');
+
+    Route::get('/laundry', [LaundryController::class, 'index'])
+        ->name('laundry.index')
+        ->middleware('permission:laundry.view');
 });
 
 // Pasien Routes
