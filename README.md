@@ -86,8 +86,8 @@ Sistem Informasi Rekam Medis Elektronik (E-Rekam Medis) adalah aplikasi web berb
 1. **Clone repository**
 
 ```bash
-git clone https://github.com/yourusername/e-rekam-medis.git
-cd e-rekam-medis
+git clone https://github.com/Tzannns/E-Rekam_medis.git
+cd E-Rekam_medis
 ```
 
 2. **Install dependencies**
