@@ -1,66 +1,259 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# E-Rekam Medis
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Rekam Medis Elektronik (E-Rekam Medis) adalah aplikasi web berbasis Laravel untuk mengelola rekam medis pasien di rumah sakit atau klinik. Aplikasi ini menyediakan sistem manajemen rekam medis yang terintegrasi dengan role-based access control untuk berbagai pengguna.
 
-## About Laravel
+## 📋 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🔐 Autentikasi & Autorisasi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Sistem login dan registrasi
+-   Role-based access control (RBAC)
+-   4 level akses: Admin, Dokter, Pasien, dan Petugas
+-   Manajemen permission menggunakan Spatie Laravel Permission
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👥 Manajemen User
 
-## Learning Laravel
+-   Manajemen pengguna (Admin, Dokter, Pasien, Petugas)
+-   Profil pengguna
+-   Assign role dan permission
+-   DataTables untuk tampilan data yang interaktif
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 📝 Rekam Medis
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   CRUD rekam medis lengkap
+-   Pencarian dan filter rekam medis
+-   Filter berdasarkan pasien, dokter, dan tanggal
+-   Tampilan detail rekam medis
+-   Dashboard untuk setiap role
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🏥 Modul Rumah Sakit
 
-## Laravel Sponsors
+-   **Pendaftaran**: Manajemen pendaftaran pasien
+-   **IGD**: Instalasi Gawat Darurat
+-   **Rawat Jalan**: Manajemen rawat jalan
+-   **Rawat Inap**: Manajemen rawat inap
+-   **Kasir**: Manajemen pembayaran
+-   **Apotik**: Manajemen obat dan resep
+-   **Laboratorium**: Manajemen hasil lab
+-   **Radiologi**: Manajemen hasil radiologi
+-   **Gizi**: Manajemen gizi pasien
+-   **Laundry**: Manajemen laundry rumah sakit
+-   **Storage**: Manajemen gudang
+-   **Manajemen**: Manajemen umum rumah sakit
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📅 Fitur Tambahan
 
-### Premium Partners
+-   Jadwal dokter dan pasien
+-   Profil pasien
+-   Dashboard dengan statistik
+-   Notifikasi menggunakan SweetAlert2
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🛠️ Teknologi yang Digunakan
 
-## Contributing
+### Backend
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **PHP**: 8.4.12
+-   **Laravel**: 12.37.0
+-   **MySQL**: Database utama
+-   **Spatie Laravel Permission**: 6.23 (Role & Permission management)
+-   **Yajra DataTables**: 12 (Server-side processing untuk tabel)
 
-## Code of Conduct
+### Frontend
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **TailwindCSS**: 3.4.18 (Utility-first CSS framework)
+-   **AlpineJS**: 3.15.1 (Lightweight JavaScript framework)
+-   **SweetAlert2**: 11.26.3 (Beautiful alert dialogs)
+-   **Vite**: 6.0.11 (Build tool)
 
-## Security Vulnerabilities
+### Development Tools
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Laravel Breeze**: 2.3.8 (Authentication scaffolding)
+-   **Laravel Pint**: 1.25.1 (Code style fixer)
+-   **PHPUnit**: 11.5.43 (Testing framework)
 
-## License
+## 📦 Instalasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Prasyarat
+
+-   PHP >= 8.2
+-   Composer
+-   Node.js & NPM
+-   MySQL
+-   Git
+
+### Langkah-langkah Instalasi
+
+1. **Clone repository**
+
+```bash
+git clone https://github.com/yourusername/e-rekam-medis.git
+cd e-rekam-medis
+```
+
+2. **Install dependencies**
+
+```bash
+composer install
+npm install
+```
+
+3. **Setup environment**
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. **Konfigurasi database**
+   Edit file `.env` dan sesuaikan konfigurasi database:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=e_rekam_medis
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+5. **Buat database**
+
+```bash
+mysql -u root -e "CREATE DATABASE e_rekam_medis CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+```
+
+6. **Jalankan migrasi dan seeder**
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+7. **Build assets**
+
+```bash
+npm run build
+# atau untuk development
+npm run dev
+```
+
+8. **Jalankan server**
+
+```bash
+php artisan serve
+```
+
+Aplikasi akan tersedia di `http://localhost:8000`
+
+## 👤 Akun Default
+
+Setelah menjalankan seeder, Anda dapat login dengan akun berikut:
+
+### Admin
+
+-   **Email**: admin@rekammedis.com
+-   **Password**: password
+
+### Dokter
+
+-   **Email**: dokter@rekammedis.com
+-   **Password**: password
+
+### Pasien
+
+-   **Email**: pasien@rekammedis.com
+-   **Password**: password
+
+### Petugas
+
+-   **Email**: petugas@rekammedis.com
+-   **Password**: password
+
+## 🔄 Migrasi Data dari SQLite ke MySQL
+
+Jika Anda memiliki data di SQLite dan ingin memindahkannya ke MySQL, gunakan command berikut:
+
+```bash
+php artisan db:migrate-sqlite-to-mysql
+```
+
+Command ini akan:
+
+-   Membaca data dari `database/database.sqlite`
+-   Memindahkan data ke MySQL
+-   Update data yang sudah ada (idempotent)
+
+## 📁 Struktur Project
+
+```
+e-rekam-medis/
+├── app/
+│   ├── Console/Commands/     # Artisan commands
+│   ├── Http/
+│   │   ├── Controllers/      # Controllers
+│   │   │   ├── Admin/        # Admin controllers
+│   │   │   ├── Dokter/       # Dokter controllers
+│   │   │   ├── Pasien/       # Pasien controllers
+│   │   │   └── Petugas/      # Petugas controllers
+│   │   └── Requests/         # Form requests
+│   └── Models/               # Eloquent models
+├── database/
+│   ├── migrations/           # Database migrations
+│   ├── seeders/              # Database seeders
+│   └── factories/            # Model factories
+├── resources/
+│   ├── views/                # Blade templates
+│   ├── css/                  # CSS files
+│   └── js/                   # JavaScript files
+├── routes/
+│   └── web.php               # Web routes
+└── tests/                    # Tests
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test
+php artisan test --filter TestName
+```
+
+## 🎨 Code Style
+
+Aplikasi menggunakan Laravel Pint untuk code style. Jalankan:
+
+```bash
+vendor/bin/pint
+```
+
+## 🔒 Security
+
+-   Pastikan file `.env` tidak di-commit ke repository
+-   Gunakan strong password untuk production
+-   Update dependencies secara berkala
+-   Gunakan HTTPS di production
+
+## 📝 License
+
+Aplikasi ini menggunakan [MIT license](https://opensource.org/licenses/MIT).
+
+## 🤝 Kontribusi
+
+Kontribusi sangat diterima! Silakan buat issue atau pull request.
+
+## 📞 Support
+
+Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan buat issue di repository ini.
+
+## 🙏 Acknowledgments
+
+-   [Laravel](https://laravel.com) - The PHP Framework
+-   [Spatie](https://spatie.be) - Laravel Permission package
+-   [TailwindCSS](https://tailwindcss.com) - CSS Framework
+-   [SweetAlert2](https://sweetalert2.github.io) - Beautiful alerts
+
+---
+
+**Dibuat dengan ❤️ menggunakan Laravel**
