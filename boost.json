@@ -1,5 +1,6 @@
 {
     "agents": [
+        "copilot",
         "cursor"
     ],
     "editors": [
