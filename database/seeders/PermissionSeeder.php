@@ -38,8 +38,13 @@ class PermissionSeeder extends Seeder
             'dokter.update',
             'dokter.delete',
 
-            // Modul lain (hanya view untuk contoh)
+            // IGD
             'igd.view',
+            'igd.create',
+            'igd.edit',
+            'igd.delete',
+
+            // Modul lain (hanya view untuk contoh)
             'rawat-jalan.view',
             'rawat-inap.view',
             'kasir.view',
@@ -72,9 +77,12 @@ class PermissionSeeder extends Seeder
                 'pendaftaran.view',
                 'pendaftaran.create',
                 'rekam-medis.view',
+                'igd.view',
+                'igd.create',
+                'igd.edit',
+                'igd.delete',
                 'rawat-jalan.view',
                 'rawat-inap.view',
-                'igd.view',
                 'kasir.view',
                 'storage.view',
                 'apotik.view',
@@ -87,5 +95,3 @@ class PermissionSeeder extends Seeder
         }
     }
 }
-
-

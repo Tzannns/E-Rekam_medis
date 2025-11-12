@@ -18,7 +18,6 @@ use App\Http\Controllers\Admin\RekamMedisController;
 use App\Http\Controllers\Admin\StorageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
-use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Dokter\IGDController as DokterIGDController;
 use App\Http\Controllers\Dokter\JadwalController as DokterJadwalController;
 use App\Http\Controllers\Dokter\LaboratoriumController as DokterLaboratoriumController;
@@ -31,6 +30,7 @@ use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController
 use App\Http\Controllers\Pasien\DokterController as PasienDokterController;
 use App\Http\Controllers\Pasien\JadwalController as PasienJadwalController;
 use App\Http\Controllers\Pasien\RekamMedisController as PasienRekamMedisController;
+use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +59,7 @@ Route::get('/dashboard', function () {
 
     // Fallback: jika user tidak punya role, assign role Pasien dan redirect
     $user->assignRole('Pasien');
+
     return redirect()->route('pasien.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -87,7 +88,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index')->middleware('permission:pendaftaran.view');
     Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
     Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-    Route::get('/igd', [IGDController::class, 'index'])->name('igd.index');
+
+    // IGD Resource Routes
+    Route::resource('igd', IGDController::class)->middleware('permission:igd.view');
+
     Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])->name('rawat-inap.index');
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
