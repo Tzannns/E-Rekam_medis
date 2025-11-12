@@ -25,7 +25,7 @@
             <!-- Logo and Title -->
             <div class="text-center mb-8">
                 <div class="flex justify-center mb-4">
-                    <x-application-logo class="h-48 w-48 text-blue-600" />
+                    <x-application-logo class="w-16 md:w-24 max-w-full object-contain" />
                 </div>
                 <h2 class="text-3xl font-bold text-gray-900">E-Rekam Medis</h2>
                 <p class="mt-2 text-sm text-gray-600">Sistem Informasi Rekam Medis Elektronik</p>
