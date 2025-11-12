@@ -31,6 +31,8 @@ use App\Http\Controllers\Pasien\DokterController as PasienDokterController;
 use App\Http\Controllers\Pasien\JadwalController as PasienJadwalController;
 use App\Http\Controllers\Pasien\RekamMedisController as PasienRekamMedisController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
+use App\Http\Controllers\Petugas\IGDController as PetugasIGDController;
+use App\Http\Controllers\Petugas\PendaftaranController as PetugasPendaftaranController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -113,7 +115,18 @@ Route::middleware(['auth', 'role:Dokter'])->prefix('dokter')->name('dokter.')->g
     Route::get('/rekam-medis/{rekamMedi}', [DokterRekamMedisController::class, 'show'])->name('rekam-medis.show');
 
     // Modul Dokter
-    Route::get('/igd', [DokterIGDController::class, 'index'])->name('igd.index');
+    Route::get('/igd', [DokterIGDController::class, 'index'])
+        ->name('igd.index')
+        ->middleware('permission:igd.view');
+    Route::get('/igd/{igd}', [DokterIGDController::class, 'show'])
+        ->name('igd.show')
+        ->middleware('permission:igd.view');
+    Route::get('/igd/{igd}/edit', [DokterIGDController::class, 'edit'])
+        ->name('igd.edit')
+        ->middleware('permission:igd.edit');
+    Route::put('/igd/{igd}', [DokterIGDController::class, 'update'])
+        ->name('igd.update')
+        ->middleware('permission:igd.edit');
     Route::get('/rawat-jalan', [DokterRawatJalanController::class, 'index'])->name('rawat-jalan.index');
     Route::get('/rawat-inap', [DokterRawatInapController::class, 'index'])->name('rawat-inap.index');
     Route::get('/pasien', [DokterPasienController::class, 'index'])->name('pasien.index');
@@ -127,11 +140,15 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/dashboard', [PetugasDashboardController::class, 'index'])->name('dashboard');
 
     // Akses modul untuk Petugas (dengan permission)
-    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])
+    Route::get('/pendaftaran', [PetugasPendaftaranController::class, 'index'])
         ->name('pendaftaran.index')
         ->middleware('permission:pendaftaran.view');
-    Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
-    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+    Route::get('/pendaftaran/create', [PetugasPendaftaranController::class, 'create'])
+        ->name('pendaftaran.create')
+        ->middleware('permission:pendaftaran.create');
+    Route::post('/pendaftaran', [PetugasPendaftaranController::class, 'store'])
+        ->name('pendaftaran.store')
+        ->middleware('permission:pendaftaran.create');
 
     Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])
         ->name('rawat-jalan.index')
@@ -145,9 +162,27 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
         ->name('rekam-medis.index')
         ->middleware('permission:rekam-medis.view');
 
-    Route::get('/igd', [IGDController::class, 'index'])
+    Route::get('/igd', [PetugasIGDController::class, 'index'])
         ->name('igd.index')
         ->middleware('permission:igd.view');
+    Route::get('/igd/create', [PetugasIGDController::class, 'create'])
+        ->name('igd.create')
+        ->middleware('permission:igd.create');
+    Route::post('/igd', [PetugasIGDController::class, 'store'])
+        ->name('igd.store')
+        ->middleware('permission:igd.create');
+    Route::get('/igd/{igd}', [PetugasIGDController::class, 'show'])
+        ->name('igd.show')
+        ->middleware('permission:igd.view');
+    Route::get('/igd/{igd}/edit', [PetugasIGDController::class, 'edit'])
+        ->name('igd.edit')
+        ->middleware('permission:igd.edit');
+    Route::put('/igd/{igd}', [PetugasIGDController::class, 'update'])
+        ->name('igd.update')
+        ->middleware('permission:igd.edit');
+    Route::delete('/igd/{igd}', [PetugasIGDController::class, 'destroy'])
+        ->name('igd.destroy')
+        ->middleware('permission:igd.delete');
 
     Route::get('/kasir', [KasirController::class, 'index'])
         ->name('kasir.index')
