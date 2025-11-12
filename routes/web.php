@@ -85,6 +85,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Modul Admin
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index')->middleware('permission:pendaftaran.view');
+    Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
     Route::get('/igd', [IGDController::class, 'index'])->name('igd.index');
     Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])->name('rawat-inap.index');
@@ -124,6 +126,8 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])
         ->name('pendaftaran.index')
         ->middleware('permission:pendaftaran.view');
+    Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 
     Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])
         ->name('rawat-jalan.index')
