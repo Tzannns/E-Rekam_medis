@@ -2,9 +2,15 @@
     <div>
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">IGD</h2>
-                <p class="mt-1 text-sm text-gray-500">Instalasi Gawat Darurat</p>
+                <h2 class="text-3xl font-bold text-gray-900">Data IGD</h2>
+                <p class="mt-1 text-sm text-gray-500">Kelola data kunjungan pasien Instalasi Gawat Darurat</p>
             </div>
+            @can('igd.create')
+                <a href="{{ route('petugas.igd.create') }}"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    + Tambah IGD
+                </a>
+            @endcan
         </div>
 
         @if ($message = Session::get('success'))
@@ -67,7 +73,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex">
-                                    <a href="{{ route('dokter.igd.show', $igd) }}" title="Lihat"
+                                    <a href="{{ route('petugas.igd.show', $igd) }}" title="Lihat"
                                         class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -78,7 +84,7 @@
                                         </svg>
                                     </a>
                                     @can('igd.edit')
-                                        <a href="{{ route('dokter.igd.edit', $igd) }}" title="Edit"
+                                        <a href="{{ route('petugas.igd.edit', $igd) }}" title="Edit"
                                             class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -86,6 +92,22 @@
                                                 </path>
                                             </svg>
                                         </a>
+                                    @endcan
+                                    @can('igd.delete')
+                                        <form action="{{ route('petugas.igd.destroy', $igd) }}" method="POST"
+                                            class="delete-form inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" title="Hapus"
+                                                class="text-red-600 hover:text-red-900 hover:scale-110 transition">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
                                     @endcan
                                 </td>
                             </tr>
@@ -104,5 +126,7 @@
             </div>
         </div>
     </div>
+
+    @include('components.sweet-alert')
 </x-app-layout>
 

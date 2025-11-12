@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             PermissionSeeder::class,
-            IGDSeeder::class,
         ]);
 
         // Create Admin User (idempotent)
@@ -72,5 +71,10 @@ class DatabaseSeeder extends Seeder
         if (! $petugasUser->hasRole('Petugas')) {
             $petugasUser->assignRole('Petugas');
         }
+
+        // Call IGDSeeder after default users are created
+        $this->call([
+            IGDSeeder::class,
+        ]);
     }
 }

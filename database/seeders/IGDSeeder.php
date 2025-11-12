@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Dokter;
 use App\Models\IGD;
 use App\Models\Pasien;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class IGDSeeder extends Seeder
@@ -15,19 +14,16 @@ class IGDSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create sample pasiens with users
-        for ($i = 1; $i <= 5; $i++) {
-            $user = User::factory()->create(['name' => "Pasien $i"]);
-            Pasien::factory()->for($user, 'user')->create();
-        }
+        // Get default pasien and dokter (created in DatabaseSeeder)
+        $defaultPasien = Pasien::first();
+        $defaultDokter = Dokter::first();
 
-        // Create sample dokters with users
-        for ($i = 1; $i <= 3; $i++) {
-            $user = User::factory()->create(['name' => "Dokter $i"]);
-            Dokter::factory()->for($user, 'user')->create();
+        // Only create IGD records if default pasien and dokter exist
+        if ($defaultPasien && $defaultDokter) {
+            IGD::factory(15)->create([
+                'pasien_id' => $defaultPasien->id,
+                'dokter_id' => $defaultDokter->id,
+            ]);
         }
-
-        // Create sample IGD records
-        IGD::factory(15)->create();
     }
 }

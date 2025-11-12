@@ -93,5 +93,21 @@ class PermissionSeeder extends Seeder
                 // tidak termasuk master data: users.*, dokter.*, pasien.*, manajemen.*
             ]);
         }
+
+        $dokterRole = Role::where('name', 'Dokter')->first();
+        if ($dokterRole) {
+            $dokterRole->syncPermissions([
+                'rekam-medis.view',
+                'rekam-medis.create',
+                'rekam-medis.update',
+                'igd.view',
+                'igd.edit',
+                'rawat-jalan.view',
+                'rawat-inap.view',
+                'laboratorium.view',
+                'radiologi.view',
+                'pasien.view',
+            ]);
+        }
     }
 }

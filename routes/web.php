@@ -34,6 +34,8 @@ use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardControll
 use App\Http\Controllers\Petugas\IGDController as PetugasIGDController;
 use App\Http\Controllers\Petugas\PendaftaranController as PetugasPendaftaranController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,7 +43,8 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/dashboard', function () {
-    $user = \Illuminate\Support\Facades\Auth::user();
+    /** @var User $user */
+    $user = Auth::user();
 
     if ($user->hasRole('Admin')) {
         return redirect()->route('admin.dashboard');
