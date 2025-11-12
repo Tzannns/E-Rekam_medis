@@ -39,7 +39,7 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/dashboard', function () {
-    $user = auth()->user();
+    $user = \Illuminate\Support\Facades\Auth::user();
 
     if ($user->hasRole('Admin')) {
         return redirect()->route('admin.dashboard');
