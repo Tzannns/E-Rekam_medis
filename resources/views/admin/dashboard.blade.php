@@ -263,6 +263,25 @@
                     </div>
                 </a>
 
+                <!-- Poli -->
+                <a href="{{ route('admin.poli.index') }}"
+                    class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-teal-300">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-900">Poli</p>
+                        <p class="text-xs text-gray-500">Kelola data poli</p>
+                    </div>
+                </a>
+
                 <!-- Users -->
                 <a href="{{ route('admin.users.index') }}"
                     class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-blue-300">
@@ -316,6 +335,25 @@
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-900">Pasien</p>
                         <p class="text-xs text-gray-500">Kelola data pasien</p>
+                    </div>
+                </a>
+
+                <!-- Petugas -->
+                <a href="{{ route('admin.petugas.index') }}"
+                    class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-indigo-300">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-900">Petugas</p>
+                        <p class="text-xs text-gray-500">Kelola data petugas</p>
                     </div>
                 </a>
             </div>
