@@ -81,18 +81,16 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('rekam-medis', RekamMedisController::class)->middleware('permission:rekam-medis.view');
     Route::get('/rekam-medis-data', [RekamMedisController::class, 'data'])->name('rekam-medis.data');
 
-    // Users (simplified - can be expanded)
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    // Users Resource Routes
     Route::get('/users/data', [UserController::class, 'data'])->name('users.data');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('users', UserController::class)->except(['index']);
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-    // Dokter (simplified - can be expanded)
-    Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
+    // Dokter Resource Routes
+    Route::resource('dokter', DokterController::class);
 
-    // Pasien (simplified - can be expanded)
-    Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
+    // Pasien Resource Routes
+    Route::resource('pasien', PasienController::class);
 
     // Poli Resource Routes
     Route::resource('poli', PoliController::class);

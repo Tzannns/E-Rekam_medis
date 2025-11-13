@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-class StorePasienRequest extends FormRequest
+class UpdatePasienRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +23,14 @@ class StorePasienRequest extends FormRequest
      */
     public function rules(): array
     {
+        $pasien = $this->route('pasien');
+        $userId = $pasien instanceof \App\Models\Pasien ? $pasien->user_id : $pasien;
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'nik' => ['required', 'string', 'size:16', 'unique:pasien,nik'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'nik' => ['required', 'string', 'size:16', Rule::unique('pasien', 'nik')->ignore($pasien)],
             'tanggal_lahir' => ['required', 'date', 'before:today'],
             'jenis_kelamin' => ['required', 'in:L,P'],
             'alamat' => ['required', 'string'],
@@ -42,7 +46,6 @@ class StorePasienRequest extends FormRequest
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
             'email.unique' => 'Email sudah digunakan',
-            'password.required' => 'Password harus diisi',
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
             'nik.required' => 'NIK harus diisi',
             'nik.size' => 'NIK harus 16 karakter',

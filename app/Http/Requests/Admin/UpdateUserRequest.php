@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-class StoreDokterRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +23,15 @@ class StoreDokterRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = $this->route('user');
+        $userId = $user instanceof \App\Models\User ? $user->id : $user;
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'nip' => ['required', 'string', 'max:50', 'unique:dokter,nip'],
-            'spesialisasi' => ['required', 'string', 'max:100'],
-            'no_telp' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => ['required', 'string', 'exists:roles,name'],
         ];
     }
 
@@ -40,15 +43,11 @@ class StoreDokterRequest extends FormRequest
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
             'email.unique' => 'Email sudah digunakan',
-            'password.required' => 'Password harus diisi',
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
-            'nip.required' => 'NIP harus diisi',
-            'nip.unique' => 'NIP sudah digunakan',
-            'nip.max' => 'NIP maksimal 50 karakter',
-            'spesialisasi.required' => 'Spesialisasi harus diisi',
-            'spesialisasi.max' => 'Spesialisasi maksimal 100 karakter',
-            'no_telp.required' => 'No. Telepon harus diisi',
-            'no_telp.max' => 'No. Telepon maksimal 20 karakter',
+            'roles.required' => 'Role harus dipilih',
+            'roles.array' => 'Role harus berupa array',
+            'roles.min' => 'Minimal pilih 1 role',
+            'roles.*.exists' => 'Role tidak valid',
         ];
     }
 }

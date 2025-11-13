@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
-class StoreDokterRequest extends FormRequest
+class UpdateDokterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +23,14 @@ class StoreDokterRequest extends FormRequest
      */
     public function rules(): array
     {
+        $dokter = $this->route('dokter');
+        $userId = $dokter instanceof \App\Models\Dokter ? $dokter->user_id : $dokter;
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-            'nip' => ['required', 'string', 'max:50', 'unique:dokter,nip'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'nip' => ['required', 'string', 'max:50', Rule::unique('dokter', 'nip')->ignore($dokter)],
             'spesialisasi' => ['required', 'string', 'max:100'],
             'no_telp' => ['required', 'string', 'max:20'],
         ];
@@ -40,7 +44,6 @@ class StoreDokterRequest extends FormRequest
             'email.required' => 'Email harus diisi',
             'email.email' => 'Email tidak valid',
             'email.unique' => 'Email sudah digunakan',
-            'password.required' => 'Password harus diisi',
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
             'nip.required' => 'NIP harus diisi',
             'nip.unique' => 'NIP sudah digunakan',
