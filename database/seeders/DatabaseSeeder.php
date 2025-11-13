@@ -72,8 +72,9 @@ class DatabaseSeeder extends Seeder
             $petugasUser->assignRole('Petugas');
         }
 
-        // Call IGDSeeder after default users are created
+        // Call IGDSeeder and PoliSeeder after default users are created
         $this->call([
+            PoliSeeder::class,
             IGDSeeder::class,
         ]);
     }

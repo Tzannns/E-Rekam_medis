@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\LaundryController;
 use App\Http\Controllers\Admin\ManajemenController;
 use App\Http\Controllers\Admin\PasienController;
 use App\Http\Controllers\Admin\PendaftaranController;
+use App\Http\Controllers\Admin\PetugasController;
+use App\Http\Controllers\Admin\PoliController;
 use App\Http\Controllers\Admin\RadiologiController;
 use App\Http\Controllers\Admin\RawatInapController;
 use App\Http\Controllers\Admin\RawatJalanController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\Dokter\IGDController as DokterIGDController;
 use App\Http\Controllers\Dokter\JadwalController as DokterJadwalController;
 use App\Http\Controllers\Dokter\LaboratoriumController as DokterLaboratoriumController;
 use App\Http\Controllers\Dokter\PasienController as DokterPasienController;
+use App\Http\Controllers\Dokter\PoliController as DokterPoliController;
 use App\Http\Controllers\Dokter\RadiologiController as DokterRadiologiController;
 use App\Http\Controllers\Dokter\RawatInapController as DokterRawatInapController;
 use App\Http\Controllers\Dokter\RawatJalanController as DokterRawatJalanController;
@@ -29,10 +32,12 @@ use App\Http\Controllers\Dokter\RekamMedisController as DokterRekamMedisControll
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Pasien\DokterController as PasienDokterController;
 use App\Http\Controllers\Pasien\JadwalController as PasienJadwalController;
+use App\Http\Controllers\Pasien\PoliController as PasienPoliController;
 use App\Http\Controllers\Pasien\RekamMedisController as PasienRekamMedisController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Petugas\IGDController as PetugasIGDController;
 use App\Http\Controllers\Petugas\PendaftaranController as PetugasPendaftaranController;
+use App\Http\Controllers\Petugas\PoliController as PetugasPoliController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -89,6 +94,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // Pasien (simplified - can be expanded)
     Route::get('/pasien', [PasienController::class, 'index'])->name('pasien.index');
 
+    // Poli Resource Routes
+    Route::resource('poli', PoliController::class);
+
+    // Petugas Resource Routes
+    Route::resource('petugas', PetugasController::class);
+
     // Modul Admin
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index')->middleware('permission:pendaftaran.view');
     Route::get('/pendaftaran/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
@@ -136,6 +147,10 @@ Route::middleware(['auth', 'role:Dokter'])->prefix('dokter')->name('dokter.')->g
     Route::get('/laboratorium', [DokterLaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [DokterRadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/jadwal', [DokterJadwalController::class, 'index'])->name('jadwal.index');
+
+    // Poli Routes
+    Route::get('/poli', [DokterPoliController::class, 'index'])->name('poli.index');
+    Route::get('/poli/{poli}', [DokterPoliController::class, 'show'])->name('poli.show');
 });
 
 // Petugas Routes
@@ -164,6 +179,10 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/rekam-medis', [RekamMedisController::class, 'index'])
         ->name('rekam-medis.index')
         ->middleware('permission:rekam-medis.view');
+
+    // Poli Routes
+    Route::get('/poli', [PetugasPoliController::class, 'index'])->name('poli.index');
+    Route::get('/poli/{poli}', [PetugasPoliController::class, 'show'])->name('poli.show');
 
     Route::get('/igd', [PetugasIGDController::class, 'index'])
         ->name('igd.index')
@@ -225,6 +244,10 @@ Route::middleware(['auth', 'role:Pasien'])->prefix('pasien')->name('pasien.')->g
     // Modul Pasien
     Route::get('/jadwal', [PasienJadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/dokter', [PasienDokterController::class, 'index'])->name('dokter.index');
+
+    // Poli Routes
+    Route::get('/poli', [PasienPoliController::class, 'index'])->name('poli.index');
+    Route::get('/poli/{poli}', [PasienPoliController::class, 'show'])->name('poli.show');
 
     // Profil Pasien
     Route::get('/profil/create', [\App\Http\Controllers\Pasien\ProfilController::class, 'create'])->name('profil.create');
