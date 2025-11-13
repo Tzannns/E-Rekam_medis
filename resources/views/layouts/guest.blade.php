@@ -8,11 +8,17 @@
 
     <title>{{ config('app.name', 'E-Rekam Medis') }}</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <!-- Preload Logo for faster loading -->
+    <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" fetchpriority="high">
+    
+    <!-- Favicon with multiple sizes for better caching -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
