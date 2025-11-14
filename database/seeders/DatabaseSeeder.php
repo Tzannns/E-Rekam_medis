@@ -15,12 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Run role and permission seeders first
         $this->call([
             RoleSeeder::class,
             PermissionSeeder::class,
         ]);
 
-        // Create Admin User (idempotent)
+        // Create 4 default users
+        // 1. Admin
         $admin = User::firstOrCreate(
             ['email' => 'admin@rekammedis.com'],
             ['name' => 'Administrator', 'password' => Hash::make('password')]
@@ -29,7 +31,7 @@ class DatabaseSeeder extends Seeder
             $admin->assignRole('Admin');
         }
 
-        // Create Dokter User (idempotent)
+        // 2. Dokter
         $dokterUser = User::firstOrCreate(
             ['email' => 'dokter@rekammedis.com'],
             ['name' => 'Dr. Budi Santoso', 'password' => Hash::make('password')]
@@ -38,21 +40,30 @@ class DatabaseSeeder extends Seeder
             $dokterUser->assignRole('Dokter');
         }
 
-        $dokter = Dokter::firstOrCreate(
+        Dokter::firstOrCreate(
             ['user_id' => $dokterUser->id],
             ['nip' => 'DOK001', 'spesialisasi' => 'Dokter Umum', 'no_telp' => '081234567890']
         );
 
-        // Create Pasien User (idempotent)
+        // 3. Petugas
+        $petugasUser = User::firstOrCreate(
+            ['email' => 'petugas@rekammedis.com'],
+            ['name' => 'Ikhsan', 'password' => Hash::make('password')]
+        );
+        if (! $petugasUser->hasRole('Petugas')) {
+            $petugasUser->assignRole('Petugas');
+        }
+
+        // 4. Pasien
         $pasienUser = User::firstOrCreate(
             ['email' => 'pasien@rekammedis.com'],
-            ['name' => 'Ahmad Fauzi', 'password' => Hash::make('password')]
+            ['name' => 'Akhmad Fauzan', 'password' => Hash::make('password')]
         );
         if (! $pasienUser->hasRole('Pasien')) {
             $pasienUser->assignRole('Pasien');
         }
 
-        $pasien = Pasien::firstOrCreate(
+        Pasien::firstOrCreate(
             ['user_id' => $pasienUser->id],
             [
                 'nik' => '3201010101900001',
@@ -63,20 +74,12 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Optional: Create Petugas User (demo, idempotent)
-        $petugasUser = User::firstOrCreate(
-            ['email' => 'petugas@rekammedis.com'],
-            ['name' => 'Petugas Pendaftaran', 'password' => Hash::make('password')]
-        );
-        if (! $petugasUser->hasRole('Petugas')) {
-            $petugasUser->assignRole('Petugas');
-        }
-
-        // Call IGDSeeder and PoliSeeder after default users are created
+        // Now call other seeders after users are created
         $this->call([
             PoliSeeder::class,
             IGDSeeder::class,
             RawatJalanSeeder::class,
+            RawatInapSeeder::class,
         ]);
     }
 }

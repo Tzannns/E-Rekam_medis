@@ -50,8 +50,13 @@ class PermissionSeeder extends Seeder
             'rawat-jalan.edit',
             'rawat-jalan.delete',
 
-            // Modul lain (hanya view untuk contoh)
+            // Rawat Inap
             'rawat-inap.view',
+            'rawat-inap.create',
+            'rawat-inap.edit',
+            'rawat-inap.delete',
+
+            // Modul lain (hanya view untuk contoh)
             'kasir.view',
             'storage.view',
             'apotik.view',
@@ -91,6 +96,9 @@ class PermissionSeeder extends Seeder
                 'rawat-jalan.edit',
                 'rawat-jalan.delete',
                 'rawat-inap.view',
+                'rawat-inap.create',
+                'rawat-inap.edit',
+                'rawat-inap.delete',
                 'kasir.view',
                 'storage.view',
                 'apotik.view',
@@ -113,6 +121,7 @@ class PermissionSeeder extends Seeder
                 'rawat-jalan.view',
                 'rawat-jalan.edit',
                 'rawat-inap.view',
+                'rawat-inap.edit',
                 'laboratorium.view',
                 'radiologi.view',
                 'pasien.view',

@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Dokter;
-use App\Models\IGD;
 use App\Models\Pasien;
+use App\Models\RawatInap;
 use Illuminate\Database\Seeder;
 
-class IGDSeeder extends Seeder
+class RawatInapSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,9 +18,9 @@ class IGDSeeder extends Seeder
         $defaultPasien = Pasien::first();
         $defaultDokter = Dokter::first();
 
-        // Only create IGD records if default pasien and dokter exist
+        // Only create RawatInap records if default pasien and dokter exist
         if ($defaultPasien && $defaultDokter) {
-            IGD::factory(5)->create([
+            RawatInap::factory(8)->create([
                 'pasien_id' => $defaultPasien->id,
                 'dokter_id' => $defaultDokter->id,
             ]);

@@ -109,7 +109,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Rawat Jalan Resource Routes
     Route::resource('rawat-jalan', RawatJalanController::class)->middleware('permission:rawat-jalan.view');
-    Route::get('/rawat-inap', [RawatInapController::class, 'index'])->name('rawat-inap.index');
+
+    // Rawat Inap Resource Routes
+    Route::resource('rawat-inap', RawatInapController::class)->middleware('permission:rawat-inap.view');
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
     Route::get('/storage', [StorageController::class, 'index'])->name('storage.index');
     Route::get('/apotik', [ApotikController::class, 'index'])->name('apotik.index');

@@ -22,7 +22,7 @@ class RawatJalanSeeder extends Seeder
 
         // Only create RawatJalan records if default pasien, dokter, and poli exist
         if ($defaultPasien && $defaultDokter && $defaultPoli) {
-            RawatJalan::factory(15)->create([
+            RawatJalan::factory(5)->create([
                 'pasien_id' => $defaultPasien->id,
                 'dokter_id' => $defaultDokter->id,
                 'poli_id' => $defaultPoli->id,
