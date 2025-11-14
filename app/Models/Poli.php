@@ -9,6 +9,8 @@ class Poli extends Model
 {
     use HasFactory;
 
+    protected $table = 'polis';
+
     protected $fillable = [
         'nama_poli',
         'kode_poli',

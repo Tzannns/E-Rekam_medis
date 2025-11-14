@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Petugas;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\RawatJalanController as AdminRawatJalanController;
 use App\Http\Requests\StoreRawatJalanRequest;
 use App\Http\Requests\UpdateRawatJalanRequest;
 use App\Models\Dokter;
@@ -12,7 +12,7 @@ use App\Models\RawatJalan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class RawatJalanController extends Controller
+class RawatJalanController extends AdminRawatJalanController
 {
     public function index(): View
     {
@@ -20,7 +20,7 @@ class RawatJalanController extends Controller
             ->latest('tanggal_kunjungan')
             ->paginate(10);
 
-        return view('admin.rawat-jalan.index', compact('rawatJalans'));
+        return view('petugas.rawat-jalan.index', compact('rawatJalans'));
     }
 
     public function create(): View
@@ -29,7 +29,7 @@ class RawatJalanController extends Controller
         $dokters = Dokter::with('user')->get();
         $polis = Poli::all();
 
-        return view('admin.rawat-jalan.create', compact('pasiens', 'dokters', 'polis'));
+        return view('petugas.rawat-jalan.create', compact('pasiens', 'dokters', 'polis'));
     }
 
     public function store(StoreRawatJalanRequest $request): RedirectResponse
@@ -37,7 +37,7 @@ class RawatJalanController extends Controller
         $rawatJalan = RawatJalan::create($request->validated());
 
         return redirect()
-            ->route('admin.rawat-jalan.show', $rawatJalan)
+            ->route('petugas.rawat-jalan.show', $rawatJalan)
             ->with('success', 'Data Rawat Jalan berhasil ditambahkan');
     }
 
@@ -45,7 +45,7 @@ class RawatJalanController extends Controller
     {
         $rawatJalan->load('pasien.user', 'dokter.user', 'poli');
 
-        return view('admin.rawat-jalan.show', compact('rawatJalan'));
+        return view('petugas.rawat-jalan.show', compact('rawatJalan'));
     }
 
     public function edit(RawatJalan $rawatJalan): View
@@ -55,7 +55,7 @@ class RawatJalanController extends Controller
         $dokters = Dokter::with('user')->get();
         $polis = Poli::all();
 
-        return view('admin.rawat-jalan.edit', compact('rawatJalan', 'pasiens', 'dokters', 'polis'));
+        return view('petugas.rawat-jalan.edit', compact('rawatJalan', 'pasiens', 'dokters', 'polis'));
     }
 
     public function update(UpdateRawatJalanRequest $request, RawatJalan $rawatJalan): RedirectResponse
@@ -63,7 +63,7 @@ class RawatJalanController extends Controller
         $rawatJalan->update($request->validated());
 
         return redirect()
-            ->route('admin.rawat-jalan.show', $rawatJalan)
+            ->route('petugas.rawat-jalan.show', $rawatJalan)
             ->with('success', 'Data Rawat Jalan berhasil diperbarui');
     }
 
@@ -72,7 +72,7 @@ class RawatJalanController extends Controller
         $rawatJalan->delete();
 
         return redirect()
-            ->route('admin.rawat-jalan.index')
+            ->route('petugas.rawat-jalan.index')
             ->with('success', 'Data Rawat Jalan berhasil dihapus');
     }
 }

@@ -38,6 +38,7 @@ use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardControll
 use App\Http\Controllers\Petugas\IGDController as PetugasIGDController;
 use App\Http\Controllers\Petugas\PendaftaranController as PetugasPendaftaranController;
 use App\Http\Controllers\Petugas\PoliController as PetugasPoliController;
+use App\Http\Controllers\Petugas\RawatJalanController as PetugasRawatJalanController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -106,7 +107,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // IGD Resource Routes
     Route::resource('igd', IGDController::class)->middleware('permission:igd.view');
 
-    Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
+    // Rawat Jalan Resource Routes
+    Route::resource('rawat-jalan', RawatJalanController::class)->middleware('permission:rawat-jalan.view');
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])->name('rawat-inap.index');
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
     Route::get('/storage', [StorageController::class, 'index'])->name('storage.index');
@@ -139,7 +141,18 @@ Route::middleware(['auth', 'role:Dokter'])->prefix('dokter')->name('dokter.')->g
     Route::put('/igd/{igd}', [DokterIGDController::class, 'update'])
         ->name('igd.update')
         ->middleware('permission:igd.edit');
-    Route::get('/rawat-jalan', [DokterRawatJalanController::class, 'index'])->name('rawat-jalan.index');
+    Route::get('/rawat-jalan', [DokterRawatJalanController::class, 'index'])
+        ->name('rawat-jalan.index')
+        ->middleware('permission:rawat-jalan.view');
+    Route::get('/rawat-jalan/{rawatJalan}', [DokterRawatJalanController::class, 'show'])
+        ->name('rawat-jalan.show')
+        ->middleware('permission:rawat-jalan.view');
+    Route::get('/rawat-jalan/{rawatJalan}/edit', [DokterRawatJalanController::class, 'edit'])
+        ->name('rawat-jalan.edit')
+        ->middleware('permission:rawat-jalan.edit');
+    Route::put('/rawat-jalan/{rawatJalan}', [DokterRawatJalanController::class, 'update'])
+        ->name('rawat-jalan.update')
+        ->middleware('permission:rawat-jalan.edit');
     Route::get('/rawat-inap', [DokterRawatInapController::class, 'index'])->name('rawat-inap.index');
     Route::get('/pasien', [DokterPasienController::class, 'index'])->name('pasien.index');
     Route::get('/laboratorium', [DokterLaboratoriumController::class, 'index'])->name('laboratorium.index');
@@ -166,9 +179,27 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
         ->name('pendaftaran.store')
         ->middleware('permission:pendaftaran.create');
 
-    Route::get('/rawat-jalan', [RawatJalanController::class, 'index'])
+    Route::get('/rawat-jalan', [PetugasRawatJalanController::class, 'index'])
         ->name('rawat-jalan.index')
         ->middleware('permission:rawat-jalan.view');
+    Route::get('/rawat-jalan/create', [PetugasRawatJalanController::class, 'create'])
+        ->name('rawat-jalan.create')
+        ->middleware('permission:rawat-jalan.create');
+    Route::post('/rawat-jalan', [PetugasRawatJalanController::class, 'store'])
+        ->name('rawat-jalan.store')
+        ->middleware('permission:rawat-jalan.create');
+    Route::get('/rawat-jalan/{rawatJalan}', [PetugasRawatJalanController::class, 'show'])
+        ->name('rawat-jalan.show')
+        ->middleware('permission:rawat-jalan.view');
+    Route::get('/rawat-jalan/{rawatJalan}/edit', [PetugasRawatJalanController::class, 'edit'])
+        ->name('rawat-jalan.edit')
+        ->middleware('permission:rawat-jalan.edit');
+    Route::put('/rawat-jalan/{rawatJalan}', [PetugasRawatJalanController::class, 'update'])
+        ->name('rawat-jalan.update')
+        ->middleware('permission:rawat-jalan.edit');
+    Route::delete('/rawat-jalan/{rawatJalan}', [PetugasRawatJalanController::class, 'destroy'])
+        ->name('rawat-jalan.destroy')
+        ->middleware('permission:rawat-jalan.delete');
 
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])
         ->name('rawat-inap.index')

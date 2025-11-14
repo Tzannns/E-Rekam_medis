@@ -76,6 +76,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PoliSeeder::class,
             IGDSeeder::class,
+            RawatJalanSeeder::class,
         ]);
     }
 }

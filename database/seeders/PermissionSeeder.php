@@ -44,8 +44,13 @@ class PermissionSeeder extends Seeder
             'igd.edit',
             'igd.delete',
 
-            // Modul lain (hanya view untuk contoh)
+            // Rawat Jalan
             'rawat-jalan.view',
+            'rawat-jalan.create',
+            'rawat-jalan.edit',
+            'rawat-jalan.delete',
+
+            // Modul lain (hanya view untuk contoh)
             'rawat-inap.view',
             'kasir.view',
             'storage.view',
@@ -82,6 +87,9 @@ class PermissionSeeder extends Seeder
                 'igd.edit',
                 'igd.delete',
                 'rawat-jalan.view',
+                'rawat-jalan.create',
+                'rawat-jalan.edit',
+                'rawat-jalan.delete',
                 'rawat-inap.view',
                 'kasir.view',
                 'storage.view',
@@ -103,6 +111,7 @@ class PermissionSeeder extends Seeder
                 'igd.view',
                 'igd.edit',
                 'rawat-jalan.view',
+                'rawat-jalan.edit',
                 'rawat-inap.view',
                 'laboratorium.view',
                 'radiologi.view',
