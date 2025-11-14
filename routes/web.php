@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\RawatJalanController;
 use App\Http\Controllers\Admin\RekamMedisController;
 use App\Http\Controllers\Admin\StorageController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
 use App\Http\Controllers\Dokter\IGDController as DokterIGDController;
 use App\Http\Controllers\Dokter\JadwalController as DokterJadwalController;
@@ -98,6 +99,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Petugas Resource Routes
     Route::resource('petugas', PetugasController::class);
+
+    // User Management Resource Routes (Unified User, Pasien, Dokter, Petugas)
+    Route::resource('user-management', UserManagementController::class)->parameters(['user-management' => 'user'])->middleware('permission:users.view');
+    Route::get('user-management-export', [UserManagementController::class, 'export'])->name('user-management.export')->middleware('permission:users.view');
 
     // Modul Admin
     Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index')->middleware('permission:pendaftaran.view');
