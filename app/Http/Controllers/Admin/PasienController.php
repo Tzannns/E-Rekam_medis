@@ -91,11 +91,17 @@ class PasienController extends Controller
 
     public function destroy(Pasien $pasien): RedirectResponse
     {
-        if (auth()->id() === $pasien->user_id) {
+        $currentUser = auth()->user();
+
+        if ($currentUser && $currentUser->id === $pasien->user_id) {
             return back()->with('warning', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
-        $pasien->user->delete();
+        if ($pasien->relationLoaded('user') || $pasien->user()->exists()) {
+            $pasien->user()->delete();
+        } else {
+            $pasien->delete();
+        }
 
         return redirect()
             ->route('admin.pasien.index')
