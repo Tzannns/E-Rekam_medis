@@ -1,5 +1,5 @@
-<div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
-    <button @click="$dispatch('open-mobile-sidebar')" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden">
+<div x-data="{}" class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+    <button @click="window.dispatchEvent(new CustomEvent('open-mobile-sidebar')); window.dispatchEvent(new CustomEvent('toggle-desktop-sidebar'))" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>

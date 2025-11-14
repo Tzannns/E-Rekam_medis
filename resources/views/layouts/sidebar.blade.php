@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="hidden lg:flex lg:flex-shrink-0">
+<div x-data="{ open: true }" @toggle-desktop-sidebar.window="open = !open" class="hidden lg:flex lg:flex-shrink-0" x-show="open" x-cloak>
     <div class="flex flex-col w-64">
         <div class="flex flex-col flex-grow bg-blue-700 pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center flex-shrink-0 px-4 mb-8">
