@@ -123,6 +123,32 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');
+    
+    // Pengaturan Aplikasi
+    Route::get('/manajemen/pengaturan', [ManajemenController::class, 'pengaturan'])->name('manajemen.pengaturan');
+    Route::post('/manajemen/pengaturan', [ManajemenController::class, 'updatePengaturan'])->name('manajemen.update-pengaturan');
+    
+    // Manajemen User
+    Route::get('/manajemen/users', [ManajemenController::class, 'users'])->name('manajemen.users');
+    Route::post('/manajemen/users', [ManajemenController::class, 'storeUser'])->name('manajemen.store-user');
+    Route::put('/manajemen/users/{user}', [ManajemenController::class, 'updateUser'])->name('manajemen.update-user');
+    Route::delete('/manajemen/users/{user}', [ManajemenController::class, 'destroyUser'])->name('manajemen.destroy-user');
+    
+    // Manajemen Role
+    Route::get('/manajemen/roles', [ManajemenController::class, 'roles'])->name('manajemen.roles');
+    Route::post('/manajemen/roles', [ManajemenController::class, 'storeRole'])->name('manajemen.store-role');
+    Route::put('/manajemen/roles/{role}', [ManajemenController::class, 'updateRole'])->name('manajemen.update-role');
+    Route::delete('/manajemen/roles/{role}', [ManajemenController::class, 'destroyRole'])->name('manajemen.destroy-role');
+    
+    // Log Aktivitas
+    Route::get('/manajemen/log-aktivitas', [ManajemenController::class, 'logAktivitas'])->name('manajemen.log-aktivitas');
+    Route::delete('/manajemen/log-aktivitas/clear', [ManajemenController::class, 'clearLog'])->name('manajemen.clear-log');
+    
+    // Backup Database
+    Route::get('/manajemen/backup', [ManajemenController::class, 'backup'])->name('manajemen.backup');
+    Route::post('/manajemen/backup/create', [ManajemenController::class, 'createBackup'])->name('manajemen.create-backup');
+    Route::get('/manajemen/backup/download/{filename}', [ManajemenController::class, 'downloadBackup'])->name('manajemen.download-backup');
+    Route::delete('/manajemen/backup/delete/{filename}', [ManajemenController::class, 'deleteBackup'])->name('manajemen.delete-backup');
     Route::get('/gizi', [GiziController::class, 'index'])
         ->name('gizi.index')
         ->middleware('permission:gizi.view');
