@@ -3,12 +3,133 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\View\View;
+use App\Models\Gizi;
+use App\Models\Pasien;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class GiziController extends Controller
 {
-    public function index(): View
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        return view('admin.gizi.index');
+        $search = $request->get('search');
+        
+        $gizi = Gizi::with('pasien')
+            ->when($search, function($query, $search) {
+                return $query->whereHas('pasien', function($q) use ($search) {
+                    $q->where('nama', 'like', "%{$search}%");
+                })
+                ->orWhere('jenis_makanan', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(15);
+
+        return view('admin.gizi.index', compact('gizi'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $pasien = Pasien::all();
+        return view('admin.gizi.create', compact('pasien'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'pasien_id' => 'required|exists:pasien,id',
+            'tanggal' => 'required|date',
+            'jenis_makanan' => 'required|string|max:255',
+            'jumlah' => 'required|integer|min:1',
+            'catatan' => 'nullable|string',
+            'status' => 'required|in:pending,diberikan,ditolak'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            Gizi::create($validated);
+            DB::commit();
+            
+            Alert::success('Success', 'Data gizi berhasil ditambahkan');
+            return redirect()->route('admin.gizi.index');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Error', 'Terjadi kesalahan saat menyimpan data');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Gizi $gizi)
+    {
+        $gizi->load('pasien');
+        return view('admin.gizi.show', compact('gizi'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Gizi $gizi)
+    {
+        $pasien = Pasien::all();
+        return view('admin.gizi.edit', compact('gizi', 'pasien'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Gizi $gizi)
+    {
+        $validated = $request->validate([
+            'pasien_id' => 'required|exists:pasien,id',
+            'tanggal' => 'required|date',
+            'jenis_makanan' => 'required|string|max:255',
+            'jumlah' => 'required|integer|min:1',
+            'catatan' => 'nullable|string',
+            'status' => 'required|in:pending,diberikan,ditolak'
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $gizi->update($validated);
+            DB::commit();
+            
+            Alert::success('Success', 'Data gizi berhasil diupdate');
+            return redirect()->route('admin.gizi.index');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Error', 'Terjadi kesalahan saat update data');
+            return back()->withInput();
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Gizi $gizi)
+    {
+        DB::beginTransaction();
+        try {
+            $gizi->delete();
+            DB::commit();
+            
+            Alert::success('Success', 'Data gizi berhasil dihapus');
+            return redirect()->route('admin.gizi.index');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Error', 'Terjadi kesalahan saat menghapus data');
+            return back();
+        }
     }
 }
