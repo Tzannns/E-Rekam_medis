@@ -123,7 +123,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/kasir/{kasir}', [KasirController::class, 'show'])->name('kasir.show')->middleware('permission:kasir.view');
     Route::post('/kasir/{kasir}/pembayaran', [KasirController::class, 'tambahPembayaran'])->name('kasir.pembayaran.store')->middleware('permission:kasir.create');
     Route::resource('storage', StorageController::class)->middleware('permission:storage.view');
-    Route::get('/apotik', [ApotikController::class, 'index'])->name('apotik.index');
+    Route::resource('apotik', ApotikController::class)->middleware('permission:apotik.view');
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');
@@ -332,9 +332,7 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
         ->name('storage.index')
         ->middleware('permission:storage.view');
 
-    Route::get('/apotik', [ApotikController::class, 'index'])
-        ->name('apotik.index')
-        ->middleware('permission:apotik.view');
+    Route::resource('apotik', ApotikController::class)->middleware('permission:apotik.view');
 
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])
         ->name('laboratorium.index')
