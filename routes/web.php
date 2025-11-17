@@ -117,7 +117,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Rawat Inap Resource Routes
     Route::resource('rawat-inap', RawatInapController::class)->middleware('permission:rawat-inap.view');
-    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
+    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index')->middleware('permission:kasir.view');
+    Route::get('/kasir/create', [KasirController::class, 'create'])->name('kasir.create')->middleware('permission:kasir.create');
+    Route::post('/kasir', [KasirController::class, 'store'])->name('kasir.store')->middleware('permission:kasir.create');
+    Route::get('/kasir/{kasir}', [KasirController::class, 'show'])->name('kasir.show')->middleware('permission:kasir.view');
+    Route::post('/kasir/{kasir}/pembayaran', [KasirController::class, 'tambahPembayaran'])->name('kasir.pembayaran.store')->middleware('permission:kasir.create');
     Route::get('/storage', [StorageController::class, 'index'])->name('storage.index');
     Route::get('/apotik', [ApotikController::class, 'index'])->name('apotik.index');
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index');
@@ -285,6 +289,18 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/kasir', [KasirController::class, 'index'])
         ->name('kasir.index')
         ->middleware('permission:kasir.view');
+    Route::get('/kasir/create', [KasirController::class, 'create'])
+        ->name('kasir.create')
+        ->middleware('permission:kasir.create');
+    Route::post('/kasir', [KasirController::class, 'store'])
+        ->name('kasir.store')
+        ->middleware('permission:kasir.create');
+    Route::get('/kasir/{kasir}', [KasirController::class, 'show'])
+        ->name('kasir.show')
+        ->middleware('permission:kasir.view');
+    Route::post('/kasir/{kasir}/pembayaran', [KasirController::class, 'tambahPembayaran'])
+        ->name('kasir.pembayaran.store')
+        ->middleware('permission:kasir.create');
 
     Route::get('/storage', [StorageController::class, 'index'])
         ->name('storage.index')

@@ -56,8 +56,11 @@ class PermissionSeeder extends Seeder
             'rawat-inap.edit',
             'rawat-inap.delete',
 
-            // Modul lain (hanya view untuk contoh)
+            // Kasir
             'kasir.view',
+            'kasir.create',
+            'kasir.edit',
+            'kasir.delete',
             'storage.view',
             'apotik.view',
             'laboratorium.view',
@@ -106,6 +109,9 @@ class PermissionSeeder extends Seeder
                 'rawat-inap.edit',
                 'rawat-inap.delete',
                 'kasir.view',
+                'kasir.create',
+                'kasir.edit',
+                'kasir.delete',
                 'storage.view',
                 'apotik.view',
                 'laboratorium.view',
