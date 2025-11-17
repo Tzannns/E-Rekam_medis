@@ -65,6 +65,9 @@ class PermissionSeeder extends Seeder
             'manajemen.view',
             'gizi.view',
             'laundry.view',
+            'laundry.create',
+            'laundry.edit',
+            'laundry.delete',
 
             // Users management
             'users.view',
@@ -106,6 +109,9 @@ class PermissionSeeder extends Seeder
                 'radiologi.view',
                 'gizi.view',
                 'laundry.view',
+                'laundry.create',
+                'laundry.edit',
+                'laundry.delete',
                 // tidak termasuk master data: users.*, dokter.*, pasien.*, manajemen.*
             ]);
         }
