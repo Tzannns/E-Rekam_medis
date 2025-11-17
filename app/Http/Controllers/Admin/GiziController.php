@@ -16,13 +16,25 @@ class GiziController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        
+        $status = $request->get('status');
+        $tanggalDari = $request->get('tanggal_dari');
+        $tanggalSampai = $request->get('tanggal_sampai');
+
         $gizi = Gizi::with('pasien')
-            ->when($search, function($query, $search) {
-                return $query->whereHas('pasien', function($q) use ($search) {
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('pasien', function ($q) use ($search) {
                     $q->where('nama', 'like', "%{$search}%");
                 })
-                ->orWhere('jenis_makanan', 'like', "%{$search}%");
+                    ->orWhere('jenis_makanan', 'like', "%{$search}%");
+            })
+            ->when($status, function ($query, $status) {
+                return $query->where('status', $status);
+            })
+            ->when($tanggalDari, function ($query, $tanggalDari) {
+                return $query->whereDate('tanggal', '>=', $tanggalDari);
+            })
+            ->when($tanggalSampai, function ($query, $tanggalSampai) {
+                return $query->whereDate('tanggal', '<=', $tanggalSampai);
             })
             ->latest()
             ->paginate(15);
@@ -36,6 +48,7 @@ class GiziController extends Controller
     public function create()
     {
         $pasien = Pasien::with('user')->get();
+
         return view('admin.gizi.create', compact('pasien'));
     }
 
@@ -50,17 +63,18 @@ class GiziController extends Controller
             'jenis_makanan' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'catatan' => 'nullable|string',
-            'status' => 'required|in:pending,diberikan,ditolak'
+            'status' => 'required|in:pending,diberikan,ditolak',
         ]);
 
         DB::beginTransaction();
         try {
             Gizi::create($validated);
             DB::commit();
-            
+
             return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil ditambahkan');
         } catch (\Exception $e) {
             DB::rollback();
+
             return back()->withInput()->with('error', 'Terjadi kesalahan saat menyimpan data');
         }
     }
@@ -71,6 +85,7 @@ class GiziController extends Controller
     public function show(Gizi $gizi)
     {
         $gizi->load('pasien');
+
         return view('admin.gizi.show', compact('gizi'));
     }
 
@@ -80,6 +95,7 @@ class GiziController extends Controller
     public function edit(Gizi $gizi)
     {
         $pasien = Pasien::with('user')->get();
+
         return view('admin.gizi.edit', compact('gizi', 'pasien'));
     }
 
@@ -94,17 +110,18 @@ class GiziController extends Controller
             'jenis_makanan' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'catatan' => 'nullable|string',
-            'status' => 'required|in:pending,diberikan,ditolak'
+            'status' => 'required|in:pending,diberikan,ditolak',
         ]);
 
         DB::beginTransaction();
         try {
             $gizi->update($validated);
             DB::commit();
-            
+
             return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollback();
+
             return back()->withInput()->with('error', 'Terjadi kesalahan saat update data');
         }
     }
@@ -118,10 +135,11 @@ class GiziController extends Controller
         try {
             $gizi->delete();
             DB::commit();
-            
+
             return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollback();
+
             return back()->with('error', 'Terjadi kesalahan saat menghapus data');
         }
     }
