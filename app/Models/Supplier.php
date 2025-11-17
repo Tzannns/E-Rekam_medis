@@ -5,31 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Apotik extends Model
+class Supplier extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'kode_apotik',
-        'nama_apotik',
-        'lokasi',
+        'kode_supplier',
+        'nama_supplier',
+        'alamat',
         'telepon',
         'email',
+        'contact_person',
         'status',
-    ];
-
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     public function obats()
     {
         return $this->hasMany(Obat::class);
-    }
-
-    public function transaksiApotiks()
-    {
-        return $this->hasMany(TransaksiApotik::class);
     }
 }

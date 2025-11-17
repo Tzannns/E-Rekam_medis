@@ -85,6 +85,11 @@ class DatabaseSeeder extends Seeder
             GiziSeeder::class,
             KasirSeeder::class,
             StorageItemSeeder::class,
+            ApotikSeeder::class,
+            SupplierSeeder::class,
+            ObatSeeder::class,
+            StokObatSeeder::class,
+            TransaksiApotikSeeder::class,
         ]);
     }
 }

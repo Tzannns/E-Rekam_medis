@@ -1,9 +1,39 @@
 <x-app-layout>
     <div>
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-gray-900">Manajemen Apotik</h2>
+            <p class="mt-1 text-sm text-gray-500">Kelola data apotik dan informasi farmasi</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="mb-6 border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8">
+                <a href="{{ route('admin.apotik.index') }}" 
+                   class="border-b-2 {{ request()->routeIs('admin.apotik.index') || request()->routeIs('admin.apotik.show') || request()->routeIs('admin.apotik.create') || request()->routeIs('admin.apotik.edit') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                    Data Apotik
+                </a>
+                <a href="{{ route('admin.apotik.supplier.index') }}" 
+                   class="border-b-2 {{ request()->routeIs('admin.apotik.supplier.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                    Supplier
+                </a>
+                <a href="{{ route('admin.apotik.obat.index') }}" 
+                   class="border-b-2 {{ request()->routeIs('admin.apotik.obat.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                    Data Obat
+                </a>
+                <a href="{{ route('admin.apotik.stok.index') }}" 
+                   class="border-b-2 {{ request()->routeIs('admin.apotik.stok.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                    Stok Obat
+                </a>
+                <a href="{{ route('admin.apotik.transaksi.index') }}" 
+                   class="border-b-2 {{ request()->routeIs('admin.apotik.transaksi.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                    Transaksi
+                </a>
+            </nav>
+        </div>
+
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Data Apotik</h2>
-                <p class="mt-1 text-sm text-gray-500">Kelola data apotik dan informasi farmasi</p>
+                <h3 class="text-xl font-semibold text-gray-900">Daftar Apotik</h3>
             </div>
             @can('apotik.create')
                 <a href="{{ route('admin.apotik.create') }}"

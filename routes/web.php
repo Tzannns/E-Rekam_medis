@@ -75,6 +75,14 @@ Route::get('/dashboard', function () {
     return redirect()->route('pasien.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Test route outside middleware
+Route::get('/test-route', function() {
+    $user = auth()->user();
+    $hasRole = $user->hasRole('Admin');
+    $roles = $user->getRoleNames();
+    return 'User: ' . $user->email . '<br>Has Admin Role: ' . ($hasRole ? 'YES' : 'NO') . '<br>Roles: ' . $roles->implode(', ');
+});
+
 // Admin Routes
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -123,7 +131,18 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/kasir/{kasir}', [KasirController::class, 'show'])->name('kasir.show')->middleware('permission:kasir.view');
     Route::post('/kasir/{kasir}/pembayaran', [KasirController::class, 'tambahPembayaran'])->name('kasir.pembayaran.store')->middleware('permission:kasir.create');
     Route::resource('storage', StorageController::class)->middleware('permission:storage.view');
+    
+    // Apotik Sub-modules - HARUS DI ATAS resource apotik
+    Route::prefix('apotik')->name('apotik.')->group(function () {
+        Route::resource('supplier', \App\Http\Controllers\Admin\SupplierController::class);
+        Route::resource('obat', \App\Http\Controllers\Admin\ObatController::class);
+        Route::resource('stok', \App\Http\Controllers\Admin\StokObatController::class)->only(['index', 'create', 'store', 'show']);
+        Route::resource('transaksi', \App\Http\Controllers\Admin\TransaksiApotikController::class);
+    });
+    
+    // Resource apotik HARUS DI BAWAH agar tidak menangkap /apotik/supplier dll
     Route::resource('apotik', ApotikController::class)->middleware('permission:apotik.view');
+    
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');

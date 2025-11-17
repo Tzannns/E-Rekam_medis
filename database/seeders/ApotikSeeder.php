@@ -10,6 +10,9 @@ class ApotikSeeder extends Seeder
 {
     public function run(): void
     {
-        Apotik::factory(15)->create();
+        // Only create if no apotik exists
+        if (Apotik::count() === 0) {
+            Apotik::factory(15)->create();
+        }
     }
 }

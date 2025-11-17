@@ -66,13 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             startLoading();
-            
-            // Add fade out effect to main content
-            const mainContent = document.querySelector('main');
-            if (mainContent) {
-                mainContent.style.opacity = '0.6';
-                mainContent.style.transition = 'opacity 0.2s ease';
-            }
         }
     }, true);
 
