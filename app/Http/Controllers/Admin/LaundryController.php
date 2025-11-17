@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Laundry;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -61,11 +62,16 @@ class LaundryController extends Controller
             'jenis' => ['nullable', 'string', 'max:255'],
             'jumlah' => ['required', 'integer', 'min:1'],
             'berat_kg' => ['nullable', 'numeric', 'min:0'],
-            'tanggal_masuk' => ['required', 'date'],
-            'tanggal_selesai' => ['nullable', 'date'],
+            'tanggal_masuk' => ['required', 'date_format:Y-m-d\TH:i'],
+            'tanggal_selesai' => ['nullable', 'date_format:Y-m-d\TH:i'],
             'status' => ['required', 'in:Menunggu,Sedang Diproses,Selesai'],
             'catatan' => ['nullable', 'string'],
         ]);
+
+        $data['tanggal_masuk'] = Carbon::parse($data['tanggal_masuk']);
+        if (!empty($data['tanggal_selesai'])) {
+            $data['tanggal_selesai'] = Carbon::parse($data['tanggal_selesai']);
+        }
 
         $laundry = Laundry::create($data);
 
@@ -90,11 +96,16 @@ class LaundryController extends Controller
             'jenis' => ['nullable', 'string', 'max:255'],
             'jumlah' => ['required', 'integer', 'min:1'],
             'berat_kg' => ['nullable', 'numeric', 'min:0'],
-            'tanggal_masuk' => ['required', 'date'],
-            'tanggal_selesai' => ['nullable', 'date'],
+            'tanggal_masuk' => ['required', 'date_format:Y-m-d\TH:i'],
+            'tanggal_selesai' => ['nullable', 'date_format:Y-m-d\TH:i'],
             'status' => ['required', 'in:Menunggu,Sedang Diproses,Selesai'],
             'catatan' => ['nullable', 'string'],
         ]);
+
+        $data['tanggal_masuk'] = Carbon::parse($data['tanggal_masuk']);
+        if (!empty($data['tanggal_selesai'])) {
+            $data['tanggal_selesai'] = Carbon::parse($data['tanggal_selesai']);
+        }
 
         $laundry->update($data);
 

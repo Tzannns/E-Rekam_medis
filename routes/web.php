@@ -124,7 +124,27 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');
     Route::get('/gizi', [GiziController::class, 'index'])->name('gizi.index');
-    Route::resource('laundry', LaundryController::class)->middleware('permission:laundry.view');
+    Route::get('/laundry', [LaundryController::class, 'index'])
+        ->name('laundry.index')
+        ->middleware('permission:laundry.view');
+    Route::get('/laundry/create', [LaundryController::class, 'create'])
+        ->name('laundry.create')
+        ->middleware('permission:laundry.create');
+    Route::post('/laundry', [LaundryController::class, 'store'])
+        ->name('laundry.store')
+        ->middleware('permission:laundry.create');
+    Route::get('/laundry/{laundry}', [LaundryController::class, 'show'])
+        ->name('laundry.show')
+        ->middleware('permission:laundry.view');
+    Route::get('/laundry/{laundry}/edit', [LaundryController::class, 'edit'])
+        ->name('laundry.edit')
+        ->middleware('permission:laundry.edit');
+    Route::put('/laundry/{laundry}', [LaundryController::class, 'update'])
+        ->name('laundry.update')
+        ->middleware('permission:laundry.edit');
+    Route::delete('/laundry/{laundry}', [LaundryController::class, 'destroy'])
+        ->name('laundry.destroy')
+        ->middleware('permission:laundry.delete');
 });
 
 // Dokter Routes
