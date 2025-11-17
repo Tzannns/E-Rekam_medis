@@ -25,7 +25,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body class="font-sans antialiased bg-gray-50" x-data="{ pageLoading: false }">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
         @include('layouts.sidebar')
@@ -36,11 +36,24 @@
             @include('layouts.header')
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50" 
+                  x-show="!pageLoading"
+                  x-transition:enter="transition ease-out duration-300"
+                  x-transition:enter-start="opacity-0 transform translate-y-2"
+                  x-transition:enter-end="opacity-100 transform translate-y-0">
                 <div class="container mx-auto px-6 py-8">
                     {{ $slot }}
                 </div>
             </main>
+
+            <!-- Loading State -->
+            <div x-show="pageLoading" 
+                 x-cloak
+                 class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+                <div class="container mx-auto px-6 py-8">
+                    <x-loading-skeleton type="card" :count="3" />
+                </div>
+            </div>
         </div>
     </div>
 

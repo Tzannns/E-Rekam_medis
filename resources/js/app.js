@@ -1,5 +1,6 @@
 import './bootstrap';
 import './delete-confirm';
+import './page-loader';
 
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
