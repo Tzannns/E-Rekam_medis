@@ -10,10 +10,10 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Role Information (Read-only) -->
+                <!-- Current Role Information -->
                 <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
                     <p class="text-sm text-gray-700">
-                        <span class="font-medium">Role:</span>
+                        <span class="font-medium">Role Saat Ini:</span>
                         @forelse ($user->roles as $role)
                             <span
                                 class="inline-block px-3 py-1 rounded-full text-xs font-medium ml-2
@@ -25,7 +25,7 @@
                                 {{ $role->name }}
                             </span>
                         @empty
-                            <span class="text-gray-500 ml-2">No role</span>
+                            <span class="text-gray-500 ml-2">Tidak ada role</span>
                         @endforelse
                     </p>
                 </div>

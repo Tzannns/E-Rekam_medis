@@ -38,7 +38,7 @@ class StoreUserManagementRequest extends FormRequest
         if ($this->role === 'Pasien') {
             $rules['nik'] = ['required', 'string', 'max:20', 'unique:pasien,nik'];
             $rules['tanggal_lahir'] = ['required', 'date'];
-            $rules['jenis_kelamin'] = ['required', 'in:Laki-laki,Perempuan'];
+            $rules['jenis_kelamin'] = ['required', 'in:L,P'];
             $rules['alamat'] = ['required', 'string', 'max:500'];
             $rules['no_telp'] = ['required', 'string', 'max:20'];
         }
@@ -69,7 +69,7 @@ class StoreUserManagementRequest extends FormRequest
             'tanggal_lahir.required' => 'Tanggal lahir harus diisi',
             'tanggal_lahir.date' => 'Tanggal lahir tidak valid',
             'jenis_kelamin.required' => 'Jenis kelamin harus dipilih',
-            'jenis_kelamin.in' => 'Jenis kelamin tidak valid',
+            'jenis_kelamin.in' => 'Jenis kelamin harus L (Laki-laki) atau P (Perempuan)',
             'alamat.required' => 'Alamat harus diisi',
             'alamat.max' => 'Alamat maksimal 500 karakter',
             'no_telp.required' => 'No. Telepon harus diisi',

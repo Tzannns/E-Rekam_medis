@@ -54,7 +54,7 @@ class UpdateUserManagementRequest extends FormRequest
                 Rule::unique('pasien', 'nik')->ignore($pasienRecord?->id),
             ];
             $rules['tanggal_lahir'] = ['nullable', 'date'];
-            $rules['jenis_kelamin'] = ['nullable', 'in:Laki-laki,Perempuan'];
+            $rules['jenis_kelamin'] = ['nullable', 'in:L,P'];
             $rules['alamat'] = ['nullable', 'string', 'max:500'];
             $rules['no_telp'] = ['nullable', 'string', 'max:20'];
         }
@@ -77,7 +77,7 @@ class UpdateUserManagementRequest extends FormRequest
             'nik.unique' => 'NIK sudah digunakan',
             'nik.max' => 'NIK maksimal 20 karakter',
             'tanggal_lahir.date' => 'Tanggal lahir tidak valid',
-            'jenis_kelamin.in' => 'Jenis kelamin tidak valid',
+            'jenis_kelamin.in' => 'Jenis kelamin harus L (Laki-laki) atau P (Perempuan)',
             'alamat.max' => 'Alamat maksimal 500 karakter',
             'no_telp.max' => 'No. Telepon maksimal 20 karakter',
         ];

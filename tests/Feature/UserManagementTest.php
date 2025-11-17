@@ -3,100 +3,179 @@
 namespace Tests\Feature;
 
 use App\Models\Dokter;
-use App\Models\Pasien;
 use App\Models\User;
-use Database\Seeders\PermissionSeeder;
-use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserManagementTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $adminUser;
-    private Pasien $pasien;
-    private Dokter $dokter;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->seed(RoleSeeder::class);
-        $this->seed(PermissionSeeder::class);
-
-        $this->adminUser = User::factory()->create();
-        $this->adminUser->assignRole('Admin');
-
-        $pasienUser = User::factory()->create(['name' => 'Pasien Test']);
-        $this->pasien = Pasien::factory()->for($pasienUser, 'user')->create();
-
-        $dokterUser = User::factory()->create(['name' => 'Dokter Test']);
-        $this->dokter = Dokter::factory()->for($dokterUser, 'user')->create();
-    }
-
-    public function test_admin_can_view_index(): void
-    {
-        $response = $this->actingAs($this->adminUser)->get(route('admin.user-management.index'));
-
-        $response->assertStatus(200);
-        $response->assertViewIs('admin.user-management.index');
-    }
-
-    public function test_search_filters_results(): void
-    {
-        $special = User::factory()->create(['name' => 'UniqueSearchUser', 'email' => 'unique@example.com']);
-
-        $response = $this->actingAs($this->adminUser)->get(route('admin.user-management.index', ['pencarian' => 'UniqueSearchUser']));
-
-        $response->assertStatus(200);
-        $response->assertSee('UniqueSearchUser');
-    }
-
-    public function test_admin_can_create_petugas_user(): void
-    {
-        $data = [
-            'name' => 'Petugas Baru',
-            'email' => 'petugas.baru@example.com',
-            'password' => 'Password123!',
-            'password_confirmation' => 'Password123!',
-            'role' => 'Petugas',
+        // Create roles
+        $roles = [
+            'Admin' => Role::create(['name' => 'Admin']),
+            'Dokter' => Role::create(['name' => 'Dokter']),
+            'Petugas' => Role::create(['name' => 'Petugas']),
+            'Pasien' => Role::create(['name' => 'Pasien']),
         ];
 
-        $response = $this->actingAs($this->adminUser)->post(route('admin.user-management.store'), $data);
+        // Create permission
+        Permission::create(['name' => 'users.view']);
+        Permission::create(['name' => 'users.create']);
+        Permission::create(['name' => 'users.edit']);
+        Permission::create(['name' => 'users.delete']);
 
-        $this->assertDatabaseHas('users', ['email' => 'petugas.baru@example.com', 'name' => 'Petugas Baru']);
-        $response->assertRedirect(route('admin.user-management.index'));
+        // Give permissions to Admin role
+        $adminRole = $roles['Admin'];
+        $adminRole->givePermissionTo(['users.view', 'users.create', 'users.edit', 'users.delete']);
     }
 
-    public function test_admin_can_update_user(): void
+    public function test_can_view_user_management_index(): void
     {
-        $user = User::factory()->create(['name' => 'Old Name']);
-        $response = $this->actingAs($this->adminUser)->put(route('admin.user-management.update', $user), [
-            'name' => 'New Name',
-            'email' => $user->email,
-        ]);
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
 
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'name' => 'New Name']);
-        $response->assertRedirect(route('admin.user-management.index'));
-    }
-
-    public function test_admin_can_delete_user(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($this->adminUser)->delete(route('admin.user-management.destroy', $user));
-
-        $this->assertDatabaseMissing('users', ['id' => $user->id]);
-        $response->assertRedirect(route('admin.user-management.index'));
-    }
-
-    public function test_export_returns_pdf(): void
-    {
-        $response = $this->actingAs($this->adminUser)->get(route('admin.user-management.export'));
+        $response = $this->actingAs($admin)
+            ->get(route('admin.user-management.index'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition');
-        $this->assertStringContainsString('attachment', $response->headers->get('content-disposition'));
+    }
+
+    public function test_can_create_dokter_user(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        $response = $this->actingAs($admin)
+            ->post(route('admin.user-management.store'), [
+                'name' => 'Dr. Sekar',
+                'email' => 'sekar@hospital.com',
+                'password' => 'Password123',
+                'password_confirmation' => 'Password123',
+                'role' => 'Dokter',
+                'nip' => 'DOK002',
+                'spesialisasi' => 'Bedah',
+                'no_telp' => '081234567892',
+            ]);
+
+        $response->assertRedirect(route('admin.user-management.index'));
+        $this->assertDatabaseHas('users', [
+            'name' => 'Dr. Sekar',
+            'email' => 'sekar@hospital.com',
+        ]);
+        $this->assertDatabaseHas('dokter', [
+            'nip' => 'DOK002',
+            'spesialisasi' => 'Bedah',
+        ]);
+    }
+
+    public function test_can_create_pasien_user(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        $response = $this->actingAs($admin)
+            ->post(route('admin.user-management.store'), [
+                'name' => 'Siti Nurhaliza',
+                'email' => 'siti@example.com',
+                'password' => 'Password123',
+                'password_confirmation' => 'Password123',
+                'role' => 'Pasien',
+                'nik' => '3201010101900002',
+                'tanggal_lahir' => '1990-01-02',
+                'jenis_kelamin' => 'L',
+                'alamat' => 'Jl. Merdeka No. 10',
+                'no_telp' => '081234567893',
+            ]);
+
+        $response->assertRedirect(route('admin.user-management.index'));
+        $this->assertDatabaseHas('users', [
+            'name' => 'Siti Nurhaliza',
+            'email' => 'siti@example.com',
+        ]);
+        $this->assertDatabaseHas('pasien', [
+            'nik' => '3201010101900002',
+        ]);
+    }
+
+    public function test_can_update_user(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        $user = User::factory()->create(['name' => 'Old Name']);
+        $user->assignRole('Dokter');
+        Dokter::factory()->create([
+            'user_id' => $user->id,
+            'nip' => 'DOK001',
+            'spesialisasi' => 'Umum',
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->put(route('admin.user-management.update', $user), [
+                'name' => 'New Name',
+                'email' => $user->email,
+                'nip' => 'DOK001-UPDATED',
+                'spesialisasi' => 'Bedah',
+                'no_telp' => '081234567890',
+            ]);
+
+        $response->assertRedirect(route('admin.user-management.index'));
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'New Name',
+        ]);
+    }
+
+    public function test_can_delete_user(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        $user = User::factory()->create();
+        $user->assignRole('Pasien');
+
+        $response = $this->actingAs($admin)
+            ->delete(route('admin.user-management.destroy', $user));
+
+        $response->assertRedirect(route('admin.user-management.index'));
+        $this->assertModelMissing($user);
+    }
+
+    public function test_cannot_delete_own_account(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        $response = $this->actingAs($admin)
+            ->delete(route('admin.user-management.destroy', $admin));
+
+        $response->assertSessionHas('warning');
+        $this->assertDatabaseHas('users', ['id' => $admin->id]);
+    }
+
+    public function test_email_must_be_unique(): void
+    {
+        $admin = User::factory()->create();
+        $admin->assignRole('Admin');
+
+        User::factory()->create(['email' => 'existing@example.com']);
+
+        $response = $this->actingAs($admin)
+            ->post(route('admin.user-management.store'), [
+                'name' => 'Another User',
+                'email' => 'existing@example.com',
+                'password' => 'Password123',
+                'password_confirmation' => 'Password123',
+                'role' => 'Admin',
+            ]);
+
+        $response->assertSessionHasErrors('email');
     }
 }

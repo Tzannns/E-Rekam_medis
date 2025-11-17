@@ -115,11 +115,6 @@ class UserManagementController extends Controller
 
         $user->update($data);
 
-        // Update role if changed
-        if ($request->filled('role')) {
-            $user->syncRoles($request->role);
-        }
-
         // Update related dokter data if exists
         if ($user->dokter) {
             $user->dokter->update([
