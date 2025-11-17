@@ -84,6 +84,7 @@ class DatabaseSeeder extends Seeder
             LaundrySeeder::class,
             GiziSeeder::class,
             KasirSeeder::class,
+            StorageItemSeeder::class,
         ]);
     }
 }
