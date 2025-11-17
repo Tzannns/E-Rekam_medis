@@ -7,7 +7,6 @@ use App\Models\Gizi;
 use App\Models\Pasien;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class GiziController extends Controller
 {
@@ -36,7 +35,7 @@ class GiziController extends Controller
      */
     public function create()
     {
-        $pasien = Pasien::all();
+        $pasien = Pasien::with('user')->get();
         return view('admin.gizi.create', compact('pasien'));
     }
 
@@ -59,12 +58,10 @@ class GiziController extends Controller
             Gizi::create($validated);
             DB::commit();
             
-            Alert::success('Success', 'Data gizi berhasil ditambahkan');
-            return redirect()->route('admin.gizi.index');
+            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil ditambahkan');
         } catch (\Exception $e) {
             DB::rollback();
-            Alert::error('Error', 'Terjadi kesalahan saat menyimpan data');
-            return back()->withInput();
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat menyimpan data');
         }
     }
 
@@ -82,7 +79,7 @@ class GiziController extends Controller
      */
     public function edit(Gizi $gizi)
     {
-        $pasien = Pasien::all();
+        $pasien = Pasien::with('user')->get();
         return view('admin.gizi.edit', compact('gizi', 'pasien'));
     }
 
@@ -105,12 +102,10 @@ class GiziController extends Controller
             $gizi->update($validated);
             DB::commit();
             
-            Alert::success('Success', 'Data gizi berhasil diupdate');
-            return redirect()->route('admin.gizi.index');
+            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollback();
-            Alert::error('Error', 'Terjadi kesalahan saat update data');
-            return back()->withInput();
+            return back()->withInput()->with('error', 'Terjadi kesalahan saat update data');
         }
     }
 
@@ -124,12 +119,10 @@ class GiziController extends Controller
             $gizi->delete();
             DB::commit();
             
-            Alert::success('Success', 'Data gizi berhasil dihapus');
-            return redirect()->route('admin.gizi.index');
+            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollback();
-            Alert::error('Error', 'Terjadi kesalahan saat menghapus data');
-            return back();
+            return back()->with('error', 'Terjadi kesalahan saat menghapus data');
         }
     }
 }

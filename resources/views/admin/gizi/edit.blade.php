@@ -29,7 +29,7 @@
                         <select name="pasien_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                             <option value="">Pilih Pasien</option>
                             @foreach($pasien as $p)
-                                <option value="{{ $p->id }}" {{ old('pasien_id', $gizi->pasien_id) == $p->id ? 'selected' : '' }}>{{ $p->nama }}</option>
+                                <option value="{{ $p->id }}" {{ old('pasien_id', $gizi->pasien_id) == $p->id ? 'selected' : '' }}>{{ $p->user->name ?? $p->id }}</option>
                             @endforeach
                         </select>
                         @error('pasien_id')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror

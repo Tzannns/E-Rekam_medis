@@ -18,7 +18,7 @@
                 <dl class="space-y-4">
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Pasien</dt>
-                        <dd class="text-lg text-gray-900">{{ $gizi->pasien->nama ?? '-' }}</dd>
+                        <dd class="text-lg text-gray-900">{{ $gizi->pasien->user->name ?? '-' }}</dd>
                     </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Tanggal</dt>

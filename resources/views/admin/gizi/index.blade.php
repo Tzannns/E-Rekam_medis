@@ -64,9 +64,9 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse (($gizi ?? collect()) as $item)
+                        @forelse ($gizi as $item)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->pasien->nama ?? '-' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->pasien->user->name ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ isset($item->tanggal) ? \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') : '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->jenis_makanan ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->jumlah ?? '-' }}</td>
@@ -119,11 +119,9 @@
                     </tbody>
                 </table>
             </div>
-            @isset($gizi)
-                <div class="px-6 py-4 border-t border-gray-200">
-                    {{ $gizi->links() }}
-                </div>
-            @endisset
+            <div class="px-6 py-4 border-t border-gray-200">
+                {{ $gizi->links() }}
+            </div>
         </div>
     </div>
 
