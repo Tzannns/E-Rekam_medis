@@ -5,7 +5,7 @@
                 <h2 class="text-3xl font-bold text-gray-900">Rekam Medis</h2>
                 <p class="mt-1 text-sm text-gray-500">Kelola data rekam medis pasien</p>
             </div>
-            <a href="{{ route('admin.rekam-medis.create') }}"
+            <a href="{{ route('petugas.rekam-medis.create') }}"
                 class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -15,7 +15,7 @@
         </div>
         <!-- Search and Filter -->
         <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
-            <form method="GET" action="{{ route('admin.rekam-medis.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route('petugas.rekam-medis.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
@@ -65,7 +65,7 @@
                         class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Filter
                     </button>
-                    <a href="{{ route('admin.rekam-medis.index') }}"
+                    <a href="{{ route('petugas.rekam-medis.index') }}"
                         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Reset
                     </a>
@@ -107,7 +107,7 @@
                                     {{ Str::limit($rekam->diagnosa, 50) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex items-center">
-                                    <a href="{{ route('admin.rekam-medis.show', $rekam) }}" title="Lihat"
+                                    <a href="{{ route('petugas.rekam-medis.show', $rekam) }}" title="Lihat"
                                         class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -117,7 +117,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    <a href="{{ route('admin.rekam-medis.edit', $rekam) }}" title="Edit"
+                                    <a href="{{ route('petugas.rekam-medis.edit', $rekam) }}" title="Edit"
                                         class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,7 +125,7 @@
                                             </path>
                                         </svg>
                                     </a>
-                                    <form action="{{ route('admin.rekam-medis.destroy', $rekam) }}" method="POST"
+                                    <form action="{{ route('petugas.rekam-medis.destroy', $rekam) }}" method="POST"
                                         class="delete-form inline">
                                         @csrf
                                         @method('DELETE')

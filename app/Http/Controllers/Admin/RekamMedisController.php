@@ -11,11 +11,25 @@ use App\Models\RekamMedis;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class RekamMedisController extends Controller
 {
+    protected function getPrefix(): string
+    {
+        return Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+    }
+
+    protected function getView(string $view): string
+    {
+        $prefix = $this->getPrefix();
+
+        return "{$prefix}.rekam-medis.{$view}";
+    }
+
     public function index(Request $request): View
     {
         $query = RekamMedis::with(['pasien.user', 'dokter.user']);
@@ -58,7 +72,7 @@ class RekamMedisController extends Controller
         $pasienList = Pasien::with('user')->get();
         $dokterList = Dokter::with('user')->get();
 
-        return view('admin.rekam-medis.index', compact('rekamMedis', 'pasienList', 'dokterList'));
+        return view($this->getView('index'), compact('rekamMedis', 'pasienList', 'dokterList'));
     }
 
     public function create(): View
@@ -66,14 +80,14 @@ class RekamMedisController extends Controller
         $pasienList = Pasien::with('user')->get();
         $dokterList = Dokter::with('user')->get();
 
-        return view('admin.rekam-medis.create', compact('pasienList', 'dokterList'));
+        return view($this->getView('create'), compact('pasienList', 'dokterList'));
     }
 
     public function store(StoreRekamMedisRequest $request): RedirectResponse
     {
         RekamMedis::create($request->validated());
 
-        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+        $prefix = $this->getPrefix();
 
         return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil ditambahkan.');
@@ -83,7 +97,7 @@ class RekamMedisController extends Controller
     {
         $rekamMedi->load(['pasien.user', 'dokter.user']);
 
-        return view('admin.rekam-medis.show', compact('rekamMedi'));
+        return view($this->getView('show'), compact('rekamMedi'));
     }
 
     public function edit(RekamMedis $rekamMedi): View
@@ -91,14 +105,14 @@ class RekamMedisController extends Controller
         $pasienList = Pasien::with('user')->get();
         $dokterList = Dokter::with('user')->get();
 
-        return view('admin.rekam-medis.edit', compact('rekamMedi', 'pasienList', 'dokterList'));
+        return view($this->getView('edit'), compact('rekamMedi', 'pasienList', 'dokterList'));
     }
 
     public function update(UpdateRekamMedisRequest $request, RekamMedis $rekamMedi): RedirectResponse
     {
         $rekamMedi->update($request->validated());
 
-        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+        $prefix = $this->getPrefix();
 
         return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil diperbarui.');
@@ -108,7 +122,7 @@ class RekamMedisController extends Controller
     {
         $rekamMedi->delete();
 
-        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+        $prefix = $this->getPrefix();
 
         return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil dihapus.');

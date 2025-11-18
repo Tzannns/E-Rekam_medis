@@ -89,7 +89,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Rekam Medis
-    Route::resource('rekam-medis', RekamMedisController::class)->middleware('permission:rekam-medis.view');
+    Route::resource('rekam-medis', RekamMedisController::class)
+        ->parameters(['rekam-medis' => 'rekamMedi'])
+        ->middleware('permission:rekam-medis.view');
     Route::get('/rekam-medis-data', [RekamMedisController::class, 'data'])->name('rekam-medis.data');
 
     // Users Resource Routes
