@@ -29,8 +29,8 @@ class RekamMedisController extends Controller
                 $q->whereHas('dokter.user', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
                 })
-                ->orWhere('diagnosa', 'like', "%{$search}%")
-                ->orWhere('keluhan', 'like', "%{$search}%");
+                    ->orWhere('diagnosa', 'like', "%{$search}%")
+                    ->orWhere('keluhan', 'like', "%{$search}%");
             });
         }
 

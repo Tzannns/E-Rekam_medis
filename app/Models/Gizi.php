@@ -17,7 +17,7 @@ class Gizi extends Model
         'jenis_makanan',
         'jumlah',
         'catatan',
-        'status'
+        'status',
     ];
 
     protected $casts = [

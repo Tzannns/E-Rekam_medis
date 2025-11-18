@@ -29,8 +29,9 @@ class MigrateSqliteToMysql extends Command
     {
         $sqlitePath = database_path('database.sqlite');
 
-        if (!file_exists($sqlitePath)) {
-            $this->error('File SQLite tidak ditemukan: ' . $sqlitePath);
+        if (! file_exists($sqlitePath)) {
+            $this->error('File SQLite tidak ditemukan: '.$sqlitePath);
+
             return Command::FAILURE;
         }
 
@@ -38,7 +39,7 @@ class MigrateSqliteToMysql extends Command
 
         try {
             // Connect to SQLite
-            $sqlite = new PDO('sqlite:' . $sqlitePath);
+            $sqlite = new PDO('sqlite:'.$sqlitePath);
             $sqlite->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Get all tables except system tables
@@ -70,7 +71,7 @@ class MigrateSqliteToMysql extends Command
             // Filter tables that exist in SQLite
             $tablesToMigrate = array_intersect($tableOrder, $tables);
 
-            $this->info('Tabel yang akan dimigrasikan: ' . implode(', ', $tablesToMigrate));
+            $this->info('Tabel yang akan dimigrasikan: '.implode(', ', $tablesToMigrate));
 
             // Start transaction
             DB::beginTransaction();
@@ -82,16 +83,19 @@ class MigrateSqliteToMysql extends Command
 
                 DB::commit();
                 $this->info('Migrasi data berhasil!');
+
                 return Command::SUCCESS;
 
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->error('Error saat migrasi: ' . $e->getMessage());
+                $this->error('Error saat migrasi: '.$e->getMessage());
+
                 return Command::FAILURE;
             }
 
         } catch (\Exception $e) {
-            $this->error('Error: ' . $e->getMessage());
+            $this->error('Error: '.$e->getMessage());
+
             return Command::FAILURE;
         }
     }
@@ -108,10 +112,11 @@ class MigrateSqliteToMysql extends Command
 
         if (empty($rows)) {
             $this->line("  Tabel $table kosong, dilewati.");
+
             return;
         }
 
-        $this->line("  Ditemukan " . count($rows) . " baris data.");
+        $this->line('  Ditemukan '.count($rows).' baris data.');
 
         // Get column names
         $columns = array_keys($rows[0]);
@@ -177,7 +182,7 @@ class MigrateSqliteToMysql extends Command
                 }
 
             } catch (\Exception $e) {
-                $this->warn("  Error pada baris: " . $e->getMessage());
+                $this->warn('  Error pada baris: '.$e->getMessage());
                 // Continue with next row
             }
         }

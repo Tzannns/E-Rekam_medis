@@ -8,12 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('laundry')) {
+        if (! Schema::hasTable('laundry')) {
             return;
         }
 
         Schema::table('laundry', function (Blueprint $table) {
-            if (!Schema::hasColumn('laundry', 'unit')) {
+            if (! Schema::hasColumn('laundry', 'unit')) {
                 // make column nullable to avoid issues with existing rows
                 $table->string('unit')->nullable()->after('id');
             }
@@ -22,7 +22,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (!Schema::hasTable('laundry')) {
+        if (! Schema::hasTable('laundry')) {
             return;
         }
 

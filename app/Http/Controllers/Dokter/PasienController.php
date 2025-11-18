@@ -11,6 +11,7 @@ class PasienController extends Controller
     public function index(): View
     {
         $pasien = Pasien::with('user')->latest()->paginate(15);
+
         return view('dokter.pasien.index', compact('pasien'));
     }
 }

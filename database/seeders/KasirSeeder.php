@@ -41,7 +41,7 @@ class KasirSeeder extends Seeder
         }
 
         $total = max($subtotal - $diskon, 0);
-        $nomor = 'INV-' . now()->format('YmdHis') . '-' . sprintf('%03d', random_int(1, 999));
+        $nomor = 'INV-'.now()->format('YmdHis').'-'.sprintf('%03d', random_int(1, 999));
 
         $trx = KasirTransaksi::create([
             'pasien_id' => $pasienId,

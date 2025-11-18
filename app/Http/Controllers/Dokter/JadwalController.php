@@ -16,7 +16,7 @@ class JadwalController extends Controller
             ->with(['pasien.user'])
             ->latest()
             ->paginate(15);
-        
+
         return view('dokter.jadwal.index', compact('jadwal'));
     }
 }

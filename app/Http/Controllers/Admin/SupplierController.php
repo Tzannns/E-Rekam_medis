@@ -27,8 +27,9 @@ class SupplierController extends Controller
 
             return view('admin.apotik.supplier.index', compact('suppliers'));
         } catch (\Exception $e) {
-            \Log::error('Supplier Index Error: ' . $e->getMessage());
-            return response('Error: ' . $e->getMessage(), 500);
+            \Log::error('Supplier Index Error: '.$e->getMessage());
+
+            return response('Error: '.$e->getMessage(), 500);
         }
     }
 
@@ -59,6 +60,7 @@ class SupplierController extends Controller
     public function show(Supplier $supplier)
     {
         $supplier->load('obats');
+
         return view('admin.apotik.supplier.show', compact('supplier'));
     }
 

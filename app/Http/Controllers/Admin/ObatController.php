@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Obat;
 use App\Models\Apotik;
+use App\Models\Obat;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -41,7 +41,7 @@ class ObatController extends Controller
     {
         $apotiks = Apotik::where('status', 'Aktif')->get();
         $suppliers = Supplier::where('status', 'Aktif')->get();
-        
+
         return view('admin.apotik.obat.create', compact('apotiks', 'suppliers'));
     }
 
@@ -74,6 +74,7 @@ class ObatController extends Controller
     public function show(Obat $obat)
     {
         $obat->load(['apotik', 'supplier', 'stokObats.user']);
+
         return view('admin.apotik.obat.show', compact('obat'));
     }
 
@@ -81,7 +82,7 @@ class ObatController extends Controller
     {
         $apotiks = Apotik::where('status', 'Aktif')->get();
         $suppliers = Supplier::where('status', 'Aktif')->get();
-        
+
         return view('admin.apotik.obat.edit', compact('obat', 'apotiks', 'suppliers'));
     }
 

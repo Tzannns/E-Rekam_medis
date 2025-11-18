@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pasien;
 use App\Models\Dokter;
+use App\Models\Pasien;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class PendaftaranController extends Controller
 {
@@ -38,14 +38,14 @@ class PendaftaranController extends Controller
     {
         // Trim dan clean NIK input
         $nik = trim($request->input('nik', ''));
-        
+
         // Manual validation for NIK
         $nikError = null;
         if (empty($nik)) {
             $nikError = 'NIK harus diisi';
         } elseif (strlen($nik) !== 16) {
             $nikError = 'NIK harus terdiri dari 16 digit';
-        } elseif (!ctype_digit($nik)) {
+        } elseif (! ctype_digit($nik)) {
             $nikError = 'NIK hanya boleh berisi angka';
         } elseif (Pasien::where('nik', $nik)->exists()) {
             $nikError = 'NIK sudah terdaftar dalam sistem';
@@ -54,7 +54,7 @@ class PendaftaranController extends Controller
         // Prepare validation
         $data = $request->all();
         $data['nik'] = $nik;
-        
+
         $validator = Validator::make($data, [
             'nama' => 'required|string|max:255',
             'nik' => 'required',
@@ -85,7 +85,7 @@ class PendaftaranController extends Controller
             // Create user first
             $user = User::create([
                 'name' => $request->nama,
-                'email' => $nik . '@pasien.local', // Auto-generate email
+                'email' => $nik.'@pasien.local', // Auto-generate email
                 'password' => bcrypt('password'), // Default password
             ]);
 
@@ -108,9 +108,9 @@ class PendaftaranController extends Controller
             if (isset($user)) {
                 $user->delete();
             }
-            
+
             return redirect()->back()
-                ->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])
+                ->withErrors(['error' => 'Terjadi kesalahan: '.$e->getMessage()])
                 ->withInput();
         }
     }

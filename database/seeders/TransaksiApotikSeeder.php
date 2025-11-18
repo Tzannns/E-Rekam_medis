@@ -24,8 +24,9 @@ class TransaksiApotikSeeder extends Seeder
         $pasiens = Pasien::all();
         $obats = Obat::where('stok', '>', 0)->get();
 
-        if (!$apotik || !$admin || $obats->isEmpty()) {
+        if (! $apotik || ! $admin || $obats->isEmpty()) {
             $this->command->warn('Pastikan Apotik, User, dan Obat sudah di-seed terlebih dahulu');
+
             return;
         }
 
@@ -59,14 +60,14 @@ class TransaksiApotikSeeder extends Seeder
             $diskon = 0;
             $pajak = 0;
             $total = $subtotal - $diskon + $pajak;
-            
+
             // Pembayaran dengan kembalian
             $bayar = ceil($total / 10000) * 10000; // Bulatkan ke atas 10rb
             $kembalian = $bayar - $total;
 
             // Generate nomor transaksi
             $date = now()->subDays(rand(0, 30))->format('Ymd');
-            $noTransaksi = 'APT-' . $date . '-' . str_pad($i, 4, '0', STR_PAD_LEFT);
+            $noTransaksi = 'APT-'.$date.'-'.str_pad($i, 4, '0', STR_PAD_LEFT);
 
             // Buat transaksi
             $transaksi = TransaksiApotik::create([
@@ -74,7 +75,7 @@ class TransaksiApotikSeeder extends Seeder
                 'apotik_id' => $apotik->id,
                 'pasien_id' => $tipePembeli === 'Pasien' && $pasien ? $pasien->id : null,
                 'user_id' => $admin->id,
-                'nama_pembeli' => $tipePembeli === 'Umum' ? 'Pembeli ' . $i : null,
+                'nama_pembeli' => $tipePembeli === 'Umum' ? 'Pembeli '.$i : null,
                 'tipe_pembeli' => $tipePembeli,
                 'subtotal' => $subtotal,
                 'diskon' => $diskon,

@@ -33,12 +33,14 @@ class KasirController extends Controller
         }
 
         $transaksi = $query->paginate(15);
+
         return view('admin.kasir.index', compact('transaksi'));
     }
 
     public function create(): View
     {
         $pasienList = Pasien::with('user')->get();
+
         return view('admin.kasir.create', compact('pasienList'));
     }
 
@@ -63,7 +65,7 @@ class KasirController extends Controller
         $diskon = isset($data['diskon']) ? (float) $data['diskon'] : 0.0;
         $total = max($subtotal - $diskon, 0);
 
-        $nomor = 'INV-' . now()->format('YmdHis') . '-' . sprintf('%03d', random_int(1, 999));
+        $nomor = 'INV-'.now()->format('YmdHis').'-'.sprintf('%03d', random_int(1, 999));
 
         $trx = KasirTransaksi::create([
             'pasien_id' => $data['pasien_id'],
@@ -94,6 +96,7 @@ class KasirController extends Controller
         $kasir->load(['pasien.user', 'items', 'pembayaran']);
         $dibayar = (float) $kasir->pembayaran()->sum('jumlah');
         $sisa = max((float) $kasir->total - $dibayar, 0);
+
         return view('admin.kasir.show', compact('kasir', 'dibayar', 'sisa'));
     }
 

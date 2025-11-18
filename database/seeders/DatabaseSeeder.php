@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
             RawatJalanSeeder::class,
             RawatInapSeeder::class,
             LaundrySeeder::class,
+            LaboratoriumSeeder::class,
             GiziSeeder::class,
             KasirSeeder::class,
             StorageItemSeeder::class,
