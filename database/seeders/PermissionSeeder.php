@@ -80,6 +80,8 @@ class PermissionSeeder extends Seeder
             'laundry.create',
             'laundry.edit',
             'laundry.delete',
+            'appointment.view',
+            'appointment.edit',
 
             // Users management
             'users.view',
@@ -136,6 +138,8 @@ class PermissionSeeder extends Seeder
                 'laundry.create',
                 'laundry.edit',
                 'laundry.delete',
+                'appointment.view',
+                'appointment.edit',
                 // tidak termasuk master data: users.*, dokter.*, pasien.*, manajemen.*
             ]);
         }

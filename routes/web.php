@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ApotikController;
+use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\Admin\GiziController;
@@ -30,11 +31,13 @@ use App\Http\Controllers\Dokter\RadiologiController as DokterRadiologiController
 use App\Http\Controllers\Dokter\RawatInapController as DokterRawatInapController;
 use App\Http\Controllers\Dokter\RawatJalanController as DokterRawatJalanController;
 use App\Http\Controllers\Dokter\RekamMedisController as DokterRekamMedisController;
+use App\Http\Controllers\Pasien\AppointmentController as PasienAppointmentController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Pasien\DokterController as PasienDokterController;
 use App\Http\Controllers\Pasien\JadwalController as PasienJadwalController;
 use App\Http\Controllers\Pasien\PoliController as PasienPoliController;
 use App\Http\Controllers\Pasien\RekamMedisController as PasienRekamMedisController;
+use App\Http\Controllers\Petugas\AppointmentController as PetugasAppointmentController;
 use App\Http\Controllers\Petugas\DashboardController as PetugasDashboardController;
 use App\Http\Controllers\Petugas\IGDController as PetugasIGDController;
 use App\Http\Controllers\Petugas\PendaftaranController as PetugasPendaftaranController;
@@ -229,6 +232,17 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/laundry/{laundry}', [LaundryController::class, 'destroy'])
         ->name('laundry.destroy')
         ->middleware('permission:laundry.delete');
+
+    // Appointment moderation
+    Route::get('/appointment', [AdminAppointmentController::class, 'index'])
+        ->name('appointment.index')
+        ->middleware('permission:appointment.view');
+    Route::get('/appointment/{appointment}', [AdminAppointmentController::class, 'show'])
+        ->name('appointment.show')
+        ->middleware('permission:appointment.view');
+    Route::put('/appointment/{appointment}', [AdminAppointmentController::class, 'update'])
+        ->name('appointment.update')
+        ->middleware('permission:appointment.edit');
 });
 
 // Dokter Routes
@@ -442,6 +456,17 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
         ->name('apotik.destroy')
         ->middleware('permission:apotik.delete');
 
+    // Appointment moderation (Petugas)
+    Route::get('/appointment', [PetugasAppointmentController::class, 'index'])
+        ->name('appointment.index')
+        ->middleware('permission:appointment.view');
+    Route::get('/appointment/{appointment}', [PetugasAppointmentController::class, 'show'])
+        ->name('appointment.show')
+        ->middleware('permission:appointment.view');
+    Route::put('/appointment/{appointment}', [PetugasAppointmentController::class, 'update'])
+        ->name('appointment.update')
+        ->middleware('permission:appointment.edit');
+
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])
         ->name('laboratorium.index')
         ->middleware('permission:laboratorium.view');
@@ -539,6 +564,9 @@ Route::middleware(['auth', 'role:Pasien'])->prefix('pasien')->name('pasien.')->g
 
     // Modul Pasien
     Route::get('/jadwal', [PasienJadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/appointment', [PasienAppointmentController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment/create', [PasienAppointmentController::class, 'create'])->name('appointment.create');
+    Route::post('/appointment', [PasienAppointmentController::class, 'store'])->name('appointment.store');
     Route::get('/dokter', [PasienDokterController::class, 'index'])->name('dokter.index');
 
     // Poli Routes
