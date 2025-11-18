@@ -55,8 +55,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <div>
-                            <p class="text-sm font-semibold text-yellow-900">Permohonan Sedang Diproses</p>
-                            <p class="text-xs text-yellow-700">Poli: <strong>{{ $pendingAppointment->poli->nama_poli }}</strong> | Tanggal usulan: <strong>{{ optional($pendingAppointment->tanggal_usulan)->format('d/m/Y') }} {{ $pendingAppointment->jam_usulan }}</strong></p>
+                            <p class="text-sm font-semibold text-yellow-900">Antrian Aktif</p>
+                            <p class="text-xs text-yellow-700">Poli: <strong>{{ optional($pendingAppointment->poli)->nama_poli ?? '-' }}</strong> | Tanggal: <strong>{{ optional($pendingAppointment->tanggal_usulan)->format('d/m/Y') }} {{ $pendingAppointment->jam_usulan }}</strong></p>
+                            @if(isset($queueTotal) && $queueTotal)
+                                <p class="text-xs text-yellow-700 mt-1">Posisi Antrian: <strong>{{ $pendingAppointment->nomor_antrian }}</strong> dari <strong>{{ $queueTotal }}</strong></p>
+                            @endif
                         </div>
                     </div>
                     <a href="{{ route('pasien.appointment.index') }}" class="text-sm font-semibold text-yellow-700 hover:text-yellow-900 flex items-center">
@@ -124,8 +127,8 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-900">Permohonan Periksa</p>
-                        <p class="text-xs text-gray-500">Ajukan dan lihat status</p>
+                        <p class="text-sm font-medium text-gray-900">Antrian Online</p>
+                        <p class="text-xs text-gray-500">Ambil antrian dan lihat status</p>
                     </div>
                 </a>
 
@@ -173,6 +176,70 @@
                         <p class="text-xs text-gray-500">Daftar poli</p>
                     </div>
                 </a>
+            </div>
+        </div>
+
+        <!-- Statistik Antrian -->
+        <div class="mb-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Statistik Antrian</h3>
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Posisi Antrian</dt>
+                                    <dd class="text-lg font-medium text-gray-900">
+                                        @if(isset($pendingAppointment) && isset($queueTotal) && $queueTotal)
+                                            {{ $pendingAppointment->nomor_antrian }} dari {{ $queueTotal }}
+                                        @else
+                                            -
+                                        @endif
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Antrian Aktif Saya</dt>
+                                    <dd class="text-lg font-medium text-gray-900">{{ $activeQueueCount ?? 0 }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white overflow-hidden shadow rounded-lg">
+                    <div class="p-5">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt class="text-sm font-medium text-gray-500 truncate">Jadwal Tersedia Hari Ini</dt>
+                                    <dd class="text-lg font-medium text-gray-900">{{ $availableToday ?? 0 }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

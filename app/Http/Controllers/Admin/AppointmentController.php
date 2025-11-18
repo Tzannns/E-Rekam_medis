@@ -59,22 +59,33 @@ class AppointmentController extends Controller
         ]);
 
         $appointment->update([
-            'dokter_id' => $data['dokter_id'] ?? null,
+            'dokter_id' => $data['dokter_id'] ?? $appointment->dokter_id,
             'status' => $data['status'],
             'catatan_admin' => $data['catatan_admin'] ?? null,
         ]);
 
-        if (in_array($data['status'], ['Disetujui', 'Diproses']) && $data['tanggal'] && $data['jam_mulai']) {
-            $jadwal = Jadwal::create([
-                'dokter_id' => $appointment->dokter_id,
-                'pasien_id' => $appointment->pasien_id,
-                'tanggal' => $data['tanggal'],
-                'jam_mulai' => $data['jam_mulai'],
-                'jam_selesai' => $data['jam_selesai'] ?? null,
-                'status' => 'terisi',
-                'keterangan' => 'Periksa dari permohonan #'.$appointment->id,
-            ]);
-            $appointment->update(['jadwal_id' => $jadwal->id]);
+        if (in_array($data['status'], ['Disetujui', 'Diproses'])) {
+            if ($appointment->jadwal_id) {
+                $jadwal = Jadwal::find($appointment->jadwal_id);
+                if ($jadwal) {
+                    $jadwal->update([
+                        'pasien_id' => $appointment->pasien_id,
+                        'status' => 'terisi',
+                    ]);
+                }
+            } elseif ($data['tanggal'] && $data['jam_mulai']) {
+                $jadwal = Jadwal::create([
+                    'dokter_id' => $appointment->dokter_id,
+                    'poli_id' => $appointment->poli_id,
+                    'pasien_id' => $appointment->pasien_id,
+                    'tanggal' => $data['tanggal'],
+                    'jam_mulai' => $data['jam_mulai'],
+                    'jam_selesai' => $data['jam_selesai'] ?? null,
+                    'status' => 'terisi',
+                    'keterangan' => 'Periksa dari permohonan #'.$appointment->id,
+                ]);
+                $appointment->update(['jadwal_id' => $jadwal->id]);
+            }
         }
 
         return redirect()->route('admin.appointment.show', $appointment)->with('success', 'Permohonan diperbarui');

@@ -14,6 +14,7 @@ class Jadwal extends Model
 
     protected $fillable = [
         'dokter_id',
+        'poli_id',
         'pasien_id',
         'tanggal',
         'jam_mulai',
@@ -34,6 +35,10 @@ class Jadwal extends Model
         return $this->belongsTo(Dokter::class);
     }
 
+    public function poli(): BelongsTo
+    {
+        return $this->belongsTo(Poli::class);
+    }
     public function pasien(): BelongsTo
     {
         return $this->belongsTo(Pasien::class);

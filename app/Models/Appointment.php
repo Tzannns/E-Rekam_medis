@@ -20,6 +20,7 @@ class Appointment extends Model
         'status',
         'catatan_admin',
         'jadwal_id',
+        'nomor_antrian',
     ];
 
     protected $casts = [
