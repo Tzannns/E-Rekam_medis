@@ -1,12 +1,13 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Edit Obat</h2>
             <p class="mt-1 text-sm text-gray-500">Edit data obat</p>
         </div>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <form action="{{ route('admin.apotik.obat.update', $obat) }}" method="POST">
+            <form action="{{ route($prefix . '.apotik.obat.update', $obat) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -83,9 +84,11 @@
                                 {{ old('kategori', $obat->kategori) === 'Tablet' ? 'selected' : '' }}>Tablet</option>
                             <option value="Kapsul"
                                 {{ old('kategori', $obat->kategori) === 'Kapsul' ? 'selected' : '' }}>Kapsul</option>
-                            <option value="Sirup" {{ old('kategori', $obat->kategori) === 'Sirup' ? 'selected' : '' }}>
+                            <option value="Sirup"
+                                {{ old('kategori', $obat->kategori) === 'Sirup' ? 'selected' : '' }}>
                                 Sirup</option>
-                            <option value="Salep" {{ old('kategori', $obat->kategori) === 'Salep' ? 'selected' : '' }}>
+                            <option value="Salep"
+                                {{ old('kategori', $obat->kategori) === 'Salep' ? 'selected' : '' }}>
                                 Salep</option>
                             <option value="Cairan"
                                 {{ old('kategori', $obat->kategori) === 'Cairan' ? 'selected' : '' }}>Cairan</option>
@@ -215,7 +218,8 @@
                             required>
                             <option value="Tersedia"
                                 {{ old('status', $obat->status) === 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                            <option value="Habis" {{ old('status', $obat->status) === 'Habis' ? 'selected' : '' }}>Habis
+                            <option value="Habis" {{ old('status', $obat->status) === 'Habis' ? 'selected' : '' }}>
+                                Habis
                             </option>
                             <option value="Kadaluarsa"
                                 {{ old('status', $obat->status) === 'Kadaluarsa' ? 'selected' : '' }}>Kadaluarsa
@@ -228,7 +232,7 @@
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-3">
-                    <a href="{{ route('admin.apotik.obat.show', $obat) }}"
+                    <a href="{{ route($prefix . '.apotik.obat.show', $obat) }}"
                         class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
                         Batal
                     </a>

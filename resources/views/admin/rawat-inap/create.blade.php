@@ -1,12 +1,13 @@
 <x-app-layout>
     <div class="max-w-2xl">
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Tambah Rawat Inap</h2>
             <p class="mt-1 text-sm text-gray-500">Buat data pasien rawat inap baru</p>
         </div>
 
         <div class="bg-white shadow rounded-lg">
-            <form action="{{ route('admin.rawat-inap.store') }}" method="POST" class="p-6 space-y-6">
+            <form action="{{ route($prefix . '.rawat-inap.store') }}" method="POST" class="p-6 space-y-6">
                 @csrf
 
                 <!-- Pasien -->
@@ -155,7 +156,7 @@
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                         Simpan
                     </button>
-                    <a href="{{ route('admin.rawat-inap.index') }}"
+                    <a href="{{ route($prefix . '.rawat-inap.index') }}"
                         class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
                         Batal
                     </a>

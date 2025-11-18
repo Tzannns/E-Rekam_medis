@@ -1,5 +1,6 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Manajemen Apotik</h2>
             <p class="mt-1 text-sm text-gray-500">Kelola data apotik dan informasi farmasi</p>
@@ -8,23 +9,23 @@
         <!-- Tab Navigation -->
         <div class="mb-6 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
-                <a href="{{ route('admin.apotik.index') }}"
+                <a href="{{ route($prefix . '.apotik.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Data Apotik
                 </a>
-                <a href="{{ route('admin.apotik.supplier.index') }}"
+                <a href="{{ route($prefix . '.apotik.supplier.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Supplier
                 </a>
-                <a href="{{ route('admin.apotik.obat.index') }}"
+                <a href="{{ route($prefix . '.apotik.obat.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Data Obat
                 </a>
-                <a href="{{ route('admin.apotik.stok.index') }}"
+                <a href="{{ route($prefix . '.apotik.stok.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Stok Obat
                 </a>
-                <a href="{{ route('admin.apotik.transaksi.index') }}"
+                <a href="{{ route($prefix . '.apotik.transaksi.index') }}"
                     class="border-b-2 border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Transaksi
                 </a>
@@ -34,9 +35,10 @@
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h3 class="text-xl font-semibold text-gray-900">Transaksi Apotik</h3>
-                <p class="text-sm text-gray-500">Penjualan hari ini: Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</p>
+                <p class="text-sm text-gray-500">Penjualan hari ini: Rp
+                    {{ number_format($totalPenjualan, 0, ',', '.') }}</p>
             </div>
-            <a href="{{ route('admin.apotik.transaksi.create') }}"
+            <a href="{{ route($prefix . '.apotik.transaksi.create') }}"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                 + Transaksi Baru
             </a>
@@ -50,7 +52,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
-            <form method="GET" action="{{ route('admin.apotik.transaksi.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route($prefix . '.apotik.transaksi.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
@@ -81,7 +83,7 @@
                         class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
                         Filter
                     </button>
-                    <a href="{{ route('admin.apotik.transaksi.index') }}"
+                    <a href="{{ route($prefix . '.apotik.transaksi.index') }}"
                         class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition">
                         Reset
                     </a>
@@ -129,7 +131,8 @@
                                     Rp {{ number_format($transaksi->total, 0, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                         {{ $transaksi->metode_pembayaran }}
                                     </span>
                                 </td>
@@ -143,7 +146,8 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex">
-                                    <a href="{{ route('admin.apotik.transaksi.show', $transaksi) }}" title="Lihat"
+                                    <a href="{{ route($prefix . '.apotik.transaksi.show', $transaksi) }}"
+                                        title="Lihat"
                                         class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

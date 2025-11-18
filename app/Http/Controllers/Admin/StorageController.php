@@ -66,7 +66,9 @@ class StorageController extends Controller
 
         StorageItem::create($validated);
 
-        return redirect()->route('admin.storage.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.storage.index')
             ->with('success', 'Barang storage berhasil ditambahkan');
     }
 
@@ -101,7 +103,9 @@ class StorageController extends Controller
 
         $storage->update($validated);
 
-        return redirect()->route('admin.storage.show', $storage)
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.storage.show', $storage)
             ->with('success', 'Data storage berhasil diperbarui');
     }
 
@@ -109,7 +113,9 @@ class StorageController extends Controller
     {
         $storage->delete();
 
-        return redirect()->route('admin.storage.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.storage.index')
             ->with('success', 'Data storage berhasil dihapus');
     }
 }

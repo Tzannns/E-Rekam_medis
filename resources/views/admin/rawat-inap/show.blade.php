@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="max-w-4xl">
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900">Detail Rawat Inap</h2>
@@ -7,12 +8,12 @@
             </div>
             <div class="flex gap-3">
                 @can('rawat-inap.edit')
-                    <a href="{{ route('admin.rawat-inap.edit', $rawatInap) }}"
+                    <a href="{{ route($prefix . '.rawat-inap.edit', $rawatInap) }}"
                         class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
                         Edit
                     </a>
                 @endcan
-                <a href="{{ route('admin.rawat-inap.index') }}"
+                <a href="{{ route($prefix . '.rawat-inap.index') }}"
                     class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
                     Kembali
                 </a>
@@ -127,7 +128,7 @@
 
         @can('rawat-inap.delete')
             <div class="mt-6 border-t pt-6">
-                <form action="{{ route('admin.rawat-inap.destroy', $rawatInap) }}" method="POST"
+                <form action="{{ route($prefix . '.rawat-inap.destroy', $rawatInap) }}" method="POST"
                     class="delete-form inline">
                     @csrf
                     @method('DELETE')

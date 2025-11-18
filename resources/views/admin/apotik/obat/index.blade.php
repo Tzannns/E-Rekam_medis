@@ -1,5 +1,6 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Manajemen Apotik</h2>
             <p class="mt-1 text-sm text-gray-500">Kelola data apotik dan informasi farmasi</p>
@@ -8,23 +9,23 @@
         <!-- Tab Navigation -->
         <div class="mb-6 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
-                <a href="{{ route('admin.apotik.index') }}"
+                <a href="{{ route($prefix . '.apotik.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Data Apotik
                 </a>
-                <a href="{{ route('admin.apotik.supplier.index') }}"
+                <a href="{{ route($prefix . '.apotik.supplier.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Supplier
                 </a>
-                <a href="{{ route('admin.apotik.obat.index') }}"
+                <a href="{{ route($prefix . '.apotik.obat.index') }}"
                     class="border-b-2 border-blue-500 text-blue-600 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Data Obat
                 </a>
-                <a href="{{ route('admin.apotik.stok.index') }}"
+                <a href="{{ route($prefix . '.apotik.stok.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Stok Obat
                 </a>
-                <a href="{{ route('admin.apotik.transaksi.index') }}"
+                <a href="{{ route($prefix . '.apotik.transaksi.index') }}"
                     class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Transaksi
                 </a>
@@ -35,7 +36,7 @@
             <div>
                 <h3 class="text-xl font-semibold text-gray-900">Daftar Obat</h3>
             </div>
-            <a href="{{ route('admin.apotik.obat.create') }}"
+            <a href="{{ route($prefix . '.apotik.obat.create') }}"
                 class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                 + Tambah Obat
             </a>
@@ -99,7 +100,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
-            <form method="GET" action="{{ route('admin.apotik.obat.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route($prefix . '.apotik.obat.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
@@ -113,7 +114,8 @@
                             class="w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Semua Kategori</option>
                             @foreach ($kategoris as $kat)
-                                <option value="{{ $kat }}" {{ request('kategori') === $kat ? 'selected' : '' }}>
+                                <option value="{{ $kat }}"
+                                    {{ request('kategori') === $kat ? 'selected' : '' }}>
                                     {{ $kat }}
                                 </option>
                             @endforeach
@@ -137,7 +139,7 @@
                         class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
                         Filter
                     </button>
-                    <a href="{{ route('admin.apotik.obat.index') }}"
+                    <a href="{{ route($prefix . '.apotik.obat.index') }}"
                         class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition">
                         Reset
                     </a>
@@ -177,7 +179,8 @@
                                     <div class="text-sm text-gray-500">{{ $obat->satuan }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                         {{ $obat->kategori }}
                                     </span>
                                 </td>
@@ -200,37 +203,47 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex">
-                                    <a href="{{ route('admin.apotik.obat.show', $obat) }}" title="Lihat"
-                                        class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <a href="{{ route('admin.apotik.obat.edit', $obat) }}" title="Edit"
-                                        class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                    <form action="{{ route('admin.apotik.obat.destroy', $obat) }}" method="POST"
-                                        class="delete-form" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" title="Hapus"
-                                            class="text-red-600 hover:text-red-900 hover:scale-110 transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    @can('obat.view')
+                                        <a href="{{ route($prefix . '.apotik.obat.show', $obat) }}" title="Lihat"
+                                            class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
                                                 </path>
                                             </svg>
-                                        </button>
-                                    </form>
+                                        </a>
+                                    @endcan
+                                    @can('obat.edit')
+                                        <a href="{{ route($prefix . '.apotik.obat.edit', $obat) }}" title="Edit"
+                                            class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    @endcan
+                                    @can('obat.delete')
+                                        <form action="{{ route($prefix . '.apotik.obat.destroy', $obat) }}"
+                                            method="POST" class="delete-form" style="display:inline;"
+                                            data-name="{{ $obat->nama_obat }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" title="Hapus"
+                                                class="text-red-600 hover:text-red-900 hover:scale-110 transition">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

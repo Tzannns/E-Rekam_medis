@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Apotik;
 use App\Models\Obat;
@@ -67,7 +68,9 @@ class ObatController extends Controller
 
         Obat::create($validated);
 
-        return redirect()->route('admin.apotik.obat.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.obat.index')
             ->with('success', 'Obat berhasil ditambahkan');
     }
 
@@ -105,7 +108,9 @@ class ObatController extends Controller
 
         $obat->update($validated);
 
-        return redirect()->route('admin.apotik.obat.show', $obat)
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.obat.show', $obat)
             ->with('success', 'Data obat berhasil diperbarui');
     }
 
@@ -113,7 +118,9 @@ class ObatController extends Controller
     {
         $obat->delete();
 
-        return redirect()->route('admin.apotik.obat.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.obat.index')
             ->with('success', 'Data obat berhasil dihapus');
     }
 }

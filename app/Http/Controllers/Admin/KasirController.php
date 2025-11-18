@@ -88,7 +88,9 @@ class KasirController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.kasir.show', $trx)->with('success', 'Transaksi kasir berhasil dibuat');
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.kasir.show', $trx)->with('success', 'Transaksi kasir berhasil dibuat');
     }
 
     public function show(KasirTransaksi $kasir): View
@@ -129,6 +131,8 @@ class KasirController extends Controller
         $kasir->status = $dibayarBaru >= (float) $kasir->total ? 'Lunas' : ($dibayarBaru > 0 ? 'Sebagian' : 'Menunggu');
         $kasir->save();
 
-        return redirect()->route('admin.kasir.show', $kasir)->with('success', 'Pembayaran berhasil ditambahkan');
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.kasir.show', $kasir)->with('success', 'Pembayaran berhasil ditambahkan');
     }
 }

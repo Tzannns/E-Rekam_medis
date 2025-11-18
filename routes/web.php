@@ -313,10 +313,46 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/rawat-inap', [RawatInapController::class, 'index'])
         ->name('rawat-inap.index')
         ->middleware('permission:rawat-inap.view');
+    Route::get('/rawat-inap/create', [RawatInapController::class, 'create'])
+        ->name('rawat-inap.create')
+        ->middleware('permission:rawat-inap.create');
+    Route::post('/rawat-inap', [RawatInapController::class, 'store'])
+        ->name('rawat-inap.store')
+        ->middleware('permission:rawat-inap.create');
+    Route::get('/rawat-inap/{rawatInap}', [RawatInapController::class, 'show'])
+        ->name('rawat-inap.show')
+        ->middleware('permission:rawat-inap.view');
+    Route::get('/rawat-inap/{rawatInap}/edit', [RawatInapController::class, 'edit'])
+        ->name('rawat-inap.edit')
+        ->middleware('permission:rawat-inap.edit');
+    Route::put('/rawat-inap/{rawatInap}', [RawatInapController::class, 'update'])
+        ->name('rawat-inap.update')
+        ->middleware('permission:rawat-inap.edit');
+    Route::delete('/rawat-inap/{rawatInap}', [RawatInapController::class, 'destroy'])
+        ->name('rawat-inap.destroy')
+        ->middleware('permission:rawat-inap.delete');
 
     Route::get('/rekam-medis', [RekamMedisController::class, 'index'])
         ->name('rekam-medis.index')
         ->middleware('permission:rekam-medis.view');
+    Route::get('/rekam-medis/create', [RekamMedisController::class, 'create'])
+        ->name('rekam-medis.create')
+        ->middleware('permission:rekam-medis.create');
+    Route::post('/rekam-medis', [RekamMedisController::class, 'store'])
+        ->name('rekam-medis.store')
+        ->middleware('permission:rekam-medis.create');
+    Route::get('/rekam-medis/{rekamMedi}', [RekamMedisController::class, 'show'])
+        ->name('rekam-medis.show')
+        ->middleware('permission:rekam-medis.view');
+    Route::get('/rekam-medis/{rekamMedi}/edit', [RekamMedisController::class, 'edit'])
+        ->name('rekam-medis.edit')
+        ->middleware('permission:rekam-medis.edit');
+    Route::put('/rekam-medis/{rekamMedi}', [RekamMedisController::class, 'update'])
+        ->name('rekam-medis.update')
+        ->middleware('permission:rekam-medis.edit');
+    Route::delete('/rekam-medis/{rekamMedi}', [RekamMedisController::class, 'destroy'])
+        ->name('rekam-medis.destroy')
+        ->middleware('permission:rekam-medis.delete');
 
     // Poli Routes
     Route::get('/poli', [PetugasPoliController::class, 'index'])->name('poli.index');
@@ -363,8 +399,46 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/storage', [StorageController::class, 'index'])
         ->name('storage.index')
         ->middleware('permission:storage.view');
+    Route::get('/storage/create', [StorageController::class, 'create'])
+        ->name('storage.create')
+        ->middleware('permission:storage.create');
+    Route::post('/storage', [StorageController::class, 'store'])
+        ->name('storage.store')
+        ->middleware('permission:storage.create');
+    Route::get('/storage/{storageItem}', [StorageController::class, 'show'])
+        ->name('storage.show')
+        ->middleware('permission:storage.view');
+    Route::get('/storage/{storageItem}/edit', [StorageController::class, 'edit'])
+        ->name('storage.edit')
+        ->middleware('permission:storage.edit');
+    Route::put('/storage/{storageItem}', [StorageController::class, 'update'])
+        ->name('storage.update')
+        ->middleware('permission:storage.edit');
+    Route::delete('/storage/{storageItem}', [StorageController::class, 'destroy'])
+        ->name('storage.destroy')
+        ->middleware('permission:storage.delete');
 
-    Route::resource('apotik', ApotikController::class)->middleware('permission:apotik.view');
+    Route::get('/apotik', [ApotikController::class, 'index'])
+        ->name('apotik.index')
+        ->middleware('permission:apotik.view');
+    Route::get('/apotik/create', [ApotikController::class, 'create'])
+        ->name('apotik.create')
+        ->middleware('permission:apotik.create');
+    Route::post('/apotik', [ApotikController::class, 'store'])
+        ->name('apotik.store')
+        ->middleware('permission:apotik.create');
+    Route::get('/apotik/{apotik}', [ApotikController::class, 'show'])
+        ->name('apotik.show')
+        ->middleware('permission:apotik.view');
+    Route::get('/apotik/{apotik}/edit', [ApotikController::class, 'edit'])
+        ->name('apotik.edit')
+        ->middleware('permission:apotik.edit');
+    Route::put('/apotik/{apotik}', [ApotikController::class, 'update'])
+        ->name('apotik.update')
+        ->middleware('permission:apotik.edit');
+    Route::delete('/apotik/{apotik}', [ApotikController::class, 'destroy'])
+        ->name('apotik.destroy')
+        ->middleware('permission:apotik.delete');
 
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])
         ->name('laboratorium.index')

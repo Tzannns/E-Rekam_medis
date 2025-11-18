@@ -1,11 +1,12 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900">Detail Riwayat Stok</h2>
                 <p class="mt-1 text-sm text-gray-500">Informasi lengkap pergerakan stok</p>
             </div>
-            <a href="{{ route('admin.apotik.stok.index') }}"
+            <a href="{{ route($prefix . '.apotik.stok.index') }}"
                 class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                 Kembali
             </a>
@@ -70,14 +71,16 @@
 
                     <div class="flex items-center justify-center">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3">
                             </path>
                         </svg>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-500 mb-1">Jumlah</label>
-                        <p class="text-2xl font-bold
+                        <p
+                            class="text-2xl font-bold
                             @if (in_array($stok->tipe, ['Masuk', 'Retur'])) text-green-600
                             @else text-red-600 @endif">
                             {{ in_array($stok->tipe, ['Masuk', 'Retur']) ? '+' : '-' }}{{ $stok->jumlah }}
@@ -86,7 +89,8 @@
 
                     <div class="flex items-center justify-center">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3">
                             </path>
                         </svg>
                     </div>

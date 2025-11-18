@@ -73,7 +73,9 @@ class RekamMedisController extends Controller
     {
         RekamMedis::create($request->validated());
 
-        return redirect()->route('admin.rekam-medis.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil ditambahkan.');
     }
 
@@ -96,7 +98,9 @@ class RekamMedisController extends Controller
     {
         $rekamMedi->update($request->validated());
 
-        return redirect()->route('admin.rekam-medis.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil diperbarui.');
     }
 
@@ -104,7 +108,9 @@ class RekamMedisController extends Controller
     {
         $rekamMedi->delete();
 
-        return redirect()->route('admin.rekam-medis.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.rekam-medis.index')
             ->with('success', 'Rekam medis berhasil dihapus.');
     }
 

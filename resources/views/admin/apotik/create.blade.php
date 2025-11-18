@@ -1,7 +1,8 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex items-center gap-4">
-            <a href="{{ route('admin.apotik.index') }}" class="text-blue-600 hover:text-blue-900">
+            <a href="{{ route($prefix . '.apotik.index') }}" class="text-blue-600 hover:text-blue-900">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -12,7 +13,7 @@
             </div>
         </div>
 
-        <form action="{{ route('admin.apotik.store') }}" method="POST" class="space-y-6">
+        <form action="{{ route($prefix . '.apotik.store') }}" method="POST" class="space-y-6">
             @csrf
 
             <div class="bg-white shadow rounded-lg p-6">
@@ -84,7 +85,7 @@
                     class="px-6 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-sm text-white hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     Simpan
                 </button>
-                <a href="{{ route('admin.apotik.index') }}"
+                <a href="{{ route($prefix . '.apotik.index') }}"
                     class="px-6 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-sm text-gray-700 hover:bg-gray-400 focus:bg-gray-400 active:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     Batal
                 </a>

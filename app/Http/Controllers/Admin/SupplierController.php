@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -53,7 +54,9 @@ class SupplierController extends Controller
 
         Supplier::create($validated);
 
-        return redirect()->route('admin.apotik.supplier.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.supplier.index')
             ->with('success', 'Supplier berhasil ditambahkan');
     }
 
@@ -82,7 +85,9 @@ class SupplierController extends Controller
 
         $supplier->update($validated);
 
-        return redirect()->route('admin.apotik.supplier.show', $supplier)
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.supplier.show', $supplier)
             ->with('success', 'Data supplier berhasil diperbarui');
     }
 
@@ -90,7 +95,9 @@ class SupplierController extends Controller
     {
         $supplier->delete();
 
-        return redirect()->route('admin.apotik.supplier.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.supplier.index')
             ->with('success', 'Data supplier berhasil dihapus');
     }
 }

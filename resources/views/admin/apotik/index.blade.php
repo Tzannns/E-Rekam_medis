@@ -1,5 +1,6 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Manajemen Apotik</h2>
             <p class="mt-1 text-sm text-gray-500">Kelola data apotik dan informasi farmasi</p>
@@ -8,26 +9,28 @@
         <!-- Tab Navigation -->
         <div class="mb-6 border-b border-gray-200">
             <nav class="-mb-px flex space-x-8">
-                <a href="{{ route('admin.apotik.index') }}" 
-                   class="border-b-2 {{ request()->routeIs('admin.apotik.index') || request()->routeIs('admin.apotik.show') || request()->routeIs('admin.apotik.create') || request()->routeIs('admin.apotik.edit') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                <a href="{{ route($prefix . '.apotik.index') }}"
+                    class="border-b-2 {{ request()->routeIs('admin.apotik.index') || request()->routeIs('admin.apotik.show') || request()->routeIs('admin.apotik.create') || request()->routeIs('admin.apotik.edit') || request()->routeIs('petugas.apotik.index') || request()->routeIs('petugas.apotik.show') || request()->routeIs('petugas.apotik.create') || request()->routeIs('petugas.apotik.edit') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
                     Data Apotik
                 </a>
-                <a href="{{ route('admin.apotik.supplier.index') }}" 
-                   class="border-b-2 {{ request()->routeIs('admin.apotik.supplier.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
-                    Supplier
-                </a>
-                <a href="{{ route('admin.apotik.obat.index') }}" 
-                   class="border-b-2 {{ request()->routeIs('admin.apotik.obat.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
-                    Data Obat
-                </a>
-                <a href="{{ route('admin.apotik.stok.index') }}" 
-                   class="border-b-2 {{ request()->routeIs('admin.apotik.stok.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
-                    Stok Obat
-                </a>
-                <a href="{{ route('admin.apotik.transaksi.index') }}" 
-                   class="border-b-2 {{ request()->routeIs('admin.apotik.transaksi.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
-                    Transaksi
-                </a>
+                @if ($prefix === 'admin')
+                    <a href="{{ route($prefix . '.apotik.supplier.index') }}"
+                        class="border-b-2 {{ request()->routeIs('admin.apotik.supplier.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                        Supplier
+                    </a>
+                    <a href="{{ route($prefix . '.apotik.obat.index') }}"
+                        class="border-b-2 {{ request()->routeIs('admin.apotik.obat.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                        Data Obat
+                    </a>
+                    <a href="{{ route($prefix . '.apotik.stok.index') }}"
+                        class="border-b-2 {{ request()->routeIs('admin.apotik.stok.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                        Stok Obat
+                    </a>
+                    <a href="{{ route($prefix . '.apotik.transaksi.index') }}"
+                        class="border-b-2 {{ request()->routeIs('admin.apotik.transaksi.*') ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-4 px-1 font-medium text-sm">
+                        Transaksi
+                    </a>
+                @endif
             </nav>
         </div>
 
@@ -36,7 +39,7 @@
                 <h3 class="text-xl font-semibold text-gray-900">Daftar Apotik</h3>
             </div>
             @can('apotik.create')
-                <a href="{{ route('admin.apotik.create') }}"
+                <a href="{{ route($prefix . '.apotik.create') }}"
                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                     + Tambah Apotik
                 </a>
@@ -85,7 +88,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
-            <form method="GET" action="{{ route('admin.apotik.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route($prefix . '.apotik.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
@@ -109,7 +112,7 @@
                         class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Filter
                     </button>
-                    <a href="{{ route('admin.apotik.index') }}"
+                    <a href="{{ route($prefix . '.apotik.index') }}"
                         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Reset
                     </a>
@@ -162,7 +165,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex">
                                     @can('apotik.view')
-                                        <a href="{{ route('admin.apotik.show', $apotik) }}" title="Lihat"
+                                        <a href="{{ route($prefix . '.apotik.show', $apotik) }}" title="Lihat"
                                             class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -174,9 +177,10 @@
                                         </a>
                                     @endcan
                                     @can('apotik.edit')
-                                        <a href="{{ route('admin.apotik.edit', $apotik) }}" title="Edit"
+                                        <a href="{{ route($prefix . '.apotik.edit', $apotik) }}" title="Edit"
                                             class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                                 </path>
@@ -184,9 +188,8 @@
                                         </a>
                                     @endcan
                                     @can('apotik.delete')
-                                        <form action="{{ route('admin.apotik.destroy', $apotik) }}" method="POST"
-                                            style="display:inline;"
-                                            onsubmit="return confirm('Yakin ingin menghapus apotik ini?');">
+                                        <form action="{{ route($prefix . '.apotik.destroy', $apotik) }}" method="POST"
+                                            class="delete-form" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" title="Hapus"

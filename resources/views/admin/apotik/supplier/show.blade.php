@@ -1,16 +1,30 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900">Detail Supplier</h2>
                 <p class="mt-1 text-sm text-gray-500">Informasi lengkap supplier</p>
             </div>
             <div class="flex space-x-3">
-                <a href="{{ route('admin.apotik.supplier.edit', $supplier) }}"
-                    class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
-                    Edit
-                </a>
-                <a href="{{ route('admin.apotik.supplier.index') }}"
+                @can('supplier.edit')
+                    <a href="{{ route($prefix . '.apotik.supplier.edit', $supplier) }}"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
+                        Edit
+                    </a>
+                @endcan
+                @can('supplier.delete')
+                    <form action="{{ route($prefix . '.apotik.supplier.destroy', $supplier) }}" method="POST"
+                        class="delete-form" style="display:inline;" data-name="{{ $supplier->nama_supplier }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Hapus
+                        </button>
+                    </form>
+                @endcan
+                <a href="{{ route($prefix . '.apotik.supplier.index') }}"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                     Kembali
                 </a>
@@ -104,7 +118,8 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $obat->kode_obat }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-900">{{ $obat->nama_obat }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $obat->stok }}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {{ $obat->stok }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp
                                             {{ number_format($obat->harga_jual, 0, ',', '.') }}</td>

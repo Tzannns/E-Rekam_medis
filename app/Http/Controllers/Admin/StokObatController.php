@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Obat;
 use App\Models\StokObat;
@@ -83,7 +84,9 @@ class StokObatController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.apotik.stok.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.stok.index')
             ->with('success', 'Stok obat berhasil diperbarui');
     }
 

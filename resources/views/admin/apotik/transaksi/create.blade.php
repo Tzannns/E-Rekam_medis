@@ -1,5 +1,6 @@
 <x-app-layout>
     <div x-data="kasirApp()">
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Transaksi Baru</h2>
             <p class="mt-1 text-sm text-gray-500">Kasir Apotik</p>
@@ -15,7 +16,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.apotik.transaksi.store') }}" method="POST">
+        <form action="{{ route($prefix . '.apotik.transaksi.store') }}" method="POST">
             @csrf
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -86,7 +87,8 @@
                                     @foreach ($obats as $obat)
                                         <option value="{{ $obat->id }}" data-nama="{{ $obat->nama_obat }}"
                                             data-harga="{{ $obat->harga_jual }}" data-stok="{{ $obat->stok }}">
-                                            {{ $obat->nama_obat }} - Rp {{ number_format($obat->harga_jual, 0, ',', '.') }}
+                                            {{ $obat->nama_obat }} - Rp
+                                            {{ number_format($obat->harga_jual, 0, ',', '.') }}
                                             (Stok: {{ $obat->stok }})
                                         </option>
                                     @endforeach
@@ -121,8 +123,10 @@
                                                         <input type="number" x-model="item.jumlah"
                                                             @input="hitungTotal()" min="1" :max="item.stok"
                                                             class="w-20 px-2 py-1 border border-gray-300 rounded">
-                                                        <input type="hidden" :name="'obat_id[]'" :value="item.id">
-                                                        <input type="hidden" :name="'jumlah[]'" :value="item.jumlah">
+                                                        <input type="hidden" :name="'obat_id[]'"
+                                                            :value="item.id">
+                                                        <input type="hidden" :name="'jumlah[]'"
+                                                            :value="item.jumlah">
                                                     </td>
                                                     <td class="px-4 py-2 text-sm font-medium text-gray-900"
                                                         x-text="formatRupiah(item.harga * item.jumlah)"></td>
@@ -176,8 +180,7 @@
 
                         <div class="space-y-4">
                             <div>
-                                <label for="metode_pembayaran"
-                                    class="block text-sm font-medium text-gray-700 mb-2">
+                                <label for="metode_pembayaran" class="block text-sm font-medium text-gray-700 mb-2">
                                     Metode Pembayaran <span class="text-red-500">*</span>
                                 </label>
                                 <select name="metode_pembayaran" id="metode_pembayaran"
@@ -195,8 +198,8 @@
                                 <label for="bayar" class="block text-sm font-medium text-gray-700 mb-2">
                                     Bayar <span class="text-red-500">*</span>
                                 </label>
-                                <input type="number" name="bayar" id="bayar" x-model="bayar" @input="hitungKembalian()"
-                                    min="0" step="1000"
+                                <input type="number" name="bayar" id="bayar" x-model="bayar"
+                                    @input="hitungKembalian()" min="0" step="1000"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required>
                             </div>
@@ -225,7 +228,7 @@
                                 class="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed font-semibold">
                                 Proses Transaksi
                             </button>
-                            <a href="{{ route('admin.apotik.transaksi.index') }}"
+                            <a href="{{ route($prefix . '.apotik.transaksi.index') }}"
                                 class="block w-full px-4 py-2 border border-gray-300 rounded-lg text-center text-gray-700 hover:bg-gray-50 transition">
                                 Batal
                             </a>

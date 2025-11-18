@@ -1,12 +1,13 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Kelola Stok Obat</h2>
             <p class="mt-1 text-sm text-gray-500">Tambah atau kurangi stok obat</p>
         </div>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <form action="{{ route('admin.apotik.stok.store') }}" method="POST" x-data="stokForm()">
+            <form action="{{ route($prefix . '.apotik.stok.store') }}" method="POST" x-data="stokForm()">
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -41,8 +42,9 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="text-sm text-blue-800 font-medium">Stok Setelah Transaksi</p>
-                                    <p class="text-2xl font-bold" :class="stokAkhir >= 0 ? 'text-green-600' : 'text-red-600'"
-                                        x-text="stokAkhir"></p>
+                                    <p class="text-2xl font-bold"
+                                        :class="stokAkhir >= 0 ? 'text-green-600' : 'text-red-600'" x-text="stokAkhir">
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +113,7 @@
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-3">
-                    <a href="{{ route('admin.apotik.stok.index') }}"
+                    <a href="{{ route($prefix . '.apotik.stok.index') }}"
                         class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
                         Batal
                     </a>

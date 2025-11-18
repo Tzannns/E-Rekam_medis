@@ -1,12 +1,13 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex justify-between items-center">
             <div>
                 <h2 class="text-3xl font-bold text-gray-900">Data Rawat Inap</h2>
                 <p class="mt-1 text-sm text-gray-500">Kelola data pasien rawat inap di rumah sakit</p>
             </div>
             @can('rawat-inap.create')
-                <a href="{{ route('admin.rawat-inap.create') }}"
+                <a href="{{ route($prefix . '.rawat-inap.create') }}"
                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                     + Tambah Rawat Inap
                 </a>
@@ -21,7 +22,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
-            <form method="GET" action="{{ route('admin.rawat-inap.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route($prefix . '.rawat-inap.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
@@ -100,7 +101,7 @@
                         class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Filter
                     </button>
-                    <a href="{{ route('admin.rawat-inap.index') }}"
+                    <a href="{{ route($prefix . '.rawat-inap.index') }}"
                         class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         Reset
                     </a>
@@ -154,7 +155,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3 flex">
-                                <a href="{{ route('admin.rawat-inap.show', $rawatInap) }}" title="Lihat"
+                                <a href="{{ route($prefix . '.rawat-inap.show', $rawatInap) }}" title="Lihat"
                                     class="text-blue-600 hover:text-blue-900 hover:scale-110 transition">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -165,7 +166,7 @@
                                     </svg>
                                 </a>
                                 @can('rawat-inap.edit')
-                                    <a href="{{ route('admin.rawat-inap.edit', $rawatInap) }}" title="Edit"
+                                    <a href="{{ route($prefix . '.rawat-inap.edit', $rawatInap) }}" title="Edit"
                                         class="text-yellow-600 hover:text-yellow-900 hover:scale-110 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -175,8 +176,8 @@
                                     </a>
                                 @endcan
                                 @can('rawat-inap.delete')
-                                    <form action="{{ route('admin.rawat-inap.destroy', $rawatInap) }}" method="POST"
-                                        class="delete-form inline">
+                                    <form action="{{ route($prefix . '.rawat-inap.destroy', $rawatInap) }}"
+                                        method="POST" class="delete-form inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" title="Hapus"

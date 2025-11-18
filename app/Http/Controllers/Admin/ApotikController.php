@@ -51,8 +51,10 @@ class ApotikController extends Controller
 
         Apotik::create($validated);
 
-        return redirect()->route('admin.apotik.index')
-            ->with('success', 'Apotik berhasil ditambahkan');
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.apotik.index')
+            ->with('success', 'Data apotik berhasil ditambahkan');
     }
 
     public function show(Apotik $apotik): View
@@ -77,7 +79,9 @@ class ApotikController extends Controller
 
         $apotik->update($validated);
 
-        return redirect()->route('admin.apotik.show', $apotik)
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.apotik.show', $apotik)
             ->with('success', 'Data apotik berhasil diperbarui');
     }
 
@@ -85,7 +89,9 @@ class ApotikController extends Controller
     {
         $apotik->delete();
 
-        return redirect()->route('admin.apotik.index')
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+        return redirect()->route($prefix.'.apotik.index')
             ->with('success', 'Data apotik berhasil dihapus');
     }
 }

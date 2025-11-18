@@ -1,16 +1,30 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Detail Obat</h2>
-                <p class="mt-1 text-sm text-gray-500">Informasi lengkap obat</p>
+                <h2 class="text-3xl font-bold text-gray-900">{{ $obat->nama_obat }}</h2>
+                <p class="mt-1 text-sm text-gray-500">Kode: {{ $obat->kode_obat }}</p>
             </div>
             <div class="flex space-x-3">
-                <a href="{{ route('admin.apotik.obat.edit', $obat) }}"
-                    class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
-                    Edit
-                </a>
-                <a href="{{ route('admin.apotik.obat.index') }}"
+                @can('obat.edit')
+                    <a href="{{ route($prefix . '.apotik.obat.edit', $obat) }}"
+                        class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
+                        Edit
+                    </a>
+                @endcan
+                @can('obat.delete')
+                    <form action="{{ route($prefix . '.apotik.obat.destroy', $obat) }}" method="POST" class="delete-form"
+                        style="display:inline;" data-name="{{ $obat->nama_obat }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Hapus
+                        </button>
+                    </form>
+                @endcan
+                <a href="{{ route($prefix . '.apotik.obat.index') }}"
                     class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
                     Kembali
                 </a>
@@ -195,7 +209,8 @@
                                                 {{ $stok->tipe }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium
+                                        <td
+                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium
                                             @if (in_array($stok->tipe, ['Masuk', 'Retur'])) text-green-600
                                             @else text-red-600 @endif">
                                             {{ in_array($stok->tipe, ['Masuk', 'Retur']) ? '+' : '-' }}{{ $stok->jumlah }}

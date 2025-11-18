@@ -1,7 +1,8 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6 flex items-center gap-4">
-            <a href="{{ route('admin.apotik.index') }}" class="text-blue-600 hover:text-blue-900">
+            <a href="{{ route($prefix . '.apotik.index') }}" class="text-blue-600 hover:text-blue-900">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -81,13 +82,13 @@
                 <!-- Action Buttons -->
                 <div class="space-y-2">
                     @can('apotik.edit')
-                        <a href="{{ route('admin.apotik.edit', $apotik) }}"
+                        <a href="{{ route($prefix . '.apotik.edit', $apotik) }}"
                             class="block w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center font-medium text-sm">
                             Edit
                         </a>
                     @endcan
                     @can('apotik.delete')
-                        <form action="{{ route('admin.apotik.destroy', $apotik) }}" method="POST"
+                        <form action="{{ route($prefix . '.apotik.destroy', $apotik) }}" method="POST"
                             onsubmit="return confirm('Yakin ingin menghapus apotik ini?');">
                             @csrf
                             @method('DELETE')

@@ -1,12 +1,13 @@
 <x-app-layout>
     <div>
+        @php($prefix = \Illuminate\Support\Str::startsWith(Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin')
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-gray-900">Tambah Obat</h2>
             <p class="mt-1 text-sm text-gray-500">Tambah data obat baru</p>
         </div>
 
         <div class="bg-white shadow rounded-lg p-6">
-            <form action="{{ route('admin.apotik.obat.store') }}" method="POST">
+            <form action="{{ route($prefix . '.apotik.obat.store') }}" method="POST">
                 @csrf
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -19,7 +20,8 @@
                             required>
                             <option value="">Pilih Apotik</option>
                             @foreach ($apotiks as $apotik)
-                                <option value="{{ $apotik->id }}" {{ old('apotik_id') == $apotik->id ? 'selected' : '' }}>
+                                <option value="{{ $apotik->id }}"
+                                    {{ old('apotik_id') == $apotik->id ? 'selected' : '' }}>
                                     {{ $apotik->nama_apotik }}
                                 </option>
                             @endforeach
@@ -154,7 +156,8 @@
                         <label for="stok" class="block text-sm font-medium text-gray-700 mb-2">
                             Stok Awal <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" name="stok" id="stok" value="{{ old('stok', 0) }}" min="0"
+                        <input type="number" name="stok" id="stok" value="{{ old('stok', 0) }}"
+                            min="0"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('stok') border-red-500 @enderror"
                             required>
                         @error('stok')
@@ -200,7 +203,7 @@
                 </div>
 
                 <div class="mt-6 flex justify-end space-x-3">
-                    <a href="{{ route('admin.apotik.obat.index') }}"
+                    <a href="{{ route($prefix . '.apotik.obat.index') }}"
                         class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition">
                         Batal
                     </a>

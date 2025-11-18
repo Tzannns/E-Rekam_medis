@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\RouteHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Apotik;
 use App\Models\DetailTransaksiApotik;
@@ -155,7 +156,9 @@ class TransaksiApotikController extends Controller
             }
         });
 
-        return redirect()->route('admin.apotik.transaksi.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.transaksi.index')
             ->with('success', 'Transaksi berhasil disimpan');
     }
 
@@ -174,7 +177,9 @@ class TransaksiApotikController extends Controller
 
         $transaksi->delete();
 
-        return redirect()->route('admin.apotik.transaksi.index')
+        $prefix = RouteHelper::getPrefix();
+
+        return redirect()->route($prefix.'.apotik.transaksi.index')
             ->with('success', 'Transaksi berhasil dihapus');
     }
 }

@@ -81,8 +81,10 @@ class RawatInapController extends Controller
     {
         $rawatInap = RawatInap::create($request->validated());
 
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
         return redirect()
-            ->route('admin.rawat-inap.show', $rawatInap)
+            ->route($prefix.'.rawat-inap.show', $rawatInap)
             ->with('success', 'Data Rawat Inap berhasil ditambahkan');
     }
 
@@ -106,8 +108,10 @@ class RawatInapController extends Controller
     {
         $rawatInap->update($request->validated());
 
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
         return redirect()
-            ->route('admin.rawat-inap.show', $rawatInap)
+            ->route($prefix.'.rawat-inap.show', $rawatInap)
             ->with('success', 'Data Rawat Inap berhasil diperbarui');
     }
 
@@ -115,8 +119,10 @@ class RawatInapController extends Controller
     {
         $rawatInap->delete();
 
+        $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
         return redirect()
-            ->route('admin.rawat-inap.index')
+            ->route($prefix.'.rawat-inap.index')
             ->with('success', 'Data Rawat Inap berhasil dihapus');
     }
 }
