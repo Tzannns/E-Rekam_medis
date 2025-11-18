@@ -17,8 +17,12 @@
                         <dd class="text-lg text-gray-900">{{ $appointment->pasien->user->name }}</dd>
                     </div>
                     <div>
+                        <dt class="text-sm font-medium text-gray-600">Poli</dt>
+                        <dd class="text-lg text-gray-900">{{ $appointment->poli->nama_poli }}</dd>
+                    </div>
+                    <div>
                         <dt class="text-sm font-medium text-gray-600">Dokter</dt>
-                        <dd class="text-lg text-gray-900">{{ $appointment->dokter->user->name }}</dd>
+                        <dd class="text-lg text-gray-900">{{ $appointment->dokter ? $appointment->dokter->user->name : 'Belum ditentukan' }}</dd>
                     </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Tanggal/Jam Usulan</dt>
@@ -53,6 +57,16 @@
                 <form method="POST" action="{{ route('admin.appointment.update', $appointment) }}" class="space-y-4">
                     @csrf
                     @method('PUT')
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Dokter</label>
+                        <select name="dokter_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Pilih Dokter</option>
+                            @foreach ($dokterList as $d)
+                                <option value="{{ $d->id }}" {{ old('dokter_id', $appointment->dokter_id) == $d->id ? 'selected' : '' }}>{{ $d->user->name }} - {{ $d->spesialisasi }}</option>
+                            @endforeach
+                        </select>
+                        @error('dokter_id')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                    </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                         <select name="status" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>

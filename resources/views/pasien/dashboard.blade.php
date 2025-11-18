@@ -7,13 +7,64 @@
             </div>
         </div>
 
-        @if(isset($pendingAppointment) && $pendingAppointment)
-            <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-yellow-800">Permohonan periksa menunggu konfirmasi untuk dokter <strong>{{ $pendingAppointment->dokter->user->name }}</strong> pada {{ optional($pendingAppointment->tanggal_usulan)->format('d/m/Y') }} {{ $pendingAppointment->jam_usulan }}.</p>
+        <!-- Alur Permohonan Periksa -->
+        <div class="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <svg class="w-6 h-6 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Alur Permohonan Periksa
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold mr-2">1</div>
+                        <h4 class="font-semibold text-gray-900">Ajukan Permohonan</h4>
                     </div>
-                    <a href="{{ route('pasien.appointment.index') }}" class="text-sm font-semibold text-yellow-700 hover:text-yellow-900">Lihat Permohonan →</a>
+                    <p class="text-xs text-gray-600">Pilih poli tujuan, tanggal & jam yang diinginkan, serta keluhan Anda</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 font-bold mr-2">2</div>
+                        <h4 class="font-semibold text-gray-900">Menunggu Konfirmasi</h4>
+                    </div>
+                    <p class="text-xs text-gray-600">Admin/Petugas akan menentukan dokter dan jadwal periksa Anda</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold mr-2">3</div>
+                        <h4 class="font-semibold text-gray-900">Disetujui</h4>
+                    </div>
+                    <p class="text-xs text-gray-600">Permohonan disetujui dan jadwal periksa telah dibuat</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold mr-2">4</div>
+                        <h4 class="font-semibold text-gray-900">Datang Periksa</h4>
+                    </div>
+                    <p class="text-xs text-gray-600">Datang sesuai jadwal yang telah ditentukan</p>
+                </div>
+            </div>
+        </div>
+
+        @if(isset($pendingAppointment) && $pendingAppointment)
+            <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-yellow-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-semibold text-yellow-900">Permohonan Sedang Diproses</p>
+                            <p class="text-xs text-yellow-700">Poli: <strong>{{ $pendingAppointment->poli->nama_poli }}</strong> | Tanggal usulan: <strong>{{ optional($pendingAppointment->tanggal_usulan)->format('d/m/Y') }} {{ $pendingAppointment->jam_usulan }}</strong></p>
+                        </div>
+                    </div>
+                    <a href="{{ route('pasien.appointment.index') }}" class="text-sm font-semibold text-yellow-700 hover:text-yellow-900 flex items-center">
+                        Lihat Detail
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
         @endif

@@ -16,7 +16,7 @@ class AppointmentController extends Controller
     {
         $pasien = Auth::user()->pasien;
         $appointments = Appointment::where('pasien_id', $pasien->id)
-            ->with('dokter.user')
+            ->with(['dokter.user', 'poli'])
             ->latest()
             ->paginate(15);
 
@@ -25,16 +25,16 @@ class AppointmentController extends Controller
 
     public function create(): View
     {
-        $dokterList = Dokter::with('user')->get();
+        $poliList = \App\Models\Poli::where('status', 'aktif')->get();
 
-        return view('pasien.appointment.create', compact('dokterList'));
+        return view('pasien.appointment.create', compact('poliList'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $pasien = Auth::user()->pasien;
         $data = $request->validate([
-            'dokter_id' => ['required', 'exists:dokter,id'],
+            'poli_id' => ['required', 'exists:polis,id'],
             'tanggal_usulan' => ['required', 'date'],
             'jam_usulan' => ['required', 'string'],
             'keluhan' => ['nullable', 'string'],

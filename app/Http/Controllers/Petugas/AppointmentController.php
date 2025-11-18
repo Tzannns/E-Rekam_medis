@@ -15,7 +15,7 @@ class AppointmentController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Appointment::with(['pasien.user', 'dokter.user']);
+        $query = Appointment::with(['pasien.user', 'dokter.user', 'poli']);
 
         if ($request->filled('status') && $request->status !== 'semua') {
             $query->where('status', $request->status);
@@ -41,14 +41,16 @@ class AppointmentController extends Controller
 
     public function show(Appointment $appointment): View
     {
-        $appointment->load(['pasien.user', 'dokter.user']);
+        $appointment->load(['pasien.user', 'dokter.user', 'poli']);
+        $dokterList = Dokter::with('user')->get();
 
-        return view('petugas.appointment.show', compact('appointment'));
+        return view('petugas.appointment.show', compact('appointment', 'dokterList'));
     }
 
     public function update(Request $request, Appointment $appointment): RedirectResponse
     {
         $data = $request->validate([
+            'dokter_id' => ['nullable', 'exists:dokter,id'],
             'status' => ['required', 'in:Disetujui,Diproses,Dibatalkan'],
             'catatan_admin' => ['nullable', 'string'],
             'tanggal' => ['nullable', 'date'],
@@ -57,6 +59,7 @@ class AppointmentController extends Controller
         ]);
 
         $appointment->update([
+            'dokter_id' => $data['dokter_id'] ?? null,
             'status' => $data['status'],
             'catatan_admin' => $data['catatan_admin'] ?? null,
         ]);

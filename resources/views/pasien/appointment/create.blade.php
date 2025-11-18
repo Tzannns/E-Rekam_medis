@@ -13,14 +13,14 @@
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Dokter</label>
-                        <select name="dokter_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
-                            <option value="">Pilih Dokter</option>
-                            @foreach ($dokterList as $d)
-                                <option value="{{ $d->id }}" {{ old('dokter_id') == $d->id ? 'selected' : '' }}>{{ $d->user->name }}</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Poli Tujuan</label>
+                        <select name="poli_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                            <option value="">Pilih Poli</option>
+                            @foreach ($poliList as $p)
+                                <option value="{{ $p->id }}" {{ old('poli_id') == $p->id ? 'selected' : '' }}>{{ $p->nama_poli }}</option>
                             @endforeach
                         </select>
-                        @error('dokter_id')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
+                        @error('poli_id')<p class="text-sm text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Usulan</label>

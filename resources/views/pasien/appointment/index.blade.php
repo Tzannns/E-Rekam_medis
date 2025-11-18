@@ -19,7 +19,7 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dokter</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Poli / Dokter</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Usulan</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Usulan</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -29,7 +29,10 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($appointments as $a)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $a->dokter->user->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ $a->poli->nama_poli }}<br>
+                                    <span class="text-xs text-gray-500">{{ $a->dokter ? $a->dokter->user->name : 'Menunggu penentuan dokter' }}</span>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ optional($a->tanggal_usulan)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $a->jam_usulan }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
