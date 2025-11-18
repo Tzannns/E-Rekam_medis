@@ -25,4 +25,9 @@ class Poli extends Model
             'status' => 'string',
         ];
     }
+
+    public function dokter()
+    {
+        return $this->hasMany(Dokter::class);
+    }
 }

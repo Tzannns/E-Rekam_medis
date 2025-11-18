@@ -77,6 +77,8 @@ class DatabaseSeeder extends Seeder
         // Now call other seeders after users are created
         $this->call([
             PoliSeeder::class,
+            DokterPoliSeeder::class,
+            JadwalDokterSeeder::class,
             JadwalSeeder::class,
             RekamMedisSeeder::class,
             IGDSeeder::class,

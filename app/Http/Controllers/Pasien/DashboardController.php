@@ -33,13 +33,15 @@ class DashboardController extends Controller
             ->get();
 
         $pendingAppointment = Appointment::where('pasien_id', $pasien->id)
-            ->whereIn('status', ['Menunggu','Diproses'])
+            ->whereIn('status', ['Menunggu','Diproses','Disetujui'])
             ->latest()
             ->first();
 
         $queueTotal = null;
         if ($pendingAppointment && $pendingAppointment->jadwal_id) {
-            $queueTotal = Appointment::where('jadwal_id', $pendingAppointment->jadwal_id)->count();
+            $queueTotal = Appointment::where('jadwal_id', $pendingAppointment->jadwal_id)
+                ->whereIn('status', ['Menunggu', 'Diproses', 'Disetujui'])
+                ->count();
         }
 
         $upcomingJadwal = Jadwal::where('pasien_id', $pasien->id)
@@ -49,7 +51,7 @@ class DashboardController extends Controller
             ->first();
 
         $activeQueueCount = Appointment::where('pasien_id', $pasien->id)
-            ->whereIn('status', ['Menunggu','Diproses'])
+            ->whereIn('status', ['Menunggu','Diproses','Disetujui'])
             ->count();
 
         $appointmentsTotal = Appointment::where('pasien_id', $pasien->id)->count();

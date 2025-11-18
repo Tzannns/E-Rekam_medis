@@ -51,12 +51,17 @@ class AppointmentController extends Controller
     {
         $data = $request->validate([
             'dokter_id' => ['nullable', 'exists:dokter,id'],
-            'status' => ['required', 'in:Disetujui,Diproses,Dibatalkan'],
+            'status' => ['required', 'in:Disetujui,Diproses,Dibatalkan,Menunggu'],
             'catatan_admin' => ['nullable', 'string'],
             'tanggal' => ['nullable', 'date'],
             'jam_mulai' => ['nullable', 'string'],
             'jam_selesai' => ['nullable', 'string'],
         ]);
+
+        // Validasi dokter_id harus ada jika status Disetujui
+        if ($data['status'] === 'Disetujui' && empty($data['dokter_id']) && empty($appointment->dokter_id)) {
+            return redirect()->back()->withErrors(['dokter_id' => 'Dokter harus dipilih untuk menyetujui appointment.'])->withInput();
+        }
 
         $appointment->update([
             'dokter_id' => $data['dokter_id'] ?? $appointment->dokter_id,
@@ -68,10 +73,16 @@ class AppointmentController extends Controller
             if ($appointment->jadwal_id) {
                 $jadwal = Jadwal::find($appointment->jadwal_id);
                 if ($jadwal) {
-                    $jadwal->update([
-                        'pasien_id' => $appointment->pasien_id,
-                        'status' => 'terisi',
-                    ]);
+                    // Jangan ubah status jadwal jika masih ada antrian lain yang aktif
+                    $activeQueueCount = Appointment::where('jadwal_id', $jadwal->id)
+                        ->whereIn('status', ['Menunggu', 'Diproses', 'Disetujui'])
+                        ->count();
+                    
+                    if ($activeQueueCount === 0) {
+                        $jadwal->update([
+                            'status' => 'tersedia',
+                        ]);
+                    }
                 }
             } elseif ($data['tanggal'] && $data['jam_mulai']) {
                 $jadwal = Jadwal::create([

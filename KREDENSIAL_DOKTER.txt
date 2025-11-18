@@ -1,0 +1,102 @@
+═══════════════════════════════════════════════════════════════
+           KREDENSIAL LOGIN DOKTER - E-REKAM MEDIS
+═══════════════════════════════════════════════════════════════
+
+📋 DAFTAR DOKTER PER POLI
+
+1. POLI UMUM
+   Nama     : Dr. Budi Santoso
+   Email    : dokter@rekammedis.com
+   Password : password
+   NIP      : DOK001
+   Spesialisasi: Dokter Umum
+
+2. POLI GIGI
+   Nama     : drg. Rina Wijaya, Sp.KG
+   Email    : drgrinawijayaspkg@hospital.com
+   Password : password123
+   NIP      : 198604102010012001
+   Spesialisasi: Spesialis Konservasi Gigi
+
+3. POLI ANAK
+   Nama     : Dr. Dewi Lestari, Sp.A
+   Email    : drdewilestarisp.a@hospital.com
+   Password : password123
+   NIP      : 198506152010012001
+   Spesialisasi: Spesialis Anak
+
+4. POLI KANDUNGAN
+   Nama     : Dr. Ani Yudhoyono, Sp.OG
+   Email    : draniyudhoyonospog@hospital.com
+   Password : password123
+   NIP      : 198407102010012001
+   Spesialisasi: Spesialis Kandungan
+
+5. POLI JANTUNG
+   Nama     : Dr. Bambang Sutrisno, Sp.JP
+   Email    : drbambangsutrisnospjp@hospital.com
+   Password : password123
+   NIP      : 198305052010011001
+   Spesialisasi: Spesialis Jantung
+
+6. POLI MATA
+   Nama     : Dr. Linda Kusuma, Sp.M
+   Email    : drlindakusumaspm@hospital.com
+   Password : password123
+   NIP      : 198606202010012001
+   Spesialisasi: Spesialis Mata
+
+7. POLI THT
+   Nama     : Dr. Ratna Sari, Sp.THT
+   Email    : drratnasarisptht@hospital.com
+   Password : password123
+   NIP      : 198505102010012001
+   Spesialisasi: Spesialis THT
+
+8. POLI KULIT
+   Nama     : Dr. Fitri Handayani, Sp.KK
+   Email    : drfitrihandayanispkk@hospital.com
+   Password : password123
+   NIP      : 198604152010012001
+   Spesialisasi: Spesialis Kulit dan Kelamin
+
+9. POLI PENYAKIT DALAM
+   Nama     : Dr. Hadi Wijaya, Sp.PD
+   Email    : drhadiwijayasppd@hospital.com
+   Password : password123
+   NIP      : 198403052010011001
+   Spesialisasi: Spesialis Penyakit Dalam
+
+10. POLI BEDAH
+    Nama     : Dr. Joko Widodo, Sp.B
+    Email    : drjokowidodospb@hospital.com
+    Password : password123
+    NIP      : 198302102010011001
+    Spesialisasi: Spesialis Bedah Umum
+
+═══════════════════════════════════════════════════════════════
+
+📝 CATATAN:
+- Semua dokter sudah bisa login dengan kredensial di atas
+- Password default untuk dokter baru: password123
+- Password untuk Dr. Budi Santoso: password
+- Setiap poli hanya memiliki 1 dokter
+- Total: 10 dokter untuk 10 poli
+
+═══════════════════════════════════════════════════════════════
+
+🔐 KREDENSIAL LAINNYA:
+
+ADMIN:
+Email    : admin@rekammedis.com
+Password : password
+
+PETUGAS:
+Email    : petugas@rekammedis.com
+Password : password
+
+PASIEN:
+Email    : pasien@rekammedis.com
+Password : password
+
+═══════════════════════════════════════════════════════════════

@@ -567,6 +567,7 @@ Route::middleware(['auth', 'role:Pasien'])->prefix('pasien')->name('pasien.')->g
     Route::get('/appointment', [PasienAppointmentController::class, 'index'])->name('appointment.index');
     Route::get('/appointment/create', [PasienAppointmentController::class, 'create'])->name('appointment.create');
     Route::post('/appointment', [PasienAppointmentController::class, 'store'])->name('appointment.store');
+    Route::put('/appointment/{appointment}/cancel', [PasienAppointmentController::class, 'cancel'])->name('appointment.cancel');
     Route::get('/dokter', [PasienDokterController::class, 'index'])->name('dokter.index');
 
     // Poli Routes

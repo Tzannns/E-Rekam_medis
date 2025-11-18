@@ -7,66 +7,77 @@ use Illuminate\Database\Seeder;
 
 class PoliSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $polis = [
             [
                 'nama_poli' => 'Poli Umum',
-                'kode_poli' => 'POL-UMUM',
-                'deskripsi' => 'Poli untuk penanganan penyakit umum',
-                'lokasi' => 'Lantai 1',
+                'kode_poli' => 'UMUM',
+                'deskripsi' => 'Pelayanan kesehatan umum untuk berbagai keluhan ringan hingga sedang',
+                'lokasi' => 'Lantai 1, Ruang A',
+                'status' => 'aktif',
+            ],
+            [
+                'nama_poli' => 'Poli Gigi',
+                'kode_poli' => 'GIGI',
+                'deskripsi' => 'Pelayanan kesehatan gigi dan mulut',
+                'lokasi' => 'Lantai 1, Ruang B',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli Anak',
-                'kode_poli' => 'POL-ANAK',
-                'deskripsi' => 'Poli untuk penanganan penyakit anak',
-                'lokasi' => 'Lantai 1',
+                'kode_poli' => 'ANAK',
+                'deskripsi' => 'Pelayanan kesehatan khusus anak dan bayi',
+                'lokasi' => 'Lantai 2, Ruang A',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli Kandungan',
-                'kode_poli' => 'POL-KAND',
-                'deskripsi' => 'Poli untuk penanganan kesehatan kandungan dan kebidanan',
-                'lokasi' => 'Lantai 2',
+                'kode_poli' => 'OBGYN',
+                'deskripsi' => 'Pelayanan kesehatan ibu hamil dan kandungan',
+                'lokasi' => 'Lantai 2, Ruang B',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli Jantung',
-                'kode_poli' => 'POL-JANT',
-                'deskripsi' => 'Poli untuk penanganan penyakit jantung',
-                'lokasi' => 'Lantai 2',
-                'status' => 'aktif',
-            ],
-            [
-                'nama_poli' => 'Poli Saraf',
-                'kode_poli' => 'POL-SARAF',
-                'deskripsi' => 'Poli untuk penanganan penyakit saraf',
-                'lokasi' => 'Lantai 3',
+                'kode_poli' => 'JANTUNG',
+                'deskripsi' => 'Pelayanan kesehatan jantung dan pembuluh darah',
+                'lokasi' => 'Lantai 3, Ruang A',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli Mata',
-                'kode_poli' => 'POL-MATA',
-                'deskripsi' => 'Poli untuk penanganan penyakit mata',
-                'lokasi' => 'Lantai 3',
+                'kode_poli' => 'MATA',
+                'deskripsi' => 'Pelayanan kesehatan mata',
+                'lokasi' => 'Lantai 3, Ruang B',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli THT',
-                'kode_poli' => 'POL-THT',
-                'deskripsi' => 'Poli untuk penanganan penyakit Telinga, Hidung, dan Tenggorokan',
-                'lokasi' => 'Lantai 3',
+                'kode_poli' => 'THT',
+                'deskripsi' => 'Pelayanan kesehatan telinga, hidung, dan tenggorokan',
+                'lokasi' => 'Lantai 3, Ruang C',
                 'status' => 'aktif',
             ],
             [
                 'nama_poli' => 'Poli Kulit',
-                'kode_poli' => 'POL-KULIT',
-                'deskripsi' => 'Poli untuk penanganan penyakit kulit',
-                'lokasi' => 'Lantai 4',
+                'kode_poli' => 'KULIT',
+                'deskripsi' => 'Pelayanan kesehatan kulit dan kelamin',
+                'lokasi' => 'Lantai 4, Ruang A',
+                'status' => 'aktif',
+            ],
+            [
+                'nama_poli' => 'Poli Penyakit Dalam',
+                'kode_poli' => 'DALAM',
+                'deskripsi' => 'Pelayanan kesehatan penyakit dalam',
+                'lokasi' => 'Lantai 4, Ruang B',
+                'status' => 'aktif',
+            ],
+            [
+                'nama_poli' => 'Poli Bedah',
+                'kode_poli' => 'BEDAH',
+                'deskripsi' => 'Pelayanan kesehatan bedah umum',
+                'lokasi' => 'Lantai 4, Ruang C',
                 'status' => 'aktif',
             ],
         ];
