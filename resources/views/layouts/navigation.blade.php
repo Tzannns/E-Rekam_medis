@@ -52,6 +52,89 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                <!-- Notification Dropdown -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" class="relative inline-flex items-center justify-center p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 rounded-md transition">
+                            <!-- Bell Icon -->
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            </svg>
+                            <!-- Badge Notifikasi -->
+                            @if(auth()->user()->unreadNotifications->count() > 0)
+                                <span class="absolute top-1 right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
+                                    {{ auth()->user()->unreadNotifications->count() }}
+                                </span>
+                            @endif
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <div class="px-4 py-3 border-b border-gray-200">
+                            <p class="text-sm font-semibold text-gray-900">Notifikasi</p>
+                        </div>
+                        
+                        @php
+                            $recentNotifications = auth()->user()->notifications()->take(5)->get();
+                        @endphp
+
+                        @forelse($recentNotifications as $notification)
+                            <a href="{{ route('notifications.mark-read', $notification->id) }}" 
+                               class="block px-4 py-3 hover:bg-gray-50 transition {{ $notification->read_at ? '' : 'bg-blue-50' }}">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mr-3">
+                                        @php
+                                            $icon = match($notification->data['icon'] ?? 'bell') {
+                                                'check-circle' => '✓',
+                                                'clock' => '⏱',
+                                                'x-circle' => '✕',
+                                                default => '🔔',
+                                            };
+                                            $bgColor = match($notification->data['color'] ?? 'gray') {
+                                                'green' => 'bg-green-100 text-green-600',
+                                                'blue' => 'bg-blue-100 text-blue-600',
+                                                'red' => 'bg-red-100 text-red-600',
+                                                'yellow' => 'bg-yellow-100 text-yellow-600',
+                                                default => 'bg-gray-100 text-gray-600',
+                                            };
+                                        @endphp
+                                        <div class="w-8 h-8 rounded-full {{ $bgColor }} flex items-center justify-center text-sm font-bold">
+                                            {{ $icon }}
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-semibold text-gray-900">
+                                            {{ $notification->data['title'] ?? 'Notifikasi' }}
+                                        </p>
+                                        <p class="text-xs text-gray-600 mt-1 line-clamp-2">
+                                            {{ Str::limit($notification->data['message'] ?? '', 80) }}
+                                        </p>
+                                        <p class="text-xs text-gray-400 mt-1">
+                                            {{ $notification->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="px-4 py-6 text-center">
+                                <svg class="mx-auto h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                <p class="mt-2 text-xs text-gray-500">Tidak ada notifikasi</p>
+                            </div>
+                        @endforelse
+
+                        @if($recentNotifications->count() > 0)
+                            <div class="border-t border-gray-200">
+                                <a href="{{ route('notifications.index') }}" class="block px-4 py-3 text-center text-xs font-semibold text-blue-600 hover:bg-gray-50 transition">
+                                    Lihat Semua Notifikasi
+                                </a>
+                            </div>
+                        @endif
+                    </x-slot>
+                </x-dropdown>
+
+                <!-- Profile Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">

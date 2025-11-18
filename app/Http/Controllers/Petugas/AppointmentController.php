@@ -63,11 +63,20 @@ class AppointmentController extends Controller
             return redirect()->back()->withErrors(['dokter_id' => 'Dokter harus dipilih untuk menyetujui appointment.'])->withInput();
         }
 
+        $oldStatus = $appointment->status;
+        
         $appointment->update([
             'dokter_id' => $data['dokter_id'] ?? $appointment->dokter_id,
             'status' => $data['status'],
             'catatan_admin' => $data['catatan_admin'] ?? null,
         ]);
+
+        // Kirim notifikasi jika status berubah
+        if ($oldStatus !== $data['status']) {
+            $appointment->pasien->user->notify(
+                new \App\Notifications\AppointmentStatusUpdated($appointment, $oldStatus, $data['status'])
+            );
+        }
 
         if (in_array($data['status'], ['Disetujui', 'Diproses'])) {
             if ($appointment->jadwal_id) {

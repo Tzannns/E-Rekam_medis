@@ -166,6 +166,14 @@ class AppointmentController extends Controller
 
             \DB::commit();
 
+            // Kirim notifikasi ke pasien
+            $pasien->user->notify(new \App\Notifications\AppointmentCreated($appointment));
+
+            // Kirim notifikasi ke dokter
+            if ($jadwal->dokter && $jadwal->dokter->user) {
+                $jadwal->dokter->user->notify(new \App\Notifications\NewAppointmentForDokter($appointment));
+            }
+
             return redirect()->route('pasien.appointment.index')->with('success', 'Antrian berhasil diambil. Nomor antrian Anda: ' . $appointment->nomor_antrian);
         } catch (\Exception $e) {
             \DB::rollBack();

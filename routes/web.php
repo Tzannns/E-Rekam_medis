@@ -585,6 +585,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::get('/api/notifications/unread-count', [\App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread-count');
 });
 
 require __DIR__.'/auth.php';
+
+// Test notification (hapus di production)
+Route::get('/test-notification', function () {
+    $user = auth()->user();
+    
+    if (!$user) {
+        return 'Please login first';
+    }
+
+    // Buat notifikasi dummy
+    $user->notify(new \App\Notifications\AppointmentReminder(
+        \App\Models\Appointment::first() ?? new \App\Models\Appointment([
+            'poli_id' => 1,
+            'nomor_antrian' => 1,
+            'tanggal_usulan' => now(),
+            'jam_usulan' => '08:00',
+        ])
+    ));
+
+    return redirect()->route('notifications.index')->with('success', 'Notifikasi test berhasil dibuat!');
+})->middleware('auth');
