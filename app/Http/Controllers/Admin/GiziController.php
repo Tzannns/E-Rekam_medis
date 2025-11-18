@@ -71,7 +71,9 @@ class GiziController extends Controller
             Gizi::create($validated);
             DB::commit();
 
-            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil ditambahkan');
+            $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+            return redirect()->route($prefix.'.gizi.index')->with('success', 'Data gizi berhasil ditambahkan');
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -118,7 +120,9 @@ class GiziController extends Controller
             $gizi->update($validated);
             DB::commit();
 
-            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil diupdate');
+            $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+            return redirect()->route($prefix.'.gizi.index')->with('success', 'Data gizi berhasil diupdate');
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -136,7 +140,9 @@ class GiziController extends Controller
             $gizi->delete();
             DB::commit();
 
-            return redirect()->route('admin.gizi.index')->with('success', 'Data gizi berhasil dihapus');
+            $prefix = \Illuminate\Support\Str::startsWith(\Illuminate\Support\Facades\Route::currentRouteName(), 'petugas.') ? 'petugas' : 'admin';
+
+            return redirect()->route($prefix.'.gizi.index')->with('success', 'Data gizi berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollback();
 

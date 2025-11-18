@@ -413,6 +413,24 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/gizi', [GiziController::class, 'index'])
         ->name('gizi.index')
         ->middleware('permission:gizi.view');
+    Route::get('/gizi/create', [GiziController::class, 'create'])
+        ->name('gizi.create')
+        ->middleware('permission:gizi.create');
+    Route::post('/gizi', [GiziController::class, 'store'])
+        ->name('gizi.store')
+        ->middleware('permission:gizi.create');
+    Route::get('/gizi/{gizi}', [GiziController::class, 'show'])
+        ->name('gizi.show')
+        ->middleware('permission:gizi.view');
+    Route::get('/gizi/{gizi}/edit', [GiziController::class, 'edit'])
+        ->name('gizi.edit')
+        ->middleware('permission:gizi.edit');
+    Route::put('/gizi/{gizi}', [GiziController::class, 'update'])
+        ->name('gizi.update')
+        ->middleware('permission:gizi.edit');
+    Route::delete('/gizi/{gizi}', [GiziController::class, 'destroy'])
+        ->name('gizi.destroy')
+        ->middleware('permission:gizi.delete');
 
     Route::get('/laundry', [LaundryController::class, 'index'])
         ->name('laundry.index')
