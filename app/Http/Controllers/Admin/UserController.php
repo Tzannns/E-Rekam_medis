@@ -16,11 +16,28 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::with('roles')->latest()->paginate(15);
+        $query = User::with('roles')->latest();
 
-        return view('admin.users.index', compact('users'));
+        if ($request->filled('search')) {
+            $search = $request->string('search')->toString();
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('role') && $request->role !== 'semua') {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->role);
+            });
+        }
+
+        $users = $query->paginate(15);
+        $roles = \Spatie\Permission\Models\Role::all();
+
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     public function create(): View
