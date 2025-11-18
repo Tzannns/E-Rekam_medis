@@ -176,6 +176,20 @@
                     </div>
                 </a>
 
+                <a href="{{ route('petugas.appointment.index') }}" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-yellow-300">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-900">Permohonan Periksa</p>
+                        <p class="text-xs text-gray-500">Kelola permohonan</p>
+                    </div>
+                </a>
+
                 <a href="{{ route('petugas.poli.index') }}" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-teal-300">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
