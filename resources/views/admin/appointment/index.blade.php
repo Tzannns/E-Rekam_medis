@@ -2,8 +2,8 @@
     <div>
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Permohonan Periksa</h2>
-                <p class="mt-1 text-sm text-gray-500">Kelola permohonan dari pasien</p>
+                <h2 class="text-3xl font-bold text-gray-900">Antrian Online</h2>
+                <p class="mt-1 text-sm text-gray-500">Kelola antrian online dari pasien</p>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pasien</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Poli / Dokter</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal/Jam Usulan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal/Jam</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
@@ -47,7 +47,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $a->pasien->user->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $a->poli->nama_poli }}<br>
+                                    {{ optional($a->poli)->nama_poli ?? '-' }}<br>
                                     <span class="text-xs text-gray-500">{{ $a->dokter ? $a->dokter->user->name : 'Belum ditentukan' }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ optional($a->tanggal_usulan)->format('d/m/Y') }} {{ $a->jam_usulan }}</td>

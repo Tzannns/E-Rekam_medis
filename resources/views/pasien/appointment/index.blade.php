@@ -2,10 +2,10 @@
     <div>
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Permohonan Periksa</h2>
-                <p class="mt-1 text-sm text-gray-500">Daftar permohonan periksa yang Anda ajukan</p>
+                <h2 class="text-3xl font-bold text-gray-900">Antrian Online</h2>
+                <p class="mt-1 text-sm text-gray-500">Daftar antrian online yang Anda ambil</p>
             </div>
-            <a href="{{ route('pasien.appointment.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">+ Ajukan Permohonan</a>
+            <a href="{{ route('pasien.appointment.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">+ Ambil Antrian</a>
         </div>
 
         @if ($message = Session::get('success'))
@@ -20,8 +20,9 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Poli / Dokter</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Usulan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Usulan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Daftar</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jam</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. Antrian</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
                         </tr>
@@ -30,11 +31,12 @@
                         @forelse ($appointments as $a)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $a->poli->nama_poli }}<br>
-                                    <span class="text-xs text-gray-500">{{ $a->dokter ? $a->dokter->user->name : 'Menunggu penentuan dokter' }}</span>
+                                    {{ optional($a->poli)->nama_poli ?? '-' }}<br>
+                                    <span class="text-xs text-gray-500">{{ $a->dokter ? $a->dokter->user->name : 'Ditentukan otomatis oleh sistem' }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ optional($a->tanggal_usulan)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $a->jam_usulan }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $a->nomor_antrian ?? '-' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full 
                                         @if ($a->status === 'Disetujui') bg-green-100 text-green-800
@@ -49,7 +51,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada permohonan</td>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada antrian</td>
                             </tr>
                         @endforelse
                     </tbody>

@@ -2,15 +2,15 @@
     <div>
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Detail Permohonan Periksa</h2>
-                <p class="mt-1 text-sm text-gray-500">Tinjau dan proses permohonan</p>
+                <h2 class="text-3xl font-bold text-gray-900">Detail Antrian Online</h2>
+                <p class="mt-1 text-sm text-gray-500">Tinjau informasi antrian</p>
             </div>
             <a href="{{ route('admin.appointment.index') }}" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">Kembali</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Permohonan</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Antrian</h3>
                 <dl class="space-y-4">
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Pasien</dt>
@@ -18,14 +18,14 @@
                     </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Poli</dt>
-                        <dd class="text-lg text-gray-900">{{ $appointment->poli->nama_poli }}</dd>
+                        <dd class="text-lg text-gray-900">{{ optional($appointment->poli)->nama_poli ?? '-' }}</dd>
                     </div>
                     <div>
                         <dt class="text-sm font-medium text-gray-600">Dokter</dt>
                         <dd class="text-lg text-gray-900">{{ $appointment->dokter ? $appointment->dokter->user->name : 'Belum ditentukan' }}</dd>
                     </div>
                     <div>
-                        <dt class="text-sm font-medium text-gray-600">Tanggal/Jam Usulan</dt>
+                        <dt class="text-sm font-medium text-gray-600">Tanggal/Jam</dt>
                         <dd class="text-lg text-gray-900">{{ optional($appointment->tanggal_usulan)->format('d/m/Y') }} {{ $appointment->jam_usulan }}</dd>
                     </div>
                     <div>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="bg-white shadow rounded-lg p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Proses Permohonan</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Proses Antrian</h3>
                 <form method="POST" action="{{ route('admin.appointment.update', $appointment) }}" class="space-y-4">
                     @csrf
                     @method('PUT')

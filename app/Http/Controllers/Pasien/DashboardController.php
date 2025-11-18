@@ -33,9 +33,14 @@ class DashboardController extends Controller
             ->get();
 
         $pendingAppointment = Appointment::where('pasien_id', $pasien->id)
-            ->where('status', 'Menunggu')
+            ->whereIn('status', ['Menunggu','Diproses'])
             ->latest()
             ->first();
+
+        $queueTotal = null;
+        if ($pendingAppointment && $pendingAppointment->jadwal_id) {
+            $queueTotal = Appointment::where('jadwal_id', $pendingAppointment->jadwal_id)->count();
+        }
 
         $upcomingJadwal = Jadwal::where('pasien_id', $pasien->id)
             ->where('tanggal', '>=', now()->toDateString())
@@ -43,11 +48,25 @@ class DashboardController extends Controller
             ->orderBy('jam_mulai')
             ->first();
 
+        $activeQueueCount = Appointment::where('pasien_id', $pasien->id)
+            ->whereIn('status', ['Menunggu','Diproses'])
+            ->count();
+
+        $appointmentsTotal = Appointment::where('pasien_id', $pasien->id)->count();
+
+        $availableToday = Jadwal::where('status', 'tersedia')
+            ->where('tanggal', now()->toDateString())
+            ->count();
+
         return view('pasien.dashboard', compact(
             'totalRekamMedis',
             'recentRekamMedis',
             'pendingAppointment',
+            'queueTotal',
             'upcomingJadwal'
+            , 'activeQueueCount'
+            , 'appointmentsTotal'
+            , 'availableToday'
         ));
     }
 }
