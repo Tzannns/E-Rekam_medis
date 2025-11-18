@@ -19,8 +19,9 @@ class StokObatSeeder extends Seeder
         $obats = Obat::all();
         $admin = User::where('email', 'admin@rekammedis.com')->first();
 
-        if ($obats->isEmpty() || !$admin) {
+        if ($obats->isEmpty() || ! $admin) {
             $this->command->warn('Pastikan Obat dan User sudah di-seed terlebih dahulu');
+
             return;
         }
 
@@ -34,14 +35,14 @@ class StokObatSeeder extends Seeder
                 'stok_sebelum' => 0,
                 'stok_sesudah' => $obat->stok,
                 'keterangan' => 'Stok awal',
-                'no_referensi' => 'PO-' . now()->format('Ymd') . '-' . str_pad($obat->id, 4, '0', STR_PAD_LEFT),
+                'no_referensi' => 'PO-'.now()->format('Ymd').'-'.str_pad($obat->id, 4, '0', STR_PAD_LEFT),
                 'created_at' => now()->subDays(rand(1, 30)),
             ]);
         }
 
         // Tambahkan beberapa riwayat stok masuk/keluar random
         $obatSample = $obats->random(5);
-        
+
         foreach ($obatSample as $obat) {
             // Stok masuk tambahan
             $stokSebelum = $obat->stok;
@@ -56,7 +57,7 @@ class StokObatSeeder extends Seeder
                 'stok_sebelum' => $stokSebelum,
                 'stok_sesudah' => $stokSesudah,
                 'keterangan' => 'Pembelian dari supplier',
-                'no_referensi' => 'PO-' . now()->format('Ymd') . '-' . str_pad(rand(1000, 9999), 4, '0', STR_PAD_LEFT),
+                'no_referensi' => 'PO-'.now()->format('Ymd').'-'.str_pad(rand(1000, 9999), 4, '0', STR_PAD_LEFT),
                 'created_at' => now()->subDays(rand(1, 15)),
             ]);
 
@@ -76,7 +77,7 @@ class StokObatSeeder extends Seeder
                 'stok_sebelum' => $stokSebelum,
                 'stok_sesudah' => $stokSesudah,
                 'keterangan' => 'Penjualan',
-                'no_referensi' => 'APT-' . now()->format('Ymd') . '-' . str_pad(rand(1, 100), 4, '0', STR_PAD_LEFT),
+                'no_referensi' => 'APT-'.now()->format('Ymd').'-'.str_pad(rand(1, 100), 4, '0', STR_PAD_LEFT),
                 'created_at' => now()->subDays(rand(1, 7)),
             ]);
 

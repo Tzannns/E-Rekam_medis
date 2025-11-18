@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\TransaksiApotik;
+use App\Models\Apotik;
 use App\Models\DetailTransaksiApotik;
 use App\Models\Obat;
-use App\Models\Apotik;
 use App\Models\Pasien;
 use App\Models\StokObat;
+use App\Models\TransaksiApotik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -49,7 +49,7 @@ class TransaksiApotikController extends Controller
         $apotiks = Apotik::where('status', 'Aktif')->get();
         $pasiens = Pasien::all();
         $obats = Obat::where('status', 'Tersedia')->where('stok', '>', 0)->get();
-        
+
         return view('admin.apotik.transaksi.create', compact('apotiks', 'pasiens', 'obats'));
     }
 
@@ -69,7 +69,7 @@ class TransaksiApotikController extends Controller
             'jumlah.*' => 'required|integer|min:1',
         ]);
 
-        DB::transaction(function () use ($validated, $request) {
+        DB::transaction(function () use ($validated) {
             // Calculate totals
             $subtotal = 0;
             $items = [];
@@ -144,7 +144,7 @@ class TransaksiApotikController extends Controller
                     'jumlah' => $item['jumlah'],
                     'stok_sebelum' => $stokSebelum,
                     'stok_sesudah' => $stokSesudah,
-                    'keterangan' => 'Penjualan - ' . $transaksi->no_transaksi,
+                    'keterangan' => 'Penjualan - '.$transaksi->no_transaksi,
                     'no_referensi' => $transaksi->no_transaksi,
                 ]);
 
@@ -162,6 +162,7 @@ class TransaksiApotikController extends Controller
     public function show(TransaksiApotik $transaksi)
     {
         $transaksi->load(['apotik', 'pasien', 'user', 'details.obat']);
+
         return view('admin.apotik.transaksi.show', compact('transaksi'));
     }
 

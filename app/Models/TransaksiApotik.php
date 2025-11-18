@@ -67,14 +67,14 @@ class TransaksiApotik extends Model
     {
         $date = now()->format('Ymd');
         $lastTransaction = self::whereDate('created_at', now())->latest()->first();
-        
+
         if ($lastTransaction) {
             $lastNumber = intval(substr($lastTransaction->no_transaksi, -4));
             $newNumber = $lastNumber + 1;
         } else {
             $newNumber = 1;
         }
-        
-        return 'APT-' . $date . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        return 'APT-'.$date.'-'.str_pad($newNumber, 4, '0', STR_PAD_LEFT);
     }
 }

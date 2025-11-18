@@ -11,6 +11,7 @@ class DokterController extends Controller
     public function index(): View
     {
         $dokter = Dokter::with('user')->latest()->paginate(15);
+
         return view('pasien.dokter.index', compact('dokter'));
     }
 }

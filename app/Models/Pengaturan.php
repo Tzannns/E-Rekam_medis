@@ -72,6 +72,7 @@ class Pengaturan extends Model
     {
         $settings = self::getSettings();
         $settings->update($data);
+
         return $settings;
     }
 }

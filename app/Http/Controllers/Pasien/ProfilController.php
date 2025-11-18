@@ -36,7 +36,7 @@ class ProfilController extends Controller
     public function edit(): View
     {
         $pasien = Auth::user()->pasien;
-        if (!$pasien) {
+        if (! $pasien) {
             return view('pasien.profil.create');
         }
 
@@ -46,7 +46,7 @@ class ProfilController extends Controller
     public function update(UpdateProfilPasienRequest $request): RedirectResponse
     {
         $pasien = Auth::user()->pasien;
-        if (!$pasien) {
+        if (! $pasien) {
             return redirect()->route('pasien.profil.create');
         }
 

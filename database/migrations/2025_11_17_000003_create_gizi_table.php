@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->enum('status', ['pending', 'diberikan', 'ditolak'])->default('pending');
             $table->timestamps();
-            
+
             $table->foreign('pasien_id')->references('id')->on('pasien')->onDelete('cascade');
         });
     }

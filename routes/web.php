@@ -76,11 +76,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Test route outside middleware
-Route::get('/test-route', function() {
+Route::get('/test-route', function () {
     $user = auth()->user();
     $hasRole = $user->hasRole('Admin');
     $roles = $user->getRoleNames();
-    return 'User: ' . $user->email . '<br>Has Admin Role: ' . ($hasRole ? 'YES' : 'NO') . '<br>Roles: ' . $roles->implode(', ');
+
+    return 'User: '.$user->email.'<br>Has Admin Role: '.($hasRole ? 'YES' : 'NO').'<br>Roles: '.$roles->implode(', ');
 });
 
 // Admin Routes
@@ -131,7 +132,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/kasir/{kasir}', [KasirController::class, 'show'])->name('kasir.show')->middleware('permission:kasir.view');
     Route::post('/kasir/{kasir}/pembayaran', [KasirController::class, 'tambahPembayaran'])->name('kasir.pembayaran.store')->middleware('permission:kasir.create');
     Route::resource('storage', StorageController::class)->middleware('permission:storage.view');
-    
+
     // Apotik Sub-modules - HARUS DI ATAS resource apotik
     Route::prefix('apotik')->name('apotik.')->group(function () {
         Route::resource('supplier', \App\Http\Controllers\Admin\SupplierController::class);
@@ -139,11 +140,17 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
         Route::resource('stok', \App\Http\Controllers\Admin\StokObatController::class)->only(['index', 'create', 'store', 'show']);
         Route::resource('transaksi', \App\Http\Controllers\Admin\TransaksiApotikController::class);
     });
-    
+
     // Resource apotik HARUS DI BAWAH agar tidak menangkap /apotik/supplier dll
     Route::resource('apotik', ApotikController::class)->middleware('permission:apotik.view');
-    
-    Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index');
+
+    Route::get('/laboratorium', [LaboratoriumController::class, 'index'])->name('laboratorium.index')->middleware('permission:laboratorium.view');
+    Route::get('/laboratorium/create', [LaboratoriumController::class, 'create'])->name('laboratorium.create')->middleware('permission:laboratorium.create');
+    Route::post('/laboratorium', [LaboratoriumController::class, 'store'])->name('laboratorium.store')->middleware('permission:laboratorium.create');
+    Route::get('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'show'])->name('laboratorium.show')->middleware('permission:laboratorium.view');
+    Route::get('/laboratorium/{laboratorium}/edit', [LaboratoriumController::class, 'edit'])->name('laboratorium.edit')->middleware('permission:laboratorium.edit');
+    Route::put('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'update'])->name('laboratorium.update')->middleware('permission:laboratorium.edit');
+    Route::delete('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'destroy'])->name('laboratorium.destroy')->middleware('permission:laboratorium.delete');
     Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');
 
@@ -356,6 +363,24 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/laboratorium', [LaboratoriumController::class, 'index'])
         ->name('laboratorium.index')
         ->middleware('permission:laboratorium.view');
+    Route::get('/laboratorium/create', [LaboratoriumController::class, 'create'])
+        ->name('laboratorium.create')
+        ->middleware('permission:laboratorium.create');
+    Route::post('/laboratorium', [LaboratoriumController::class, 'store'])
+        ->name('laboratorium.store')
+        ->middleware('permission:laboratorium.create');
+    Route::get('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'show'])
+        ->name('laboratorium.show')
+        ->middleware('permission:laboratorium.view');
+    Route::get('/laboratorium/{laboratorium}/edit', [LaboratoriumController::class, 'edit'])
+        ->name('laboratorium.edit')
+        ->middleware('permission:laboratorium.edit');
+    Route::put('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'update'])
+        ->name('laboratorium.update')
+        ->middleware('permission:laboratorium.edit');
+    Route::delete('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'destroy'])
+        ->name('laboratorium.destroy')
+        ->middleware('permission:laboratorium.delete');
 
     Route::get('/radiologi', [RadiologiController::class, 'index'])
         ->name('radiologi.index')

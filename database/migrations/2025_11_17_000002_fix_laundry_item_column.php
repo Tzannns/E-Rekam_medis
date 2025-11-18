@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,7 +15,7 @@ return new class extends Migration
             if ($hasNamaItem && $hasItem) {
                 DB::statement('UPDATE `laundry` SET `item` = COALESCE(`item`, `nama_item`) WHERE `nama_item` IS NOT NULL');
                 DB::statement('ALTER TABLE `laundry` DROP COLUMN `nama_item`');
-            } elseif ($hasNamaItem && !$hasItem) {
+            } elseif ($hasNamaItem && ! $hasItem) {
                 DB::statement('ALTER TABLE `laundry` CHANGE COLUMN `nama_item` `item` VARCHAR(255) NOT NULL');
             }
         }
@@ -28,7 +27,7 @@ return new class extends Migration
             $hasItem = Schema::hasColumn('laundry', 'item');
             $hasNamaItem = Schema::hasColumn('laundry', 'nama_item');
 
-            if ($hasItem && !$hasNamaItem) {
+            if ($hasItem && ! $hasNamaItem) {
                 DB::statement('ALTER TABLE `laundry` ADD COLUMN `nama_item` VARCHAR(255) NULL');
             }
         }

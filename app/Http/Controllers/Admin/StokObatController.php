@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\StokObat;
 use App\Models\Obat;
+use App\Models\StokObat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +19,7 @@ class StokObatController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->whereHas('obat', function ($q) use ($search) {
                     $q->where('nama_obat', 'like', "%{$search}%")
-                      ->orWhere('kode_obat', 'like', "%{$search}%");
+                        ->orWhere('kode_obat', 'like', "%{$search}%");
                 });
             })
             ->when($tipe && $tipe !== 'semua', function ($query) use ($tipe) {
@@ -34,6 +34,7 @@ class StokObatController extends Controller
     public function create()
     {
         $obats = Obat::where('status', '!=', 'Kadaluarsa')->get();
+
         return view('admin.apotik.stok.create', compact('obats'));
     }
 
@@ -47,17 +48,17 @@ class StokObatController extends Controller
             'no_referensi' => 'nullable|string|max:100',
         ]);
 
-        DB::transaction(function () use ($validated, $request) {
+        DB::transaction(function () use ($validated) {
             $obat = Obat::findOrFail($validated['obat_id']);
-            
+
             $stokSebelum = $obat->stok;
-            
+
             // Calculate new stock based on type
             if (in_array($validated['tipe'], ['Masuk', 'Retur'])) {
                 $stokSesudah = $stokSebelum + $validated['jumlah'];
             } else {
                 $stokSesudah = $stokSebelum - $validated['jumlah'];
-                
+
                 if ($stokSesudah < 0) {
                     throw new \Exception('Stok tidak mencukupi');
                 }
@@ -89,6 +90,7 @@ class StokObatController extends Controller
     public function show(StokObat $stok)
     {
         $stok->load(['obat', 'user']);
+
         return view('admin.apotik.stok.show', compact('stok'));
     }
 }

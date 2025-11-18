@@ -66,8 +66,8 @@ class Obat extends Model
 
     public function isNearExpiry($days = 30)
     {
-        return $this->tanggal_kadaluarsa && 
+        return $this->tanggal_kadaluarsa &&
                $this->tanggal_kadaluarsa->diffInDays(now()) <= $days &&
-               !$this->isExpired();
+               ! $this->isExpired();
     }
 }

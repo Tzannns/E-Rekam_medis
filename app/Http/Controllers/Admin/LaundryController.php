@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Laundry;
-use Illuminate\Support\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\View\View;
 
 class LaundryController extends Controller
@@ -41,7 +41,7 @@ class LaundryController extends Controller
         }
 
         if ($request->has('tanggal_sampai') && $request->tanggal_sampai) {
-            $query->where('tanggal_masuk', '<=', $request->tanggal_sampai . ' 23:59:59');
+            $query->where('tanggal_masuk', '<=', $request->tanggal_sampai.' 23:59:59');
         }
 
         $laundries = $query->latest('tanggal_masuk')->paginate(15);
@@ -69,7 +69,7 @@ class LaundryController extends Controller
         ]);
 
         $data['tanggal_masuk'] = Carbon::parse($data['tanggal_masuk']);
-        if (!empty($data['tanggal_selesai'])) {
+        if (! empty($data['tanggal_selesai'])) {
             $data['tanggal_selesai'] = Carbon::parse($data['tanggal_selesai']);
         }
 
@@ -103,7 +103,7 @@ class LaundryController extends Controller
         ]);
 
         $data['tanggal_masuk'] = Carbon::parse($data['tanggal_masuk']);
-        if (!empty($data['tanggal_selesai'])) {
+        if (! empty($data['tanggal_selesai'])) {
             $data['tanggal_selesai'] = Carbon::parse($data['tanggal_selesai']);
         }
 

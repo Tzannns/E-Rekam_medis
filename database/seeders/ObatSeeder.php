@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Obat;
 use App\Models\Apotik;
+use App\Models\Obat;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 
@@ -19,8 +19,9 @@ class ObatSeeder extends Seeder
         $apotik = Apotik::first();
         $suppliers = Supplier::all();
 
-        if (!$apotik || $suppliers->isEmpty()) {
+        if (! $apotik || $suppliers->isEmpty()) {
             $this->command->warn('Pastikan Apotik dan Supplier sudah di-seed terlebih dahulu');
+
             return;
         }
 

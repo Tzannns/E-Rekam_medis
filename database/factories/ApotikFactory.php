@@ -51,10 +51,10 @@ class ApotikFactory extends Factory
         ];
 
         return [
-            'kode_apotik' => 'APT' . str_pad($counter, 4, '0', STR_PAD_LEFT),
+            'kode_apotik' => 'APT'.str_pad($counter, 4, '0', STR_PAD_LEFT),
             'nama_apotik' => $this->faker->randomElement($namaApotik),
             'lokasi' => $this->faker->randomElement($lokasi),
-            'telepon' => '08' . $this->faker->numerify('##########'),
+            'telepon' => '08'.$this->faker->numerify('##########'),
             'email' => $this->faker->unique()->safeEmail(),
             'status' => $this->faker->randomElement(['Aktif', 'Nonaktif']),
         ];

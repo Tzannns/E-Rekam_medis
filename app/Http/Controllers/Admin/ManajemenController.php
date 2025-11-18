@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Pengaturan;
 use App\Models\LogAktivitas;
+use App\Models\Pengaturan;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class ManajemenController extends Controller
 {
@@ -42,6 +39,7 @@ class ManajemenController extends Controller
     public function pengaturan(): View
     {
         $pengaturan = Pengaturan::getSettings();
+
         return view('admin.manajemen.pengaturan', compact('pengaturan'));
     }
 
@@ -75,10 +73,10 @@ class ManajemenController extends Controller
             // Handle logo upload
             if ($request->hasFile('logo')) {
                 // Hapus logo lama
-                if ($pengaturan->logo && Storage::exists('public/' . $pengaturan->logo)) {
-                    Storage::delete('public/' . $pengaturan->logo);
+                if ($pengaturan->logo && Storage::exists('public/'.$pengaturan->logo)) {
+                    Storage::delete('public/'.$pengaturan->logo);
                 }
-                
+
                 $logoPath = $request->file('logo')->store('settings', 'public');
                 $data['logo'] = $logoPath;
             }
@@ -86,10 +84,10 @@ class ManajemenController extends Controller
             // Handle favicon upload
             if ($request->hasFile('favicon')) {
                 // Hapus favicon lama
-                if ($pengaturan->favicon && Storage::exists('public/' . $pengaturan->favicon)) {
-                    Storage::delete('public/' . $pengaturan->favicon);
+                if ($pengaturan->favicon && Storage::exists('public/'.$pengaturan->favicon)) {
+                    Storage::delete('public/'.$pengaturan->favicon);
                 }
-                
+
                 $faviconPath = $request->file('favicon')->store('settings', 'public');
                 $data['favicon'] = $faviconPath;
             }
@@ -101,7 +99,7 @@ class ManajemenController extends Controller
 
             return redirect()->back()->with('success', 'Pengaturan aplikasi berhasil diupdate');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -112,6 +110,7 @@ class ManajemenController extends Controller
     {
         $users = User::with('roles')->latest()->paginate(20);
         $roles = Role::all();
+
         return view('admin.manajemen.users', compact('users', 'roles'));
     }
 
@@ -138,11 +137,11 @@ class ManajemenController extends Controller
             $user->assignRole($request->role);
 
             // Log aktivitas
-            LogAktivitas::log('Membuat user baru: ' . $user->name, 'manajemen', 'create');
+            LogAktivitas::log('Membuat user baru: '.$user->name, 'manajemen', 'create');
 
             return redirect()->back()->with('success', 'User berhasil dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -153,7 +152,7 @@ class ManajemenController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => 'nullable|min:8|confirmed',
             'role' => 'required|exists:roles,name',
         ]);
@@ -172,11 +171,11 @@ class ManajemenController extends Controller
             $user->syncRoles([$request->role]);
 
             // Log aktivitas
-            LogAktivitas::log('Update user: ' . $user->name, 'manajemen', 'update');
+            LogAktivitas::log('Update user: '.$user->name, 'manajemen', 'update');
 
             return redirect()->back()->with('success', 'User berhasil diupdate');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -194,11 +193,11 @@ class ManajemenController extends Controller
             $user->delete();
 
             // Log aktivitas
-            LogAktivitas::log('Menghapus user: ' . $userName, 'manajemen', 'delete');
+            LogAktivitas::log('Menghapus user: '.$userName, 'manajemen', 'delete');
 
             return redirect()->back()->with('success', 'User berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -209,6 +208,7 @@ class ManajemenController extends Controller
     {
         $roles = Role::with('permissions')->get();
         $permissions = Permission::all();
+
         return view('admin.manajemen.roles', compact('roles', 'permissions'));
     }
 
@@ -225,17 +225,17 @@ class ManajemenController extends Controller
 
         try {
             $role = Role::create(['name' => $request->name]);
-            
+
             if ($request->has('permissions')) {
                 $role->syncPermissions($request->permissions);
             }
 
             // Log aktivitas
-            LogAktivitas::log('Membuat role baru: ' . $role->name, 'manajemen', 'create');
+            LogAktivitas::log('Membuat role baru: '.$role->name, 'manajemen', 'create');
 
             return redirect()->back()->with('success', 'Role berhasil dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -245,7 +245,7 @@ class ManajemenController extends Controller
     public function updateRole(Request $request, Role $role): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'name' => 'required|string|max:255|unique:roles,name,'.$role->id,
             'permissions' => 'array',
             'permissions.*' => 'exists:permissions,name',
         ]);
@@ -255,11 +255,11 @@ class ManajemenController extends Controller
             $role->syncPermissions($request->permissions ?? []);
 
             // Log aktivitas
-            LogAktivitas::log('Update role: ' . $role->name, 'manajemen', 'update');
+            LogAktivitas::log('Update role: '.$role->name, 'manajemen', 'update');
 
             return redirect()->back()->with('success', 'Role berhasil diupdate');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -277,11 +277,11 @@ class ManajemenController extends Controller
             $role->delete();
 
             // Log aktivitas
-            LogAktivitas::log('Menghapus role: ' . $roleName, 'manajemen', 'delete');
+            LogAktivitas::log('Menghapus role: '.$roleName, 'manajemen', 'delete');
 
             return redirect()->back()->with('success', 'Role berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -304,13 +304,13 @@ class ManajemenController extends Controller
     {
         try {
             LogAktivitas::truncate();
-            
+
             // Log aktivitas
             LogAktivitas::log('Membersihkan log aktivitas', 'manajemen', 'clear');
 
             return redirect()->back()->with('success', 'Log aktivitas berhasil dibersihkan');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -321,7 +321,7 @@ class ManajemenController extends Controller
     {
         $backups = collect();
         $backupPath = storage_path('app/backups');
-        
+
         if (File::exists($backupPath)) {
             $files = File::files($backupPath);
             foreach ($files as $file) {
@@ -348,12 +348,12 @@ class ManajemenController extends Controller
     {
         try {
             $backupPath = storage_path('app/backups');
-            if (!File::exists($backupPath)) {
+            if (! File::exists($backupPath)) {
                 File::makeDirectory($backupPath, 0755, true);
             }
 
-            $filename = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
-            $filePath = $backupPath . '/' . $filename;
+            $filename = 'backup_'.date('Y-m-d_H-i-s').'.sql';
+            $filePath = $backupPath.'/'.$filename;
 
             // Get database connection info
             $dbHost = config('database.connections.mysql.host');
@@ -381,11 +381,11 @@ class ManajemenController extends Controller
             }
 
             // Log aktivitas
-            LogAktivitas::log('Membuat backup database: ' . $filename, 'manajemen', 'backup');
+            LogAktivitas::log('Membuat backup database: '.$filename, 'manajemen', 'backup');
 
             return redirect()->back()->with('success', 'Backup database berhasil dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -395,18 +395,18 @@ class ManajemenController extends Controller
     public function downloadBackup($filename)
     {
         try {
-            $backupPath = storage_path('app/backups/' . $filename);
-            
-            if (!File::exists($backupPath)) {
+            $backupPath = storage_path('app/backups/'.$filename);
+
+            if (! File::exists($backupPath)) {
                 return redirect()->back()->with('error', 'File backup tidak ditemukan');
             }
 
             // Log aktivitas
-            LogAktivitas::log('Download backup database: ' . $filename, 'manajemen', 'download');
+            LogAktivitas::log('Download backup database: '.$filename, 'manajemen', 'download');
 
             return response()->download($backupPath);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -416,20 +416,20 @@ class ManajemenController extends Controller
     public function deleteBackup($filename): RedirectResponse
     {
         try {
-            $backupPath = storage_path('app/backups/' . $filename);
-            
-            if (!File::exists($backupPath)) {
+            $backupPath = storage_path('app/backups/'.$filename);
+
+            if (! File::exists($backupPath)) {
                 return redirect()->back()->with('error', 'File backup tidak ditemukan');
             }
 
             File::delete($backupPath);
 
             // Log aktivitas
-            LogAktivitas::log('Menghapus backup database: ' . $filename, 'manajemen', 'delete');
+            LogAktivitas::log('Menghapus backup database: '.$filename, 'manajemen', 'delete');
 
             return redirect()->back()->with('success', 'Backup berhasil dihapus');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
         }
     }
 
@@ -444,6 +444,6 @@ class ManajemenController extends Controller
             $bytes /= 1024;
         }
 
-        return round($bytes, $precision) . ' ' . $units[$i];
+        return round($bytes, $precision).' '.$units[$i];
     }
 }
