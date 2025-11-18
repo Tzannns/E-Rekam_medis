@@ -151,7 +151,13 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/laboratorium/{laboratorium}/edit', [LaboratoriumController::class, 'edit'])->name('laboratorium.edit')->middleware('permission:laboratorium.edit');
     Route::put('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'update'])->name('laboratorium.update')->middleware('permission:laboratorium.edit');
     Route::delete('/laboratorium/{laboratorium}', [LaboratoriumController::class, 'destroy'])->name('laboratorium.destroy')->middleware('permission:laboratorium.delete');
-    Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index');
+    Route::get('/radiologi', [RadiologiController::class, 'index'])->name('radiologi.index')->middleware('permission:radiologi.view');
+    Route::get('/radiologi/create', [RadiologiController::class, 'create'])->name('radiologi.create')->middleware('permission:radiologi.create');
+    Route::post('/radiologi', [RadiologiController::class, 'store'])->name('radiologi.store')->middleware('permission:radiologi.create');
+    Route::get('/radiologi/{radiologi}', [RadiologiController::class, 'show'])->name('radiologi.show')->middleware('permission:radiologi.view');
+    Route::get('/radiologi/{radiologi}/edit', [RadiologiController::class, 'edit'])->name('radiologi.edit')->middleware('permission:radiologi.edit');
+    Route::put('/radiologi/{radiologi}', [RadiologiController::class, 'update'])->name('radiologi.update')->middleware('permission:radiologi.edit');
+    Route::delete('/radiologi/{radiologi}', [RadiologiController::class, 'destroy'])->name('radiologi.destroy')->middleware('permission:radiologi.delete');
     Route::get('/manajemen', [ManajemenController::class, 'index'])->name('manajemen.index');
 
     // Pengaturan Aplikasi
@@ -385,6 +391,24 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
     Route::get('/radiologi', [RadiologiController::class, 'index'])
         ->name('radiologi.index')
         ->middleware('permission:radiologi.view');
+    Route::get('/radiologi/create', [RadiologiController::class, 'create'])
+        ->name('radiologi.create')
+        ->middleware('permission:radiologi.create');
+    Route::post('/radiologi', [RadiologiController::class, 'store'])
+        ->name('radiologi.store')
+        ->middleware('permission:radiologi.create');
+    Route::get('/radiologi/{radiologi}', [RadiologiController::class, 'show'])
+        ->name('radiologi.show')
+        ->middleware('permission:radiologi.view');
+    Route::get('/radiologi/{radiologi}/edit', [RadiologiController::class, 'edit'])
+        ->name('radiologi.edit')
+        ->middleware('permission:radiologi.edit');
+    Route::put('/radiologi/{radiologi}', [RadiologiController::class, 'update'])
+        ->name('radiologi.update')
+        ->middleware('permission:radiologi.edit');
+    Route::delete('/radiologi/{radiologi}', [RadiologiController::class, 'destroy'])
+        ->name('radiologi.destroy')
+        ->middleware('permission:radiologi.delete');
 
     Route::get('/gizi', [GiziController::class, 'index'])
         ->name('gizi.index')
