@@ -7,12 +7,77 @@
             </div>
         </div>
 
-        <div class="bg-white shadow rounded-lg">
+        <div class="bg-white overflow-hidden shadow rounded-lg mb-6 p-6">
+            <form method="GET" action="{{ url()->current() }}" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari jenis, hasil, catatan..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="status" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Semua</option>
+                            <option value="Diajukan" {{ request('status') === 'Diajukan' ? 'selected' : '' }}>Diajukan</option>
+                            <option value="Diproses" {{ request('status') === 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                            <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Dari</label>
+                        <input type="date" name="tanggal_dari" value="{{ request('tanggal_dari') }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sampai</label>
+                        <input type="date" name="tanggal_sampai" value="{{ request('tanggal_sampai') }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">Filter</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">Hasil Pemeriksaan Radiologi</h3>
+                <h3 class="text-lg font-medium text-gray-900">Daftar Hasil Radiologi</h3>
             </div>
             <div class="p-6">
-                <p class="text-gray-500 text-center">Fitur radiologi akan segera tersedia</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pasien</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse ($labs as $item)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ optional($item->tanggal_periksa)->format('d/m/Y H:i') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->pasien->user->name ?? '-' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $item->jenis_pemeriksaan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                            @if ($item->status === 'Selesai') bg-green-100 text-green-800
+                                            @elseif ($item->status === 'Diproses') bg-blue-100 text-blue-800
+                                            @elseif ($item->status === 'Diajukan') bg-gray-100 text-gray-800
+                                            @else bg-gray-100 text-gray-800 @endif">
+                                            {{ $item->status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">Tidak ada data</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4">{{ $labs->links() }}</div>
             </div>
         </div>
     </div>
