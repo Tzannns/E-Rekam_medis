@@ -47,26 +47,6 @@
                         @enderror
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Dokter</label>
-                        <select name="dokter_id" id="dokter_id"
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required>
-                            @if (isset($dokterList) && $dokterList->count())
-                                <option value="">Pilih Dokter</option>
-                                @foreach ($dokterList as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ old('dokter_id', $dokterId ?? '') == $d->id ? 'selected' : '' }}>
-                                        {{ $d->user->name }} - {{ $d->spesialisasi }}</option>
-                                @endforeach
-                            @else
-                                <option value="">Pilih Poli terlebih dahulu</option>
-                            @endif
-                        </select>
-                        @error('dokter_id')
-                            <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Daftar</label>
                         <input type="date" name="tanggal_usulan" id="tanggal_usulan"
                             value="{{ old('tanggal_usulan', $tanggal ?? '') }}" min="{{ date('Y-m-d') }}"
@@ -76,8 +56,9 @@
                             <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Jam Praktik</label>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Jam Praktik (Dokter &
+                            Jam)</label>
                         <select name="jadwal_id" id="jadwal_id"
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             required>
@@ -85,11 +66,12 @@
                                 <option value="">Pilih Jam</option>
                                 @foreach ($jadwalOptions as $j)
                                     <option value="{{ $j->id }}"
-                                        {{ request('jadwal_id') == $j->id ? 'selected' : '' }}>{{ $j->jam_mulai }} -
-                                        {{ $j->jam_selesai }}</option>
+                                        {{ request('jadwal_id') == $j->id ? 'selected' : '' }}>
+                                        {{ $j->dokter->user->name }} - {{ $j->jam_mulai }} - {{ $j->jam_selesai }}
+                                    </option>
                                 @endforeach
                             @else
-                                <option value="">Pilih Dokter dan Tanggal untuk melihat jadwal</option>
+                                <option value="">Pilih Poli dan Tanggal untuk melihat jadwal</option>
                             @endif
                         </select>
                         @error('jadwal_id')
@@ -100,9 +82,11 @@
                         <div class="md:col-span-2">
                             <div class="bg-yellow-50 border border-yellow-200 rounded p-4 mb-3">
                                 <p class="text-sm text-yellow-800">Total antrian aktif untuk jadwal ini:
-                                    <strong>{{ $currentQueueCount }}</strong></p>
+                                    <strong>{{ $currentQueueCount }}</strong>
+                                </p>
                                 <p class="text-sm text-yellow-800">Nomor antrian Anda jika mengambil:
-                                    <strong>{{ $currentQueueCount + 1 }}</strong></p>
+                                    <strong>{{ $currentQueueCount + 1 }}</strong>
+                                </p>
                                 <p class="text-xs text-yellow-700 mt-1">Batas maksimal: 30 antrian per jadwal</p>
                             </div>
                             <div class="overflow-x-auto bg-white border rounded">

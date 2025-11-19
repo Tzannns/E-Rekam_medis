@@ -4,17 +4,15 @@
 
     function init() {
         const poli = document.getElementById("poli_id");
-        const dokter = document.getElementById("dokter_id");
         const tanggal = document.getElementById("tanggal_usulan");
         const jadwal = document.getElementById("jadwal_id");
 
-        if (!poli || !dokter || !tanggal || !jadwal) {
+        if (!poli || !tanggal || !jadwal) {
             return;
         }
 
         function navigate() {
             const p = poli.value;
-            const d = dokter.value;
             const t = tanggal.value;
             const j = jadwal.value;
 
@@ -25,7 +23,6 @@
 
             // Set current values
             if (p) url.searchParams.set("poli_id", p);
-            if (d) url.searchParams.set("dokter_id", d);
             if (t) url.searchParams.set("tanggal_usulan", t);
             if (j) url.searchParams.set("jadwal_id", j);
 
@@ -34,7 +31,6 @@
 
         // Event listeners
         poli.addEventListener("change", navigate);
-        dokter.addEventListener("change", navigate);
         tanggal.addEventListener("change", navigate);
         jadwal.addEventListener("change", navigate);
 

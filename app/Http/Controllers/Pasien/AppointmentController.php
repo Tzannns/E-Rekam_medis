@@ -55,7 +55,6 @@ class AppointmentController extends Controller
         $jadwalOptions = collect();
 
         $poliId = $request->query('poli_id');
-        $dokterId = $request->query('dokter_id');
         $tanggal = $request->query('tanggal_usulan');
         $selectedJadwalId = $request->query('jadwal_id');
         $selectedJadwal = null;
@@ -69,14 +68,16 @@ class AppointmentController extends Controller
                 ->get();
         }
 
-        // Jika dokter dan tanggal dipilih, tampilkan jadwal
-        if ($dokterId && $tanggal) {
-            $jadwalOptions = Jadwal::where('dokter_id', $dokterId)
-                ->whereDate('tanggal', $tanggal)
-                ->where('status', 'tersedia')
-                ->with('dokter.user', 'dokter.poli')
-                ->orderBy('jam_mulai')
-                ->get();
+        // Jika poli dan tanggal dipilih, tampilkan jadwal dari SEMUA dokter di poli untuk tanggal itu
+        if ($poliId && $tanggal) {
+            $jadwalOptions = Jadwal::whereHas('dokter', function ($q) use ($poliId) {
+                $q->where('poli_id', $poliId);
+            })
+            ->whereDate('tanggal', $tanggal)
+            ->where('status', 'tersedia')
+            ->with('dokter.user')
+            ->orderBy('jam_mulai')
+            ->get();
         }
 
         if ($selectedJadwalId) {
@@ -96,7 +97,6 @@ class AppointmentController extends Controller
             'dokterList',
             'jadwalOptions',
             'poliId',
-            'dokterId',
             'tanggal',
             'selectedJadwalId',
             'selectedJadwal',
@@ -110,7 +110,6 @@ class AppointmentController extends Controller
         $pasien = Auth::user()->pasien;
         $data = $request->validate([
             'poli_id' => ['required', 'exists:polis,id'],
-            'dokter_id' => ['required', 'exists:dokter,id'],
             'tanggal_usulan' => ['required', 'date', 'after_or_equal:today'],
             'jadwal_id' => ['required', 'exists:jadwal,id'],
             'keluhan' => ['nullable', 'string'],
@@ -180,6 +179,14 @@ class AppointmentController extends Controller
             if ($admins->isNotEmpty()) {
                 foreach ($admins as $admin) {
                     $admin->notify(new \App\Notifications\NewAppointmentForAdmin($appointment));
+                }
+            }
+
+            // Kirim notifikasi ke semua Petugas
+            $petugas = User::role('Petugas')->get();
+            if ($petugas->isNotEmpty()) {
+                foreach ($petugas as $p) {
+                    $p->notify(new \App\Notifications\NewAppointmentForPetugas($appointment));
                 }
             }
 
