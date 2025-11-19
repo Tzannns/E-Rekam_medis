@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $totalRekamMedis = RekamMedis::count();
         $totalAppointment = Appointment::count();
         $appointmentMenunggu = Appointment::where('status', 'menunggu')->count();
-        
+
         $recentRekamMedis = RekamMedis::with(['pasien.user', 'dokter.user'])
             ->latest()
             ->limit(10)

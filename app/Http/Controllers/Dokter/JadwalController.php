@@ -12,7 +12,7 @@ class JadwalController extends Controller
     public function index(): View
     {
         $dokter = Auth::user()->dokter;
-        
+
         // Menampilkan jadwal pemeriksaan berdasarkan appointment yang disetujui
         $jadwalPemeriksaan = Appointment::where('dokter_id', $dokter->id)
             ->whereIn('status', ['disetujui', 'selesai'])

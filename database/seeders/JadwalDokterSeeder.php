@@ -30,7 +30,7 @@ class JadwalDokterSeeder extends Seeder
         $totalJadwal = 0;
 
         foreach ($dokters as $dokter) {
-            if (!$dokter->poli_id) {
+            if (! $dokter->poli_id) {
                 continue;
             }
 
@@ -44,14 +44,14 @@ class JadwalDokterSeeder extends Seeder
                     // Buat 2-3 slot jadwal per hari
                     $jumlahSlot = rand(2, 3);
                     $selectedSlots = array_rand($jamPraktik, $jumlahSlot);
-                    
-                    if (!is_array($selectedSlots)) {
+
+                    if (! is_array($selectedSlots)) {
                         $selectedSlots = [$selectedSlots];
                     }
 
                     foreach ($selectedSlots as $slotIndex) {
                         $slot = $jamPraktik[$slotIndex];
-                        
+
                         Jadwal::create([
                             'dokter_id' => $dokter->id,
                             'poli_id' => $dokter->poli_id,
@@ -60,7 +60,7 @@ class JadwalDokterSeeder extends Seeder
                             'jam_mulai' => $slot['jam_mulai'],
                             'jam_selesai' => $slot['jam_selesai'],
                             'status' => 'tersedia',
-                            'keterangan' => 'Jadwal praktik ' . $dokter->user->name . ' di ' . $dokter->poli->nama_poli,
+                            'keterangan' => 'Jadwal praktik '.$dokter->user->name.' di '.$dokter->poli->nama_poli,
                         ]);
 
                         $totalJadwal++;
@@ -84,10 +84,10 @@ class JadwalDokterSeeder extends Seeder
     private function getHariPraktik(int $dokterId): array
     {
         $allDays = [1, 2, 3, 4, 5, 6]; // Senin - Sabtu (0 = Minggu)
-        
+
         // Gunakan modulo untuk distribusi merata
         $offset = $dokterId % 4;
-        
+
         $patterns = [
             [1, 3, 5], // Senin, Rabu, Jumat
             [2, 4, 6], // Selasa, Kamis, Sabtu

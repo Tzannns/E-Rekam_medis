@@ -13,6 +13,7 @@
     </style>
     </head>
 <body>
+    @include('admin.report.pdf._header')
     <h2>Laporan Rawat Jalan</h2>
     <div class="meta">
         Dicetak: {{ now()->format('d/m/Y H:i') }}

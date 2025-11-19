@@ -29,6 +29,7 @@
 </head>
 
 <body>
+    @include('admin.report.pdf._header')
     <h2>Data Users</h2>
     <table>
         <thead>

@@ -28,15 +28,16 @@ class DokterPoliSeeder extends Seeder
 
         foreach ($dokterData as $kodePoli => $dokterInfo) {
             $poli = Poli::where('kode_poli', $kodePoli)->first();
-            
-            if (!$poli) {
+
+            if (! $poli) {
                 $this->command->warn("Poli dengan kode {$kodePoli} tidak ditemukan. Skip.");
+
                 continue;
             }
 
             // Cek apakah user sudah ada berdasarkan NIP
-            $email = strtolower(str_replace([' ', '.', ','], '', $dokterInfo['name'])) . '@hospital.com';
-            
+            $email = strtolower(str_replace([' ', '.', ','], '', $dokterInfo['name'])).'@hospital.com';
+
             $user = User::firstOrCreate(
                 ['email' => $email],
                 [
@@ -46,7 +47,7 @@ class DokterPoliSeeder extends Seeder
             );
 
             // Assign role Dokter jika belum punya
-            if (!$user->hasRole('Dokter')) {
+            if (! $user->hasRole('Dokter')) {
                 $user->assignRole('Dokter');
             }
 
@@ -57,12 +58,12 @@ class DokterPoliSeeder extends Seeder
                     'user_id' => $user->id,
                     'poli_id' => $poli->id,
                     'spesialisasi' => $dokterInfo['spesialisasi'],
-                    'no_telp' => '08' . rand(1000000000, 9999999999),
+                    'no_telp' => '08'.rand(1000000000, 9999999999),
                 ]
             );
 
             // Update poli_id jika dokter sudah ada tapi belum punya poli
-            if (!$dokter->poli_id) {
+            if (! $dokter->poli_id) {
                 $dokter->update(['poli_id' => $poli->id]);
             }
 
@@ -70,7 +71,7 @@ class DokterPoliSeeder extends Seeder
         }
 
         $this->command->info("\n✅ Seeder dokter per poli selesai!");
-        $this->command->info("Total Poli: " . Poli::count());
-        $this->command->info("Total Dokter: " . Dokter::count());
+        $this->command->info('Total Poli: '.Poli::count());
+        $this->command->info('Total Dokter: '.Dokter::count());
     }
 }

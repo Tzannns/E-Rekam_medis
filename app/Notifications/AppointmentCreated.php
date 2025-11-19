@@ -20,7 +20,7 @@ class AppointmentCreated extends Notification
     public function toArray(object $notifiable): array
     {
         $jadwal = $this->appointment->jadwal;
-        
+
         return [
             'title' => 'Antrian Berhasil Diambil',
             'message' => "Anda berhasil mengambil antrian di {$this->appointment->poli->nama_poli} dengan nomor antrian {$this->appointment->nomor_antrian}. Tanggal: {$this->appointment->tanggal_usulan->format('d/m/Y')} pukul {$this->appointment->jam_usulan}.",

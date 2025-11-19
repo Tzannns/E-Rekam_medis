@@ -12,7 +12,7 @@ class RadiologiController extends Controller
     public function index(): View
     {
         $dokter = Auth::user()->dokter;
-        
+
         $labs = Radiologi::with(['pasien.user', 'dokter.user'])
             ->where('dokter_id', $dokter->id)
             ->latest()

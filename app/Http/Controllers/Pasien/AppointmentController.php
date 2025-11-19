@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Pasien;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Dokter;
+use App\Models\Jadwal;
+use App\Models\Poli;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\Models\Jadwal;
-use App\Models\Poli;
-use App\Models\User;
 
 class AppointmentController extends Controller
 {
@@ -36,13 +36,13 @@ class AppointmentController extends Controller
         }
 
         // Hanya bisa dibatalkan jika statusnya Menunggu atau Diproses
-        if (!in_array($appointment->status, ['Menunggu', 'Diproses'])) {
+        if (! in_array($appointment->status, ['Menunggu', 'Diproses'])) {
             return redirect()->back()->withErrors(['error' => 'Antrian tidak dapat dibatalkan.']);
         }
 
         $appointment->update([
             'status' => 'Dibatalkan',
-            'catatan_admin' => 'Dibatalkan oleh pasien pada ' . now()->format('d/m/Y H:i'),
+            'catatan_admin' => 'Dibatalkan oleh pasien pada '.now()->format('d/m/Y H:i'),
         ]);
 
         return redirect()->route('pasien.appointment.index')->with('success', 'Antrian berhasil dibatalkan.');
@@ -73,11 +73,11 @@ class AppointmentController extends Controller
             $jadwalOptions = Jadwal::whereHas('dokter', function ($q) use ($poliId) {
                 $q->where('poli_id', $poliId);
             })
-            ->whereDate('tanggal', $tanggal)
-            ->where('status', 'tersedia')
-            ->with('dokter.user')
-            ->orderBy('jam_mulai')
-            ->get();
+                ->whereDate('tanggal', $tanggal)
+                ->where('status', 'tersedia')
+                ->with('dokter.user')
+                ->orderBy('jam_mulai')
+                ->get();
         }
 
         if ($selectedJadwalId) {
@@ -145,6 +145,7 @@ class AppointmentController extends Controller
             $maxQueue = 30;
             if ($currentQueue >= $maxQueue) {
                 \DB::rollBack();
+
                 return redirect()->back()->withErrors(['jadwal_id' => 'Antrian sudah penuh untuk jadwal ini.'])->withInput();
             }
 
@@ -158,7 +159,7 @@ class AppointmentController extends Controller
 
             // Jangan ubah status jadwal, biarkan tetap 'tersedia' untuk pasien lain
             // Hanya update keterangan jika diperlukan
-            if (!$jadwal->keterangan) {
+            if (! $jadwal->keterangan) {
                 $jadwal->update([
                     'keterangan' => 'Jadwal antrian online tersedia',
                 ]);
@@ -190,10 +191,11 @@ class AppointmentController extends Controller
                 }
             }
 
-            return redirect()->route('pasien.appointment.index')->with('success', 'Antrian berhasil diambil. Nomor antrian Anda: ' . $appointment->nomor_antrian);
+            return redirect()->route('pasien.appointment.index')->with('success', 'Antrian berhasil diambil. Nomor antrian Anda: '.$appointment->nomor_antrian);
         } catch (\Exception $e) {
             \DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()])->withInput();
+
+            return redirect()->back()->withErrors(['error' => 'Terjadi kesalahan: '.$e->getMessage()])->withInput();
         }
     }
 }

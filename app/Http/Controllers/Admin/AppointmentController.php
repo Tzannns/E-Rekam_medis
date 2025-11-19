@@ -64,7 +64,7 @@ class AppointmentController extends Controller
         }
 
         $oldStatus = $appointment->status;
-        
+
         $appointment->update([
             'dokter_id' => $data['dokter_id'] ?? $appointment->dokter_id,
             'status' => $data['status'],
@@ -86,7 +86,7 @@ class AppointmentController extends Controller
                     $activeQueueCount = Appointment::where('jadwal_id', $jadwal->id)
                         ->whereIn('status', ['Menunggu', 'Diproses', 'Disetujui'])
                         ->count();
-                    
+
                     if ($activeQueueCount === 0) {
                         $jadwal->update([
                             'status' => 'tersedia',

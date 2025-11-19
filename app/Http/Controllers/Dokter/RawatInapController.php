@@ -12,7 +12,7 @@ class RawatInapController extends Controller
     public function index(): View
     {
         $dokter = Auth::user()->dokter;
-        
+
         $rawatInap = RawatInap::where('dokter_id', $dokter->id)
             ->with(['pasien.user'])
             ->latest('tanggal_masuk')
@@ -24,7 +24,7 @@ class RawatInapController extends Controller
     public function show(RawatInap $rawatInap): View
     {
         $dokter = Auth::user()->dokter;
-        
+
         // Pastikan rawat inap ini milik dokter yang login
         if ($rawatInap->dokter_id !== $dokter->id) {
             abort(403, 'Anda tidak memiliki akses ke data ini');

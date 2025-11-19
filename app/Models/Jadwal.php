@@ -39,6 +39,7 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Poli::class);
     }
+
     public function pasien(): BelongsTo
     {
         return $this->belongsTo(Pasien::class);

@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index(): View
     {
         $dokter = Auth::user()->dokter;
-        
+
         $totalRekamMedis = RekamMedis::where('dokter_id', $dokter->id)->count();
         $totalPasien = RekamMedis::where('dokter_id', $dokter->id)
             ->distinct('pasien_id')
@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->whereDate('tanggal_usulan', today())
             ->whereIn('status', ['disetujui', 'selesai'])
             ->count();
-        
+
         $recentRekamMedis = RekamMedis::where('dokter_id', $dokter->id)
             ->with(['pasien.user'])
             ->latest()

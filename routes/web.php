@@ -609,8 +609,8 @@ require __DIR__.'/auth.php';
 // Test notification (hapus di production)
 Route::get('/test-notification', function () {
     $user = auth()->user();
-    
-    if (!$user) {
+
+    if (! $user) {
         return 'Please login first';
     }
 

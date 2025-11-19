@@ -31,7 +31,7 @@ class AppointmentStatusUpdated extends Notification
         ];
 
         $message = "Antrian Anda di {$this->appointment->poli->nama_poli} {$statusMessages[$this->newStatus]}.";
-        
+
         if ($this->newStatus === 'Disetujui' && $this->appointment->dokter) {
             $message .= " Dokter: {$this->appointment->dokter->user->name}.";
         }
@@ -54,7 +54,7 @@ class AppointmentStatusUpdated extends Notification
 
     private function getIcon(string $status): string
     {
-        return match($status) {
+        return match ($status) {
             'Disetujui' => 'check-circle',
             'Diproses' => 'clock',
             'Dibatalkan' => 'x-circle',
@@ -64,7 +64,7 @@ class AppointmentStatusUpdated extends Notification
 
     private function getColor(string $status): string
     {
-        return match($status) {
+        return match ($status) {
             'Disetujui' => 'green',
             'Diproses' => 'blue',
             'Dibatalkan' => 'red',

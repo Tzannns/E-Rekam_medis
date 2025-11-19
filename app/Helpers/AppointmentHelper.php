@@ -21,7 +21,7 @@ class AppointmentHelper
      */
     public static function getQueuePosition(Appointment $appointment): ?int
     {
-        if (!$appointment->jadwal_id) {
+        if (! $appointment->jadwal_id) {
             return null;
         }
 
@@ -41,7 +41,7 @@ class AppointmentHelper
             ->whereIn('status', ['Menunggu', 'Diproses', 'Disetujui'])
             ->exists();
 
-        return !$existingAppointment;
+        return ! $existingAppointment;
     }
 
     /**
@@ -49,7 +49,7 @@ class AppointmentHelper
      */
     public static function getStatusBadgeClass(string $status): string
     {
-        return match($status) {
+        return match ($status) {
             'Disetujui' => 'bg-green-100 text-green-800',
             'Diproses' => 'bg-blue-100 text-blue-800',
             'Menunggu' => 'bg-yellow-100 text-yellow-800',
@@ -80,6 +80,7 @@ class AppointmentHelper
     public static function isJadwalFull(int $jadwalId): bool
     {
         $currentQueue = self::getActiveQueueCount($jadwalId);
+
         return $currentQueue >= self::getMaxQueueLimit();
     }
 }

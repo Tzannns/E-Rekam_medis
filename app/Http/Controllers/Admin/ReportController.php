@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Appointment;
-use App\Models\RawatJalan;
-use App\Models\TransaksiApotik;
+use App\Models\Dokter;
 use App\Models\Laundry;
 use App\Models\Poli;
-use App\Models\Dokter;
+use App\Models\RawatJalan;
+use App\Models\TransaksiApotik;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ReportController extends Controller
 {
@@ -64,6 +64,7 @@ class ReportController extends Controller
                 'items' => $appointments->items(),
                 'filters' => $request->all(),
             ]);
+
             return $pdf->download('laporan_appointment_'.now()->format('Ymd_His').'.pdf');
         }
 
@@ -112,6 +113,7 @@ class ReportController extends Controller
                 'items' => $records->items(),
                 'filters' => $request->all(),
             ]);
+
             return $pdf->download('laporan_rawat_jalan_'.now()->format('Ymd_His').'.pdf');
         }
 
@@ -154,6 +156,7 @@ class ReportController extends Controller
                 'items' => $transactions->items(),
                 'filters' => $request->all(),
             ]);
+
             return $pdf->download('laporan_apotik_'.now()->format('Ymd_His').'.pdf');
         }
 
@@ -195,6 +198,7 @@ class ReportController extends Controller
                 'items' => $items->items(),
                 'filters' => $request->all(),
             ]);
+
             return $pdf->download('laporan_laundry_'.now()->format('Ymd_His').'.pdf');
         }
 
