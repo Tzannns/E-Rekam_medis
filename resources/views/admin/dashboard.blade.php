@@ -263,7 +263,7 @@
                     </div>
                 </a>
 
-                <!-- Permohonan Periksa -->
+                <!-- Antrian Online -->
                 <a href="{{ route('admin.appointment.index') }}"
                     class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex items-center cursor-pointer border border-gray-200 hover:border-yellow-300">
                     <div class="flex-shrink-0">
@@ -277,7 +277,7 @@
                         </div>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-900">Permohonan Periksa</p>
+                        <p class="text-sm font-medium text-gray-900">Antrian Online</p>
                         <p class="text-xs text-gray-500">Kelola permohonan</p>
                     </div>
                 </a>
