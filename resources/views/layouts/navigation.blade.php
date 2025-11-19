@@ -62,7 +62,7 @@
                             </svg>
                             <!-- Badge Notifikasi -->
                             @if(auth()->user()->unreadNotifications->count() > 0)
-                                <span class="absolute top-1 right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
+                                <span class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
                                     {{ auth()->user()->unreadNotifications->count() }}
                                 </span>
                             @endif

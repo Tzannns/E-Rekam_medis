@@ -17,7 +17,15 @@ class DashboardController extends Controller
         $totalDokter = Dokter::count();
         $totalPasien = Pasien::count();
         $totalRekamMedis = RekamMedis::count();
+        
         $recentRekamMedis = RekamMedis::with(['pasien.user', 'dokter.user'])
+            ->latest()
+            ->limit(10)
+            ->get();
+        
+        // Antrian terbaru
+        $recentAntrian = \App\Models\Appointment::with(['pasien.user', 'dokter.user', 'poli'])
+            ->whereIn('status', ['menunggu', 'disetujui'])
             ->latest()
             ->limit(10)
             ->get();
@@ -27,7 +35,8 @@ class DashboardController extends Controller
             'totalDokter',
             'totalPasien',
             'totalRekamMedis',
-            'recentRekamMedis'
+            'recentRekamMedis',
+            'recentAntrian'
         ));
     }
 }

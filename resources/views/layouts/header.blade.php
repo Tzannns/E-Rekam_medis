@@ -35,7 +35,7 @@
                         <!-- Badge -->
                         @if (auth()->user()->unreadNotifications->count() > 0)
                             <span
-                                class="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-600 rounded-full">
+                                class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-600 rounded-full">
                                 {{ auth()->user()->unreadNotifications->count() }}
                             </span>
                         @endif
