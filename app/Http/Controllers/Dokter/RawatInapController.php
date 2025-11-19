@@ -13,10 +13,8 @@ class RawatInapController extends Controller
     {
         $dokter = Auth::user()->dokter;
         
-        // Hanya menampilkan pasien rawat inap yang ditangani oleh dokter ini
-        // Filter berdasarkan dokter_id saja (tidak perlu filter poli karena sudah ada dokter_id)
         $rawatInap = RawatInap::where('dokter_id', $dokter->id)
-            ->with(['pasien.user', 'dokter.poli'])
+            ->with(['pasien.user'])
             ->latest('tanggal_masuk')
             ->paginate(15);
 

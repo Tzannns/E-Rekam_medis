@@ -14,9 +14,7 @@ class JadwalController extends Controller
         $dokter = Auth::user()->dokter;
         
         // Menampilkan jadwal pemeriksaan berdasarkan appointment yang disetujui
-        // Hanya menampilkan appointment untuk poli dokter yang bersangkutan
         $jadwalPemeriksaan = Appointment::where('dokter_id', $dokter->id)
-            ->where('poli_id', $dokter->poli_id)
             ->whereIn('status', ['disetujui', 'selesai'])
             ->with(['pasien.user', 'poli', 'jadwal'])
             ->orderBy('tanggal_usulan', 'desc')
