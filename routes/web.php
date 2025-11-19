@@ -243,6 +243,14 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/appointment/{appointment}', [AdminAppointmentController::class, 'update'])
         ->name('appointment.update')
         ->middleware('permission:appointment.edit');
+
+    Route::prefix('report')->name('report.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('index');
+        Route::get('/appointments', [\App\Http\Controllers\Admin\ReportController::class, 'appointments'])->name('appointments');
+        Route::get('/rawat-jalan', [\App\Http\Controllers\Admin\ReportController::class, 'rawatJalan'])->name('rawat-jalan');
+        Route::get('/apotik', [\App\Http\Controllers\Admin\ReportController::class, 'apotik'])->name('apotik');
+        Route::get('/laundry', [\App\Http\Controllers\Admin\ReportController::class, 'laundry'])->name('laundry');
+    });
 });
 
 // Dokter Routes
