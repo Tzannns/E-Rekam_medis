@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
-use App\Models\Jadwal;
+use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -12,11 +12,17 @@ class JadwalController extends Controller
     public function index(): View
     {
         $dokter = Auth::user()->dokter;
-        $jadwal = Jadwal::where('dokter_id', $dokter->id)
-            ->with(['pasien.user'])
-            ->latest()
+        
+        // Menampilkan jadwal pemeriksaan berdasarkan appointment yang disetujui
+        // Hanya menampilkan appointment untuk poli dokter yang bersangkutan
+        $jadwalPemeriksaan = Appointment::where('dokter_id', $dokter->id)
+            ->where('poli_id', $dokter->poli_id)
+            ->whereIn('status', ['disetujui', 'selesai'])
+            ->with(['pasien.user', 'poli', 'jadwal'])
+            ->orderBy('tanggal_usulan', 'desc')
+            ->orderBy('jam_usulan', 'desc')
             ->paginate(15);
 
-        return view('dokter.jadwal.index', compact('jadwal'));
+        return view('dokter.jadwal.index', compact('jadwalPemeriksaan'));
     }
 }

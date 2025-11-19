@@ -279,6 +279,7 @@ Route::middleware(['auth', 'role:Dokter'])->prefix('dokter')->name('dokter.')->g
         ->name('rawat-jalan.update')
         ->middleware('permission:rawat-jalan.edit');
     Route::get('/rawat-inap', [DokterRawatInapController::class, 'index'])->name('rawat-inap.index');
+    Route::get('/rawat-inap/{rawatInap}', [DokterRawatInapController::class, 'show'])->name('rawat-inap.show');
     Route::get('/pasien', [DokterPasienController::class, 'index'])->name('pasien.index');
     Route::get('/laboratorium', [DokterLaboratoriumController::class, 'index'])->name('laboratorium.index');
     Route::get('/radiologi', [DokterRadiologiController::class, 'index'])->name('radiologi.index');
@@ -560,6 +561,8 @@ Route::middleware(['auth', 'role:Petugas'])->prefix('petugas')->name('petugas.')
 Route::middleware(['auth', 'role:Pasien'])->prefix('pasien')->name('pasien.')->group(function () {
     Route::get('/dashboard', [PasienDashboardController::class, 'index'])->name('dashboard');
     Route::get('/rekam-medis', [PasienRekamMedisController::class, 'index'])->name('rekam-medis.index');
+    Route::get('/rekam-medis/create', [PasienRekamMedisController::class, 'create'])->name('rekam-medis.create');
+    Route::post('/rekam-medis', [PasienRekamMedisController::class, 'store'])->name('rekam-medis.store');
     Route::get('/rekam-medis/{rekamMedi}', [PasienRekamMedisController::class, 'show'])->name('rekam-medis.show');
 
     // Modul Pasien

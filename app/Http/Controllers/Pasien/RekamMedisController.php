@@ -65,4 +65,48 @@ class RekamMedisController extends Controller
 
         return view('pasien.rekam-medis.show', compact('rekamMedi'));
     }
+
+    public function create(): View|RedirectResponse
+    {
+        $pasien = Auth::user()->pasien;
+        if ($pasien === null) {
+            return redirect()->route('pasien.profil.create')
+                ->with('info', 'Lengkapi data profil pasien terlebih dahulu.');
+        }
+
+        return view('pasien.rekam-medis.create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $pasien = Auth::user()->pasien;
+        if ($pasien === null) {
+            return redirect()->route('pasien.profil.create')
+                ->with('info', 'Lengkapi data profil pasien terlebih dahulu.');
+        }
+
+        $validated = $request->validate([
+            'tanggal_periksa' => 'required|date',
+            'keluhan' => 'nullable|string',
+            'riwayat_penyakit' => 'nullable|string',
+            'alergi_obat' => 'nullable|string',
+            'catatan' => 'nullable|string',
+        ]);
+
+        // Simpan data riwayat medis awal dari pasien
+        // Nanti dokter yang akan melengkapi diagnosa dan tindakan
+        RekamMedis::create([
+            'pasien_id' => $pasien->id,
+            'dokter_id' => 1, // Temporary, akan diupdate oleh dokter
+            'tanggal_periksa' => $validated['tanggal_periksa'],
+            'keluhan' => $validated['keluhan'],
+            'diagnosa' => 'Menunggu pemeriksaan dokter',
+            'tindakan' => $validated['riwayat_penyakit'] ?? null,
+            'resep_obat' => $validated['alergi_obat'] ?? null,
+            'catatan' => $validated['catatan'],
+        ]);
+
+        return redirect()->route('pasien.rekam-medis.index')
+            ->with('success', 'Riwayat medis berhasil disimpan.');
+    }
 }
