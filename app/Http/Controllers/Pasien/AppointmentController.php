@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\Jadwal;
 use App\Models\Poli;
+use App\Models\User;
 
 class AppointmentController extends Controller
 {
@@ -71,7 +72,7 @@ class AppointmentController extends Controller
         // Jika dokter dan tanggal dipilih, tampilkan jadwal
         if ($dokterId && $tanggal) {
             $jadwalOptions = Jadwal::where('dokter_id', $dokterId)
-                ->where('tanggal', $tanggal)
+                ->whereDate('tanggal', $tanggal)
                 ->where('status', 'tersedia')
                 ->with('dokter.user', 'dokter.poli')
                 ->orderBy('jam_mulai')
@@ -172,6 +173,14 @@ class AppointmentController extends Controller
             // Kirim notifikasi ke dokter
             if ($jadwal->dokter && $jadwal->dokter->user) {
                 $jadwal->dokter->user->notify(new \App\Notifications\NewAppointmentForDokter($appointment));
+            }
+
+            // Kirim notifikasi ke semua Admin
+            $admins = User::role('Admin')->get();
+            if ($admins->isNotEmpty()) {
+                foreach ($admins as $admin) {
+                    $admin->notify(new \App\Notifications\NewAppointmentForAdmin($appointment));
+                }
             }
 
             return redirect()->route('pasien.appointment.index')->with('success', 'Antrian berhasil diambil. Nomor antrian Anda: ' . $appointment->nomor_antrian);
